@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+    "name": "Jisho Grabber",
+    "version": "1.0",
+    "description": "Add a context menu option to highlighted text to highlighted text to search it on Jisho and get ",
+    "homepage_url": "N/A",
+
+    "icons": {
+        "48": "icons/toolbar-icon.svg",
+        "96": "icons/toolbar-icon.svg"
+    },
+
+    "background": {
+        "scripts": ["src/search-selection.js"]
+    },
+
+    "content_scripts": [
+        {
+            "matches": ["https://jisho.org/search/*"],
+            "js": ["src/element-picker.js", "src/jisho-search-selector.js"]
+        }
+    ],
+
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "clipboardWrite"
+    ]
+}

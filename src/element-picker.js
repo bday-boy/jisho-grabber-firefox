@@ -9,6 +9,8 @@
 
 let myCanvas;
 let canvasContainer;
+const offsetY = document.body.getBoundingClientRect().top;
+const offsetX = document.body.getBoundingClientRect().left;
 
 const getElementBoundingClientRect = function(elem) {
     /*
@@ -55,8 +57,9 @@ const highlightElement = function(elem) {
     const rect = getElementBoundingClientRect(elem);
     createCanvasOverlay();
     let ctx = myCanvas.getContext('2d', {alpha: true});
-    ctx.fillstyle = "rgb(144, 238, 144)";
-    ctx.fillRect(rect.left, rect.top + window.scrollY, rect.width, rect.height);
+    ctx.fillStyle = "rgba(144, 238, 144, 0.4)";
+    ctx.fillRect(rect.left - offsetX, rect.top + window.scrollY - offsetY,
+        rect.width, rect.height);
 };
 
 const createCanvasOverlay = function() {

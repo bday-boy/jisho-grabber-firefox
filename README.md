@@ -7,6 +7,6 @@ select a definition within the Jisho webpage directly.
 
 ## What it does
 
-- Adds two context menu (left-click menu) items: one for searching highlighted text on Jisho.org,
+- Adds two context menu (right-click menu) items: one for searching highlighted text on Jisho.org,
   and another for selecting a definition of a word on Jisho.org and adding it to a JSON.
 - Upon click, it opens a new webpage on jisho.org searching the highlighted text.

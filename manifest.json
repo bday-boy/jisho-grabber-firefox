@@ -21,7 +21,8 @@
             "js": [
                 "src/meaning-selector.js",
                 "src/element-picker.js",
-                "src/utils.js"
+                "src/word-utils.js",
+                "src/word-parser.js"
             ]
         }
     ],

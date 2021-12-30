@@ -6,7 +6,7 @@
 **              processing meaning/word data and such.
 */
 
-const isHiragana = function(c) {
+function isHiragana(c) {
     if (!c) {
         throw new Error(`${c} is a null-type value.`);
     }
@@ -21,7 +21,7 @@ const isHiragana = function(c) {
     }
 };
 
-const isKatakana = function(c) {
+function isKatakana(c) {
     if (!c) {
         throw new Error(`${c} is a null-type value.`);
     }
@@ -36,11 +36,11 @@ const isKatakana = function(c) {
     }
 };
 
-const isKana = function(c) {
+function isKana(c) {
     return isHiragana(c) || isKatakana(c);
 };
 
-const kana = function(word) {
+function kana(word) {
     if (!word) {
         throw new Error(`${word} is a null-type value.`);
     }
@@ -58,7 +58,8 @@ const kana = function(word) {
     }
 };
 
-const kanji = function(word) {
+// This one doesn't work yet lmao
+function kanji(word) {
     if (!word) {
         throw new Error(`${word} is a null-type value.`);
     }

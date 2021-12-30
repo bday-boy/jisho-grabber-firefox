@@ -9,7 +9,7 @@
 elem = document.getElementById("main_results");
 elem.onclick = function(event) {
     let clicked_elem = event.target;
-    let word_class = "concept_light clearfix";
+    let word_class = "meaning-wrapper";
     while (clicked_elem !== null && clicked_elem.getAttribute("class") !== word_class) {
         clicked_elem = clicked_elem.parentElement;
     }

@@ -3,7 +3,6 @@
     "name": "Jisho Grabber",
     "version": "1.0",
     "description": "Add a context menu option to highlighted text to highlighted text to search it on Jisho and get ",
-    "homepage_url": "N/A",
 
     "icons": {
         "48": "icons/toolbar-icon.svg",
@@ -23,7 +22,6 @@
 
     "permissions": [
         "activeTab",
-        "contextMenus",
-        "clipboardWrite"
+        "contextMenus"
     ]
 }

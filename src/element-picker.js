@@ -53,15 +53,6 @@ const getElementBoundingClientRect = function(elem) {
     };
 };
 
-const highlightElement = function(elem) {
-    const rect = getElementBoundingClientRect(elem);
-    createCanvasOverlay();
-    let ctx = myCanvas.getContext('2d', {alpha: true});
-    ctx.fillStyle = "rgba(144, 238, 144, 0.4)";
-    ctx.fillRect(rect.left - offsetX, rect.top + window.scrollY - offsetY,
-        rect.width, rect.height);
-};
-
 const createCanvasOverlay = function() {
     if (myCanvas === undefined) {
         if (canvasContainer === undefined) {
@@ -94,4 +85,13 @@ const hideCanvas = function() {
         //myCanvas.style.visibility='hidden';
         myCanvas.parentNode.style.visibility='hidden';
     }
+};
+
+const highlightElement = function(elem) {
+    const rect = getElementBoundingClientRect(elem);
+    createCanvasOverlay();
+    let ctx = myCanvas.getContext('2d', {alpha: true});
+    ctx.fillStyle = "rgba(144, 238, 144, 0.4)";
+    ctx.fillRect(rect.left - offsetX, rect.top + window.scrollY - offsetY,
+        rect.width, rect.height);
 };

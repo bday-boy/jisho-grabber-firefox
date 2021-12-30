@@ -75,6 +75,6 @@ const highlightElement = function(elem) {
     // Draw rectangle on canvas
     let context = canvas.getContext('2d');
     context.rect(rect.left, rect.top, rect.width, rect.height);
-    context.fillstyle = rgb(144, 238, 144, 0.5);
+    context.fillstyle = "rgba(144, 238, 144, 0.1)";
     context.fill();
 };

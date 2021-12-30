@@ -3,7 +3,7 @@
 ** File:        search-selection.js
 ** Project:     jisho-grabber-firefox
 ** Description: This file contains functionality to add a search function to
-**              the left-click context menu in Firefox.
+**              the right-click context menu in Firefox.
 */
 
 browser.contextMenus.create({

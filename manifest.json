@@ -10,13 +10,19 @@
     },
 
     "background": {
-        "scripts": ["src/search-selection.js"]
+        "scripts": [
+            "src/search-selection.js",
+            "src/jisho-search-selector.js"
+        ]
     },
 
     "content_scripts": [
         {
             "matches": ["https://jisho.org/search/*"],
-            "js": ["src/element-picker.js", "src/jisho-search-selector.js"]
+            "js": [
+                "src/jisho-page-selector.js",
+                "src/element-picker.js"
+            ]
         }
     ],
 

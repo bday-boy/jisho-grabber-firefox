@@ -7,6 +7,9 @@
 **              a page that contains a single element.
 */
 
+let myCanvas;
+let canvasContainer;
+
 const getElementBoundingClientRect = function(elem) {
     /*
     ** This function was adapted from part of the uBlock Origin source code,
@@ -49,32 +52,43 @@ const getElementBoundingClientRect = function(elem) {
 };
 
 const highlightElement = function(elem) {
-    /*
-    ** This function is taken from an answer (from user Borre Mosch) on
-    ** stackoverflow about how to draw a canvas over a web page.
-    ** Date retrieved: Dec 29, 2021
-    ** https://stackoverflow.com/questions/19840907/draw-rectangle-over-html-with-javascript
-    */
-
-    // Get bounding rectangle of element to highlight
     const rect = getElementBoundingClientRect(elem);
+    createCanvasOverlay();
+    let ctx = myCanvas.getContext('2d', {alpha: true});
+    ctx.fillstyle = "rgb(144, 238, 144)";
+    ctx.fillRect(rect.left, rect.top + window.scrollY, rect.width, rect.height);
+};
 
-    // Create canvas over entire webpage
-    let canvas = document.createElement('canvas');
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.position = 'absolute';
-    canvas.style.left = 0;
-    canvas.style.top = 0;
-    canvas.style.zIndex = 100000;
-    canvas.style.pointerEvents = 'none';
-    document.body.appendChild(canvas);
+const createCanvasOverlay = function() {
+    if (myCanvas === undefined) {
+        if (canvasContainer === undefined) {
+            canvasContainer = document.createElement('div'); 
+            document.body.appendChild(canvasContainer);
+            canvasContainer.style.position = "absolute";
+            canvasContainer.style.left = "0px";
+            canvasContainer.style.top = "0px";
+            canvasContainer.style.width = "100%";
+            canvasContainer.style.height = "100%";
+            canvasContainer.style.zIndex = 10000;
+            canvasContainer.style.pointerEvents = 'none';
+        }
 
-    // Draw rectangle on canvas
-    let context = canvas.getContext('2d');
-    context.rect(rect.left, rect.top, rect.width, rect.height);
-    context.fillstyle = "rgba(144, 238, 144, 0.1)";
-    context.fill();
+        myCanvas = document.createElement('canvas');    
+        myCanvas.style.width = `${document.body.scrollWidth}px`;
+        myCanvas.style.height = `${document.body.scrollHeight}px`;
+        myCanvas.width = document.body.scrollWidth;
+        myCanvas.height = document.body.scrollHeight;    
+        myCanvas.style.overflow = 'visible';
+        myCanvas.style.position = 'absolute';
+        myCanvas.style.pointerEvents = 'none';
+        canvasContainer.appendChild(myCanvas);
+    }
+    else { myCanvas.parentNode.style.visibility = 'visible'; }
+};
+
+const hideCanvas = function() {
+    if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
+        //myCanvas.style.visibility='hidden';
+        myCanvas.parentNode.style.visibility='hidden';
+    }
 };

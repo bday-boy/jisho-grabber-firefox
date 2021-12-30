@@ -6,14 +6,24 @@
 **              a word on Jisho and save it locally.
 */
 
-elem = document.getElementById("main_results");
-elem.onclick = function(event) {
-    let clicked_elem = event.target;
-    let word_class = "meaning-wrapper";
-    while (clicked_elem !== null && clicked_elem.getAttribute("class") !== word_class) {
-        clicked_elem = clicked_elem.parentElement;
+let drawn = false;
+
+(function() {
+    let meaningWrappers = document.getElementsByClassName("meaning-wrapper");
+    for (let meaningWrapperElement of meaningWrappers) {
+        meaningWrapperElement.style.cursor = "crosshair";
+        meaningWrapperElement.addEventListener("mouseenter", (event) => {
+            if (meaningWrapperElement !== null && !drawn) {
+                highlightElement(meaningWrapperElement);
+                drawn = true;
+            }
+        });
+        meaningWrapperElement.addEventListener("mouseleave", (event) => {
+            if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
+                let ctx = myCanvas.getContext('2d', {alpha: true});
+                ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+                drawn = false;
+            }
+        });
     }
-    if (clicked_elem !== null) {
-        highlightElement(clicked_elem);
-    }
-};
+})()

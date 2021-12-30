@@ -11,8 +11,7 @@
 
     "background": {
         "scripts": [
-            "src/search-selection.js",
-            "src/jisho-search-selector.js"
+            "src/search-selection.js"
         ]
     },
 
@@ -20,7 +19,7 @@
         {
             "matches": ["https://jisho.org/search/*"],
             "js": [
-                "src/jisho-page-selector.js",
+                "src/meaning-selector.js",
                 "src/element-picker.js"
             ]
         }

@@ -25,5 +25,13 @@ let drawn = false;
                 drawn = false;
             }
         });
+        meaningWrapperElement.addEventListener("click", (event) => {
+            testFunc();
+            console.log("It failed?");
+        });
     }
 })()
+
+const testFunc = function() {
+    console.log("It worked");
+};

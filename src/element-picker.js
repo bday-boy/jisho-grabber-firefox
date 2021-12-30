@@ -12,6 +12,40 @@ let canvasContainer;
 const offsetY = document.body.getBoundingClientRect().top;
 const offsetX = document.body.getBoundingClientRect().left;
 
+const createCanvasOverlay = function() {
+    if (myCanvas === undefined) {
+        if (canvasContainer === undefined) {
+            canvasContainer = document.createElement('div'); 
+            document.body.appendChild(canvasContainer);
+            canvasContainer.style.position = "absolute";
+            canvasContainer.style.left = "0px";
+            canvasContainer.style.top = "0px";
+            canvasContainer.style.width = "100%";
+            canvasContainer.style.height = "100%";
+            canvasContainer.style.zIndex = 10000;
+            canvasContainer.style.pointerEvents = 'none';
+        }
+
+        myCanvas = document.createElement('canvas');    
+        myCanvas.style.width = `${document.body.scrollWidth}px`;
+        myCanvas.style.height = `${document.body.scrollHeight}px`;
+        myCanvas.width = document.body.scrollWidth;
+        myCanvas.height = document.body.scrollHeight;    
+        myCanvas.style.overflow = 'visible';
+        myCanvas.style.position = 'absolute';
+        myCanvas.style.pointerEvents = 'none';
+        canvasContainer.appendChild(myCanvas);
+    }
+    else { myCanvas.parentNode.style.visibility = 'visible'; }
+};
+
+const hideCanvas = function() {
+    if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
+        //myCanvas.style.visibility='hidden';
+        myCanvas.parentNode.style.visibility='hidden';
+    }
+};
+
 const getElementBoundingClientRect = function(elem) {
     /*
     ** This function was adapted from part of the uBlock Origin source code,
@@ -51,40 +85,6 @@ const getElementBoundingClientRect = function(elem) {
         top,
         width: right - left
     };
-};
-
-const createCanvasOverlay = function() {
-    if (myCanvas === undefined) {
-        if (canvasContainer === undefined) {
-            canvasContainer = document.createElement('div'); 
-            document.body.appendChild(canvasContainer);
-            canvasContainer.style.position = "absolute";
-            canvasContainer.style.left = "0px";
-            canvasContainer.style.top = "0px";
-            canvasContainer.style.width = "100%";
-            canvasContainer.style.height = "100%";
-            canvasContainer.style.zIndex = 10000;
-            canvasContainer.style.pointerEvents = 'none';
-        }
-
-        myCanvas = document.createElement('canvas');    
-        myCanvas.style.width = `${document.body.scrollWidth}px`;
-        myCanvas.style.height = `${document.body.scrollHeight}px`;
-        myCanvas.width = document.body.scrollWidth;
-        myCanvas.height = document.body.scrollHeight;    
-        myCanvas.style.overflow = 'visible';
-        myCanvas.style.position = 'absolute';
-        myCanvas.style.pointerEvents = 'none';
-        canvasContainer.appendChild(myCanvas);
-    }
-    else { myCanvas.parentNode.style.visibility = 'visible'; }
-};
-
-const hideCanvas = function() {
-    if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
-        //myCanvas.style.visibility='hidden';
-        myCanvas.parentNode.style.visibility='hidden';
-    }
 };
 
 const highlightElement = function(elem) {

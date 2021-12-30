@@ -1,5 +1,6 @@
 /*
-** Author:      Andrew Smith
+** Author:      Andrew Smith (and GitHub user gorhill and stackoverflow user
+**              Borre Mosch)
 ** File:        element-picker.js
 ** Project:     jisho-grabber-firefox
 ** Description: This file contains helper functions to draw a rectangle over
@@ -48,6 +49,13 @@ const getElementBoundingClientRect = function(elem) {
 };
 
 const highlightElement = function(elem) {
+    /*
+    ** This function is taken from an answer (from user Borre Mosch) on
+    ** stackoverflow about how to draw a canvas over a web page.
+    ** Date retrieved: Dec 29, 2021
+    ** https://stackoverflow.com/questions/19840907/draw-rectangle-over-html-with-javascript
+    */
+
     // Get bounding rectangle of element to highlight
     const rect = getElementBoundingClientRect(elem);
 

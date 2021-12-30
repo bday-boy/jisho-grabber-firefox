@@ -20,7 +20,8 @@
             "matches": ["https://jisho.org/search/*"],
             "js": [
                 "src/meaning-selector.js",
-                "src/element-picker.js"
+                "src/element-picker.js",
+                "src/utils.js"
             ]
         }
     ],

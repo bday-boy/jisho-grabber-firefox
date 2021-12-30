@@ -5,8 +5,8 @@
     "description": "Add a context menu option to highlighted text to highlighted text to search it on Jisho and get ",
 
     "icons": {
-        "48": "icons/toolbar-icon.svg",
-        "96": "icons/toolbar-icon.svg"
+        "48": "icons/extension-icon.svg",
+        "96": "icons/extension-icon.svg"
     },
 
     "background": {

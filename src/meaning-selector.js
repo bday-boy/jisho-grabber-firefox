@@ -9,7 +9,7 @@
 let drawn = false;
 
 (function() {
-    let meaningWrappers = document.getElementsByClassName("meaning-wrapper");
+    let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
     for (let meaningWrapperElement of meaningWrappers) {
         meaningWrapperElement.style.cursor = "crosshair";
         meaningWrapperElement.addEventListener("mouseenter", (event) => {
@@ -26,11 +26,11 @@ let drawn = false;
             }
         });
         meaningWrapperElement.addEventListener("click", (event) => {
-            testFunc();
+            saveDefinition();
         });
     }
-})()
+})();
 
-const testFunc = function() {
-    console.log("It worked");
+function saveDefinition() {
+    return;
 };

@@ -12,7 +12,7 @@ let canvasContainer;
 const offsetY = document.body.getBoundingClientRect().top;
 const offsetX = document.body.getBoundingClientRect().left;
 
-const createCanvasOverlay = function() {
+function createCanvasOverlay() {
     if (myCanvas === undefined) {
         if (canvasContainer === undefined) {
             canvasContainer = document.createElement('div'); 
@@ -39,14 +39,14 @@ const createCanvasOverlay = function() {
     else { myCanvas.parentNode.style.visibility = 'visible'; }
 };
 
-const hideCanvas = function() {
+function hideCanvas() {
     if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
         //myCanvas.style.visibility='hidden';
         myCanvas.parentNode.style.visibility='hidden';
     }
 };
 
-const getElementBoundingClientRect = function(elem) {
+function getElementBoundingClientRect(elem) {
     /*
     ** This function was adapted from part of the uBlock Origin source code,
     ** created by user gorhill (and 93 other contributors) on GitHub.
@@ -87,7 +87,7 @@ const getElementBoundingClientRect = function(elem) {
     };
 };
 
-const highlightElement = function(elem) {
+function highlightElement(elem) {
     const rect = getElementBoundingClientRect(elem);
     createCanvasOverlay();
     let ctx = myCanvas.getContext('2d', {alpha: true});

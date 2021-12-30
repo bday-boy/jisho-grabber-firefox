@@ -27,7 +27,6 @@ let drawn = false;
         });
         meaningWrapperElement.addEventListener("click", (event) => {
             testFunc();
-            console.log("It failed?");
         });
     }
 })()

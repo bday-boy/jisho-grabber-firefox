@@ -23,11 +23,8 @@
                 "src/element-picker.js",
                 "src/word-utils.js",
                 "src/word-parser.js",
-
-                "genanki/genanki.js",
-                "genanki/sql.js",
-                "genanki/FileSaver.min.js",
-                "genanki/jszip.min.js"
+                "src/anki.js",
+                "src/anki-connector.js"
             ]
         }
     ],

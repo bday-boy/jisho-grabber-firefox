@@ -55,9 +55,9 @@ function getWordAndReading(wordResult) {
 function getWordTags(wordResult) {
     const wordTagsElement = wordResult.querySelectorAll("div.concept_light-status span.concept_light-tag");
     const wordTags = {
-        common: null,
-        jlpt: null,
-        wanikani: null
+        common: '',
+        jlpt: '',
+        wanikani: ''
     };
     for (let tag of wordTagsElement) {
         const tagText = tag.textContent.toLowerCase().trim();
@@ -79,4 +79,15 @@ function getWordTags(wordResult) {
     return wordTags;
 };
 
-function getMeaning()
+function getMeaning(meaningWrapper) {
+    const meaning = meaningWrapper.querySelector("span.meaning-meaning").textContent;
+    const prevSibling = meaningWrapper.previousSibling;
+    let meaningTags = '';
+    if (prevSibling !== null && prevSibling.className === "meaning-tags") {
+        meaningTags = prevSibling.textContent.trim();
+    }
+    return {
+        meaning: meaning,
+        tags: meaningTags
+    };
+};

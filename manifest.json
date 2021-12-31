@@ -19,12 +19,12 @@
         {
             "matches": ["https://jisho.org/search/*"],
             "js": [
+                "src/anki.js",
+                "src/anki-connector.js",
                 "src/meaning-selector.js",
                 "src/element-picker.js",
                 "src/word-utils.js",
-                "src/word-parser.js",
-                "src/anki.js",
-                "src/anki-connector.js"
+                "src/word-parser.js"
             ]
         }
     ],
@@ -32,6 +32,11 @@
     "permissions": [
         "contextMenus",
         "storage",
-        "downloads"
+        "downloads",
+        "webRequest",
+        "tabs",
+        "dns",
+        "http://127.0.0.1:8765/",
+        "http://localhost:8765/"
     ]
 }

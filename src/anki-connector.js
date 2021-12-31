@@ -23,11 +23,49 @@ function invoke(action, version, params={}) {
             }
         });
 
-        xhr.open('POST', 'http://127.0.0.1:8765');
+        xhr.open('POST', 'http://127.0.0.1:8765/');
         xhr.send(JSON.stringify({action, version, params}));
     });
 };
 
-// await invoke('createDeck', 6, {deck: 'test1'});
-// const result = await invoke('deckNames', 6);
-// console.log(`got list of decks: ${result}`);
+async function asyncTest() {
+    const result = await invoke('deckNames', 6);
+    console.log(`got list of decks: ${result}`);
+};
+
+function handleEvent(e) {
+    console.log(`${e.type}: ${e.loaded} bytes transferred\n`);
+};
+
+function invokeRightFuckingNow(action, version, params={}) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', handleEvent);
+    xhr.addEventListener('load', () => {
+        try {
+            const response = JSON.parse(xhr.responseText);
+            if (Object.getOwnPropertyNames(response).length != 2) {
+                throw 'response has an unexpected number of fields';
+            }
+            if (!response.hasOwnProperty('error')) {
+                throw 'response is missing required error field';
+            }
+            if (!response.hasOwnProperty('result')) {
+                throw 'response is missing required result field';
+            }
+            if (response.error) {
+                throw response.error;
+            }
+            return response.result;
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
+    xhr.open('POST', 'http://127.0.0.1:8765');
+    xhr.send(JSON.stringify({action, version, params}));
+}
+
+function asyncSUCKS() {
+    const result = invokeRightFuckingNow('deckNames', 6);
+    console.log(`got list of decks: ${result}`);
+};

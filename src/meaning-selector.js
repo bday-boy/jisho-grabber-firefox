@@ -27,9 +27,7 @@ let drawn = false;
         });
         meaningWrapperElement.addEventListener("click", (event) => {
             saveDefinition();
-            await invoke('createDeck', 6, {deck: 'test1'});
-            const result = await invoke('deckNames', 6);
-            console.log(`got list of decks: ${result}`);
+            asyncSUCKS();
         });
     }
 })();

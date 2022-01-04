@@ -20,6 +20,7 @@
             "matches": ["https://jisho.org/search/*"],
             "js": [
                 "src/anki.js",
+                "src/anki-util.js",
                 "src/anki-connector.js",
                 "src/meaning-selector.js",
                 "src/element-picker.js",
@@ -30,13 +31,13 @@
     ],
 
     "permissions": [
+        "<all_urls>",
         "contextMenus",
         "storage",
-        "downloads",
+        "unlimitedStorage",
         "webRequest",
+        "webRequestBlocking",
         "tabs",
-        "dns",
-        "http://127.0.0.1:8765/",
-        "http://localhost:8765/"
+        "dns"
     ]
 }

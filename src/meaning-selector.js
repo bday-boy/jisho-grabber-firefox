@@ -6,7 +6,12 @@
 **              a word on Jisho and save it locally.
 */
 
+"use strict";
+
 let drawn = false;
+const ankiComm = new AnkiConnect();
+ankiComm.server = 'http://127.0.0.1:8765';
+ankiComm.enabled = true;
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -27,10 +32,15 @@ let drawn = false;
         });
         meaningWrapperElement.addEventListener("click", (event) => {
             saveDefinition();
-            asyncSUCKS();
+            ankiConnected().then(response => console.log(response));
         });
     }
 })();
+
+async function ankiConnected() {
+    const fulfilled = await ankiComm.isConnected();
+    return fulfilled;
+}
 
 function saveDefinition() {
     return;

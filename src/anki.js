@@ -15,11 +15,9 @@ class Anki {
     makeKana(expression) {
         if (!expression) {
             throw new Error(`${expression} is a null-type value.`);
-        }
-        else if (typeof expression !== 'string') {
+        } else if (typeof expression !== 'string') {
             throw new Error(`${expression} is not a string.`);
-        }
-        else {
+        } else {
             const allKana = [];
             for (const jpnchar of expression) {
                 if (this.jpnUtil.isKana(jpnchar)) {
@@ -40,11 +38,9 @@ class Anki {
     makeKanji(expression) {
         if (!expression) {
             throw new Error(`${expression} is a null-type value.`);
-        }
-        else if (typeof expression !== 'string') {
+        } else if (typeof expression !== 'string') {
             throw new Error(`${expression} is not a string.`);
-        }
-        else {
+        } else {
             // Get rid of kanji furigana in between brackets
             expression = expression.replace(this.jpnUtil.LAZY_BRACKETS, '').replaceAll(' ', '');
             const allJpnChars = [];

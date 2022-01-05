@@ -35,8 +35,7 @@ function createCanvasOverlay() {
         myCanvas.style.position = 'absolute';
         myCanvas.style.pointerEvents = 'none';
         canvasContainer.appendChild(myCanvas);
-    }
-    else { myCanvas.parentNode.style.visibility = 'visible'; }
+    } else { myCanvas.parentNode.style.visibility = 'visible'; }
 };
 
 function hideCanvas() {
@@ -48,11 +47,11 @@ function hideCanvas() {
 
 function getElementBoundingClientRect(elem) {
     /*
-    ** This function was adapted from part of the uBlock Origin source code,
-    ** created by user gorhill (and 93 other contributors) on GitHub.
-    ** Date retrieved: Dec 29, 2021
-    ** https://github.com/gorhill/uBlock/blob/master/src/js/scriptlets/epicker.js
-    */
+     * This function was adapted from part of the uBlock Origin source code,
+     * created by user gorhill (and 93 other contributors) on GitHub.
+     * Date retrieved: Dec 29, 2021
+     * https://github.com/gorhill/uBlock/blob/master/src/js/scriptlets/epicker.js
+     */
 
     let rect = typeof elem.getBoundingClientRect === 'function'
         ? elem.getBoundingClientRect()

@@ -13,12 +13,15 @@ class AnkiDatabase {
                     version: 1,
                     stores: {
                         notes: {
-                            primaryKey: {keyPath: 'expression_no_readings', autoIncrement: false},
+                            primaryKey: {
+                                keyPath: 'expression_no_readings',
+                                autoIncrement: false
+                            },
                             indices: [
-                                {name: 'expression_with_readings', unique: false},
+                                {name: 'expressionWithReadings', unique: false},
                                 {name: 'expression', unique: true},
-                                {name: 'eng_meaning', unique: false},
-                                {name: 'parts_of_speech', unique: false},
+                                {name: 'engMeaning', unique: false},
+                                {name: 'partsOfSpeech', unique: false},
                                 {name: 'tags', unique: false}
                             ]
                         }
@@ -30,5 +33,32 @@ class AnkiDatabase {
 
     async close() {
         this._db.close();
+    }
+
+    _findFirstBulk(objectStoreName, indexName, items, createQuery, predicate) {
+        return new Promise((resolve, reject) => {
+            const itemCount = items.length;
+            const results = new Array(itemCount);
+            if (itemCount === 0) {
+                resolve(results);
+                return;
+            }
+
+            const transaction = this._db.transaction([objectStoreName], 'readonly');
+            const objectStore = transaction.objectStore(objectStoreName);
+            const index = objectStore.index(indexName);
+            let completeCount = 0;
+            const onFind = (row, itemIndex) => {
+                results[itemIndex] = row;
+                if (++completeCount >= itemCount) {
+                    resolve(results);
+                }
+            };
+            for (let i = 0; i < itemCount; ++i) {
+                const item = items[i];
+                const query = createQuery(item);
+                this._db.findFirst(index, query, onFind, reject, i, predicate, item, void 0);
+            }
+        });
     }
 }

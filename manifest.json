@@ -19,13 +19,16 @@
         {
             "matches": ["https://jisho.org/search/*"],
             "js": [
-                "src/anki.js",
+                "src/japanese-util.js",
                 "src/anki-util.js",
                 "src/anki-connector.js",
+                "src/anki.js",
+                "src/database.js",
+                "src/anki-database.js",
+                "src/word-parser.js",
                 "src/meaning-selector.js",
                 "src/element-picker.js",
-                "src/word-utils.js",
-                "src/word-parser.js"
+                "src/word-utils.js"
             ]
         }
     ],

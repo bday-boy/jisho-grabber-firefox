@@ -88,14 +88,14 @@ class WordParser {
 
         // if num_kanji !== num_furi, then something is wrong
         let numKanji = 0, numFuri = 0;
-        for (let c of word) { if (!isKana(c)) { numKanji++; } }
+        for (let c of word) { if (!this._anki.jpnUtil.isKana(c)) { numKanji++; } }
         for (let furi of furigana) { if (furi) { numFuri++; } }
 
         let finalWord = "";
         if (word.length === furigana.length && numKanji === numFuri) {
             // attempt to assign readings to each kanji
             for (let i = 0; i < word.length; i++) {
-                finalWord += isKana(word[i]) ? word[i] : ` ${word[i]}[${furigana[i]}]`;
+                finalWord += this._anki.jpnUtil.isKana(word[i]) ? word[i] : ` ${word[i]}[${furigana[i]}]`;
             }
         } else {
             // assign reading to whole word in worst case
@@ -110,11 +110,11 @@ class WordParser {
         const wordTags = {
             common: '',
             jlpt: '',
-            wanikani: ''
+            wanikani: []
         };
         for (let tag of wordTagsElement) {
-            const tagText = tag.textContent.toLowerCase().trim();
-            switch(tagText.split(' ')[0]) {
+            const tagText = tag.textContent.toLowerCase().trim().split(' ');
+            switch(tagText[0]) {
                 case 'common':
                     wordTags.common = "Common word";
                     break;
@@ -122,13 +122,14 @@ class WordParser {
                     wordTags.jlpt = tagText[tagText.length - 1];
                     break;
                 case 'wanikani':
-                    wordTags.wanikani = tagText[tagText.length - 1];
+                    wordTags.wanikani.push(tagText[tagText.length - 1]);
                     break;
                 default:
                     console.log("The parser reached a tag that it didn't expect.");
                     break;
             }
         }
+        wordTags.wanikani = wordTags.wanikani.join(', ');
         return wordTags;
     }
 

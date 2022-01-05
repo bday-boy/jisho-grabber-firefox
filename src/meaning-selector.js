@@ -7,6 +7,9 @@
  */
 
 let drawn = false;
+const parser = new WordParser();
+const db = new AnkiDatabase();
+db.loadDB().then((value) => console.log(value), (error) => console.log(error));
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -26,8 +29,7 @@ let drawn = false;
             }
         });
         meaningWrapperElement.addEventListener("click", (event) => {
-            saveDefinition();
-            ankiConnected().then(response => console.log(response));
+            saveDefinition(event.target);
         });
     }
 })();
@@ -37,6 +39,9 @@ async function ankiConnected() {
     return fulfilled;
 }
 
-function saveDefinition() {
-    return;
+function saveDefinition(wordResultElement) {
+    parser.parseWord(wordResultElement);
+    const newItem = [parser.wordObject];
+    db.bulkAdd('notes', newItem, 0, 1)
+    .then((value) => console.log(value), (error) => console.log(error));
 }

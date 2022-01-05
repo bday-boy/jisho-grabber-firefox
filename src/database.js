@@ -1,4 +1,13 @@
 /*
+ * I took this file and then edited it from https://github.com/FooSoft/yomichan.
+ * Almost none of the code is mine, but any of the documentation is. Yomichan
+ * lacks documentation, I am new to JavaScript, and IndexedDB has one of the
+ * weirdest database APIs I've ever seen, so I wanted to annotate the code in
+ * order to make it easier for myself to keep track of what this class does. It
+ * also gives me an excuse to familiarize myself with JSDoc.
+ */
+
+/*
  * Copyright (C) 2020-2021  Yomichan Authors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** Class for opening an IndexedDB database and safely interacting with it. */
 class Database {
     constructor() {
         this._db = null;
@@ -218,6 +228,14 @@ class Database {
         });
     }
 
+    /**
+     * Uses old database schema to upgrade to the newest version of the
+     * IndexedDB Database.
+     * @param {IDBDatabase} db
+     * @param {IDBTransaction} transaction
+     * @param {number} oldVersion - Integer value of old version
+     * @param {Object[]} upgrades - Objects describing database schema
+     */
     _upgrade(db, transaction, oldVersion, upgrades) {
         for (const {version, stores} of upgrades) {
             if (oldVersion >= version) { continue; }
@@ -240,6 +258,14 @@ class Database {
         }
     }
 
+    /**
+     * Searches the list in order for the value. Returns true if found at any
+     * point, and returns false if the list is exhausted before finding.
+     * Equality is done strictly (===).
+     * @param {Array} list - The list to search
+     * @param {*} value - The value to find in list
+     * @returns {boolean}
+     */
     _listContains(list, value) {
         for (let i = 0, ii = list.length; i < ii; ++i) {
             if (list[i] === value) { return true; }
@@ -268,12 +294,38 @@ class Database {
         };
     }
 
+    /**
+     * Uses an object store or index range and returns all keys in the given
+     * range, if applicable.
+     * 
+     * If query is null, all keys are matched and returned.
+     * 
+     * The onSuccess function defines what will happen with the array of keys,
+     * rather than it actually being returned by this function.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex
+     * @param {(IDBValidKey|IDBKeyRange)} [query=null]
+     * @param {function} onSuccess - Function to call on successful getAllKeys call
+     * @param {function} onError - Function to call on erroneous getAllKeys call
+     */
     _getAllKeysFast(objectStoreOrIndex, query, onSuccess, onError) {
         const request = objectStoreOrIndex.getAllKeys(query);
         request.onerror = (e) => onError(e.target.error);
         request.onsuccess = (e) => onSuccess(e.target.result);
     }
 
+    /**
+     * Uses an object store or index range to create a key cursor and returns
+     * all keys from the given cursor.
+     * 
+     * If query is null, all keys are matched and returned.
+     * 
+     * The onSuccess function defines what will happen with the array of keys,
+     * rather than it actually being returned by this function.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex
+     * @param {(IDBValidKey|IDBKeyRange)} [query=null]
+     * @param {function} onSuccess - Function to call on successful cursor request
+     * @param {function} onError - Function to call on erroneous cursor request
+     */
     _getAllKeysUsingCursor(objectStoreOrIndex, query, onSuccess, onError) {
         const results = [];
         const request = objectStoreOrIndex.openKeyCursor(query, 'next');
@@ -289,6 +341,12 @@ class Database {
         };
     }
 
+    /**
+     * Deletes all objects in the keys array from the objectStore.
+     * @param {IDBObjectStore} objectStore - An IndexedDB ObjectStore Object
+     * @param {string[]} keys - The unique keys of the objects to delete
+     * @param {function} [onProgress=null] - The function to call while deleting objects
+     */
     _bulkDeleteInternal(objectStore, keys, onProgress) {
         const count = keys.length;
         if (count === 0) { return; }
@@ -312,6 +370,14 @@ class Database {
         }
     }
 
+    /**
+     * Safely creates a database transaction only if the database is done
+     * opening.
+     * @param {string[]} storeNames - Array of object store names
+     * @param {function} resolve - Function for transaction.oncomplete
+     * @param {function} reject - Function for transaction.onabort/onerror
+     * @returns {IDBTransaction} An IndexedDB transaction
+     */
     _readWriteTransaction(storeNames, resolve, reject) {
         const transaction = this.transaction(storeNames, 'readwrite');
         transaction.onerror = (e) => reject(e.target.error);

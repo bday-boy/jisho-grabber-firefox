@@ -1,3 +1,4 @@
+/** Class for preparing data for and communicating with Anki. */
 class Anki {
     constructor() {
         this.jpnUtil = new JapaneseUtil();
@@ -6,9 +7,10 @@ class Anki {
 
     /**
      * Convert an expression of Japanese characters into just kana, like how
-     * Anki's {{kana:expression}} functionality works.
-     * @param   {String} expression The Japanese expression
-     * @returns {String}            The Japanese expression with only kana
+     * Anki's {{kana:expression}} functionality works. For example,
+     * makeKana(緊[きん] 張[ちょう]する) -> きんちょうする
+     * @param   {String} expression - The Japanese expression
+     * @returns {String}              The Japanese expression with only kana
      */
     makeKana(expression) {
         if (!expression) {
@@ -32,8 +34,8 @@ class Anki {
      * Convert an expression of Japanese characters into just kanji and
      * okurigana, like how Anki's {{kanji:expression}} functionality works. For
      * example, makeKanji(緊[きん] 張[ちょう]する) -> 緊張する
-     * @param   {String} expression The Japanese expression
-     * @returns {String}            The Japanese expression without readings
+     * @param   {String} expression - The Japanese expression
+     * @returns {String}              The Japanese expression without readings
      */
     makeKanji(expression) {
         if (!expression) {
@@ -43,10 +45,11 @@ class Anki {
             throw new Error(`${expression} is not a string.`);
         }
         else {
+            // Get rid of kanji furigana in between brackets
             expression = expression.replace(this.jpnUtil.LAZY_BRACKETS, '').replaceAll(' ', '');
             const allJpnChars = [];
             for (const jpnchar of expression) {
-                if (this.jpnUtil.isKana(jpnchar)) {
+                if (this.jpnUtil.isKanaOrKanji(jpnchar)) {
                     allJpnChars.push(jpnchar);
                 }
             }

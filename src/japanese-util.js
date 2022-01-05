@@ -6,6 +6,7 @@
 **              processing meaning/word data and such.
 */
 
+/** Class for processing Japanese characters. */
 class JapaneseUtil {
     constructor() {
         this.SYMBOLS_AND_PUNCTUATION = /[\u3000-\u303f]/;
@@ -40,7 +41,11 @@ class JapaneseUtil {
     }
 
     isKanji(c) {
-        return this.KANJI.test(c) || this.KANJI_RADICALS.test(c);
+        return this.KANJI.test(c);
+    }
+
+    isKanjiRadical(c) {
+        return this.KANJI_RADICALS.test(c);
     }
 
     isKanaOrKanji(c) {

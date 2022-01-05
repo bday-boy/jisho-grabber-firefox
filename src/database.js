@@ -33,6 +33,12 @@ class Database {
 
     // Public
 
+    /**
+     * Tries to open an IndexedDB database.
+     * @param {string} databaseName 
+     * @param {number} version 
+     * @param {Object[]} structure - Array of objects describing database schema
+     */
     async open(databaseName, version, structure) {
         if (this._db !== null) {
             throw new Error('Database already open');
@@ -52,6 +58,9 @@ class Database {
         }
     }
 
+    /**
+     * Tries to close the database. Sets the database to null if it succeeds.
+     */
     close() {
         if (this._db === null) {
             throw new Error('Database is not open');
@@ -61,14 +70,29 @@ class Database {
         this._db = null;
     }
 
+    /**
+     * If the database is still opening, returns true. Else, false.
+     * @returns {boolean} Database is opening
+     */
     isOpening() {
         return this._isOpening;
     }
 
+    /**
+     * If the database is available, returns true. Else, false.
+     * @returns {boolean} Database exists
+     */
     isOpen() {
         return this._db !== null;
     }
 
+    /**
+     * If the database is open, an IndexedDB transaction is returned. If not,
+     * an error is thrown.
+     * @param {string[]} storeNames 
+     * @param {('readonly'|'readwrite'|'readwriteflush')} [mode=null] 
+     * @returns {IDBTransaction} Transaction if database is open
+     */
     transaction(storeNames, mode) {
         if (this._db === null) {
             throw new Error(this._isOpening ? 'Database not ready' : 'Database not open');
@@ -76,6 +100,19 @@ class Database {
         return this._db.transaction(storeNames, mode);
     }
 
+    /**
+     * Adds a number of items from an items array starting at the start index.
+     * 
+     * If start + count exceeds the length of the items array, all items
+     * starting at the start index will be added.
+     * 
+     * If count is negative, nothing will be added.
+     * @param {string} objectStoreName 
+     * @param {Object[]} items - Array of "tuples" to add to the object store
+     * @param {number} start 
+     * @param {number} count 
+     * @returns {Promise} Promise to add items to the object store.
+     */
     bulkAdd(objectStoreName, items, start, count) {
         return new Promise((resolve, reject) => {
             if (start + count > items.length) {
@@ -96,6 +133,14 @@ class Database {
         });
     }
 
+    /**
+     * Gets all objects from an object store or index range.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} onSuccess 
+     * @param {function} onError 
+     * @param {*} data 
+     */
     getAll(objectStoreOrIndex, query, onSuccess, onError, data) {
         if (typeof objectStoreOrIndex.getAll === 'function') {
             this._getAllFast(objectStoreOrIndex, query, onSuccess, onError, data);
@@ -104,6 +149,13 @@ class Database {
         }
     }
 
+    /**
+     * Gets all keys from an object store or index range.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} onSuccess 
+     * @param {function} onError 
+     */
     getAllKeys(objectStoreOrIndex, query, onSuccess, onError) {
         if (typeof objectStoreOrIndex.getAllKeys === 'function') {
             this._getAllKeysFast(objectStoreOrIndex, query, onSuccess, onError);
@@ -112,6 +164,16 @@ class Database {
         }
     }
 
+    /**
+     * Finds the first object of a given key or key range.
+     * @param {string} objectStoreName 
+     * @param {string} indexName 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} predicate 
+     * @param {*} predicateArg 
+     * @param {*} defaultValue 
+     * @returns Promise for finding an object with a given key or key range
+     */
     find(objectStoreName, indexName, query, predicate, predicateArg, defaultValue) {
         return new Promise((resolve, reject) => {
             const transaction = this.transaction([objectStoreName], 'readonly');
@@ -121,6 +183,21 @@ class Database {
         });
     }
 
+    /**
+     * I honestly have no idea how this function works, but I'm assuming by the
+     * name that it uses a cursor to find the first value of some object store
+     * or index range. I just don't know why it needs to take in like 3
+     * functions as arguments. But it doesn't return anything so you'd better
+     * be sure one of those functions stores the cursor value somewhere.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} resolve 
+     * @param {function} reject 
+     * @param {*} data 
+     * @param {function} predicate 
+     * @param {*} predicateArg 
+     * @param {*} defaultValue 
+     */
     findFirst(objectStoreOrIndex, query, resolve, reject, data, predicate, predicateArg, defaultValue) {
         const noPredicate = (typeof predicate !== 'function');
         const request = objectStoreOrIndex.openCursor(query, 'next');

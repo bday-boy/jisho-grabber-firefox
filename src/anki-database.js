@@ -1,7 +1,7 @@
 class AnkiDatabase {
     constructor() {
         this._db = new Database();
-        this._dbName = 'notesdb';
+        this._dbName = 'notes';
     }
 
     async loadDB() {
@@ -14,8 +14,8 @@ class AnkiDatabase {
                     stores: {
                         notes: {
                             primaryKey: {
-                                keyPath: 'expression_no_readings',
-                                autoIncrement: false
+                                keyPath: 'id',
+                                autoIncrement: true
                             },
                             indices: [
                                 {name: 'expressionWithReadings', unique: false},

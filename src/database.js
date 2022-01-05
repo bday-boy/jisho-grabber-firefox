@@ -140,6 +140,15 @@ class Database {
         };
     }
 
+    /**
+     * I'll keep it 💯, I'm not entirely sure what this function does. I'm not
+     * sure in what context one would produce an array of targets. But if you
+     * can, I imagine this function just counts the number of objects
+     * in the object stores of all targets.
+     * @param {event.target[]} targets 
+     * @param {function} resolve 
+     * @param {function} reject 
+     */
     bulkCount(targets, resolve, reject) {
         const targetCount = targets.length;
         if (targetCount <= 0) {
@@ -168,6 +177,12 @@ class Database {
         }
     }
 
+    /**
+     * Deletes a single key from the database.
+     * @param {string} objectStoreName 
+     * @param {string} key 
+     * @returns Promise for deleting the singular key
+     */
     delete(objectStoreName, key) {
         return new Promise((resolve, reject) => {
             const transaction = this._readWriteTransaction([objectStoreName], resolve, reject);
@@ -177,6 +192,19 @@ class Database {
         });
     }
 
+    /**
+     * Creates a promise for deleting keys. Gets all keys and then passes the
+     * key deletion function into the onSuccess argument of this.getAllKeys.
+     * 
+     * If filterKeys is null, all keys will be deleted. If it is not null, only
+     * keys filtered out will be deleted.
+     * @param {string} objectStoreName 
+     * @param {string} indexName 
+     * @param {(IDBValidKey|IDBKeyRange)} [query=null] 
+     * @param {function} [filterKeys=null] 
+     * @param {function} [onProgress=null] 
+     * @returns {Promise} Promise for deleting objects
+     */
     bulkDelete(objectStoreName, indexName, query, filterKeys=null, onProgress=null) {
         return new Promise((resolve, reject) => {
             const transaction = this._readWriteTransaction([objectStoreName], resolve, reject);
@@ -199,6 +227,11 @@ class Database {
         });
     }
 
+    /**
+     * Creates a promise for deleting a database with name databaseName.
+     * @param {string} databaseName 
+     * @returns {Promise} Promise for deleting the database
+     */
     static deleteDatabase(databaseName) {
         return new Promise((resolve, reject) => {
             const request = indexedDB.deleteDatabase(databaseName);
@@ -210,6 +243,13 @@ class Database {
 
     // Private
 
+    /**
+     * Creates a promise for opening a new database.
+     * @param {string} name - IndexedDB name
+     * @param {number} version - Integer for IndexedDB database version
+     * @param {function} onUpgradeNeeded - Function for request.onupgradeneeded
+     * @returns {Promise} Promise for opening the database
+     */
     _open(name, version, onUpgradeNeeded) {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(name, version);
@@ -273,12 +313,28 @@ class Database {
         return false;
     }
 
+    /**
+     * Gets all objects in an object store or index range.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} onSuccess 
+     * @param {function} onReject 
+     * @param {*} data - To be frank, idk what this one is for
+     */
     _getAllFast(objectStoreOrIndex, query, onSuccess, onReject, data) {
         const request = objectStoreOrIndex.getAll(query);
         request.onerror = (e) => onReject(e.target.error, data);
         request.onsuccess = (e) => onSuccess(e.target.result, data);
     }
 
+    /**
+     * Gets all objects in an object store or index range from a cursor.
+     * @param {(IDBObjectStore|IDBIndex)} objectStoreOrIndex 
+     * @param {(IDBValidKey|IDBKeyRange)} query 
+     * @param {function} onSuccess 
+     * @param {function} onReject 
+     * @param {*} data - To be frank, idk what this one is for
+     */
     _getAllUsingCursor(objectStoreOrIndex, query, onSuccess, onReject, data) {
         const results = [];
         const request = objectStoreOrIndex.openCursor(query, 'next');
@@ -357,7 +413,7 @@ class Database {
             try {
                 onProgress(completedCount, count);
             } catch (e) {
-                // NOP
+                console.log(e.target.error);
             }
         };
 

@@ -9,8 +9,8 @@ class Anki {
      * Convert an expression of Japanese characters into just kana, like how
      * Anki's {{kana:expression}} functionality works. For example,
      * makeKana(緊[きん] 張[ちょう]する) -> きんちょうする
-     * @param   {String} expression - The Japanese expression
-     * @returns {String}              The Japanese expression with only kana
+     * @param {string} expression - The Japanese expression
+     * @returns {string} The Japanese expression with only kana
      */
     makeKana(expression) {
         if (!expression) {
@@ -34,8 +34,8 @@ class Anki {
      * Convert an expression of Japanese characters into just kanji and
      * okurigana, like how Anki's {{kanji:expression}} functionality works. For
      * example, makeKanji(緊[きん] 張[ちょう]する) -> 緊張する
-     * @param   {String} expression - The Japanese expression
-     * @returns {String}              The Japanese expression without readings
+     * @param {string} expression - The Japanese expression
+     * @returns {string} The Japanese expression without readings
      */
     makeKanji(expression) {
         if (!expression) {

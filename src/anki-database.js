@@ -15,8 +15,8 @@ class AnkiDatabase {
                         notes: {
                             primaryKey: {keyPath: 'expression_no_readings', autoIncrement: false},
                             indices: [
+                                {name: 'expression_with_readings', unique: false},
                                 {name: 'expression', unique: true},
-                                {name: 'expression_no_readings', unique: false},
                                 {name: 'eng_meaning', unique: false},
                                 {name: 'parts_of_speech', unique: false},
                                 {name: 'tags', unique: false}
@@ -26,5 +26,9 @@ class AnkiDatabase {
                 }
             ]
         );
+    }
+
+    async close() {
+        this._db.close();
     }
 }

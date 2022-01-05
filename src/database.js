@@ -232,9 +232,9 @@ class Database {
                 const existingIndexNames = objectStore.indexNames;
 
                 for (const index of indices) {
-                    if (this._listContains(existingIndexNames, indexName)) { continue; }
+                    if (this._listContains(existingIndexNames, index.name)) { continue; }
 
-                    objectStore.createIndex(indexName, index.name, {unique: index.unique});
+                    objectStore.createIndex(index.name, index.name, {unique: index.unique});
                 }
             }
         }

@@ -1,10 +1,10 @@
 /*
-** Author:      Andrew Smith
-** File:        jisho-page-selector.js
-** Project:     jisho-grabber-firefox
-** Description: This file contains functionality to highlight a definition of
-**              a word on Jisho and save it locally.
-*/
+ * Author:      Andrew Smith
+ * File:        jisho-page-selector.js
+ * Project:     jisho-grabber-firefox
+ * Description: This file contains functionality to highlight a definition of
+ *              a word on Jisho and save it locally.
+ */
 
 let drawn = false;
 

@@ -6,12 +6,7 @@
 **              a word on Jisho and save it locally.
 */
 
-"use strict";
-
 let drawn = false;
-const ankiComm = new AnkiConnect();
-ankiComm.server = 'http://127.0.0.1:8765';
-ankiComm.enabled = true;
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -44,4 +39,4 @@ async function ankiConnected() {
 
 function saveDefinition() {
     return;
-};
+}

@@ -27,8 +27,7 @@
                 "src/anki-database.js",
                 "src/word-parser.js",
                 "src/meaning-selector.js",
-                "src/element-picker.js",
-                "src/word-utils.js"
+                "src/element-picker.js"
             ]
         }
     ],

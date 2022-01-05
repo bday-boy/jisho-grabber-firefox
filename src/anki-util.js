@@ -18,7 +18,7 @@
 /**
  * This class has some general utility functions for working with Anki data.
  */
- class AnkiUtil {
+class AnkiUtil {
     /**
      * Gets the root deck name of a full deck name. If the deck is a root deck,
      * the same name is returned. Nested decks are separated using '::'.

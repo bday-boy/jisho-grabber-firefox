@@ -14,8 +14,8 @@ class AnkiDatabase {
                     stores: {
                         notes: {
                             primaryKey: {
-                                keyPath: 'id',
-                                autoIncrement: true
+                                keyPath: ['expression', 'englishMeaning'],
+                                autoIncrement: false
                             },
                             indices: [
                                 {name: 'expressionWithReadings', unique: false},

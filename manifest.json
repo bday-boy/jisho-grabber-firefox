@@ -5,14 +5,31 @@
     "description": "Add a context menu option to highlighted text to highlighted text to search it on Jisho and get ",
 
     "icons": {
-        "48": "icons/extension-icon.svg",
-        "96": "icons/extension-icon.svg"
+        "48": "icons/jisho-grabber.svg",
+        "96": "icons/jisho-grabber.svg"
     },
+
+    "permissions": [
+        "<all_urls>",
+        "contextMenus",
+        "storage",
+        "unlimitedStorage",
+        "webRequest",
+        "webRequestBlocking",
+        "tabs",
+        "dns"
+    ],
 
     "background": {
         "scripts": [
             "src/search-selection.js"
         ]
+    },
+
+    "browser_action": {
+        "default_icon": "icons/jisho-grabber.svg",
+        "default_title": "Jisho Grabber",
+        "default_popup": "popup/popup.html"
     },
 
     "content_scripts": [
@@ -30,16 +47,5 @@
                 "src/element-picker.js"
             ]
         }
-    ],
-
-    "permissions": [
-        "<all_urls>",
-        "contextMenus",
-        "storage",
-        "unlimitedStorage",
-        "webRequest",
-        "webRequestBlocking",
-        "tabs",
-        "dns"
     ]
 }

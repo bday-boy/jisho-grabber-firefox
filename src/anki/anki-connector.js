@@ -179,7 +179,7 @@ class AnkiConnect {
                 referrerPolicy: 'no-referrer',
                 body: JSON.stringify({action, params, version: this._localVersion})
             });
-        } catch (e) {
+        } catch (e){
             const error = new Error('Anki connection failure');
             error.data = {action, params};
             throw error;

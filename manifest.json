@@ -22,7 +22,7 @@
 
     "background": {
         "scripts": [
-            "src/search-selection.js"
+            "src/background/search-selection.js"
         ]
     },
 
@@ -38,15 +38,15 @@
                 "https://jisho.org/search/*"
             ],
             "js": [
-                "src/japanese-util.js",
-                "src/anki-util.js",
-                "src/anki-connector.js",
-                "src/anki.js",
                 "src/database.js",
-                "src/anki-database.js",
-                "src/word-parser.js",
-                "src/meaning-selector.js",
-                "src/element-picker.js"
+                "src/jisho/japanese-util.js",
+                "src/anki/anki-util.js",
+                "src/anki/anki-connector.js",
+                "src/anki/anki.js",
+                "src/anki/anki-database.js",
+                "src/jisho/word-parser.js",
+                "src/jisho/meaning-selector.js",
+                "src/jisho/element-picker.js"
             ]
         }
     ]

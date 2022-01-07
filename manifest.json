@@ -38,7 +38,8 @@
                 "https://jisho.org/search/*"
             ],
             "js": [
-                "src/database.js",
+                "src/storage/database.js",
+                "src/storage/storage.js",
                 "src/jisho/japanese-util.js",
                 "src/anki/anki-util.js",
                 "src/anki/anki-connector.js",

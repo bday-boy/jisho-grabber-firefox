@@ -6,12 +6,6 @@
  *              the right-click context menu in Firefox.
  */
 
-browser.storage.local.set({
-    testNote: {
-        reading: 'Worked!'
-    }
-}).then(() => console.log("Set success"), (error) => console.log(error));
-
 browser.contextMenus.create({
     id: "select-search",
     title: "Search %s on Jisho",

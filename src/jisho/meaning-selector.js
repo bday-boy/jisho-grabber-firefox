@@ -8,8 +8,9 @@
 
 let drawn = false;
 const parser = new WordParser();
-const db = new AnkiDatabase();
-db.loadDB().then((value) => console.log(value), (error) => console.log(error));
+// const jpnStorage = new JapaneseStorage(window.md5);
+// const db = new AnkiDatabase();
+// db.loadDB().then((value) => console.log(value), (error) => console.log(error));
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -29,22 +30,28 @@ db.loadDB().then((value) => console.log(value), (error) => console.log(error));
             }
         });
         meaningWrapperElement.addEventListener("click", (event) => {
-            saveDefinition(event.target);
+            // saveDefinition(event.target);
+            storeWord(event.target);
+            jpnStorage.get(null).then(
+                value => console.log(value),
+                error => console.log(error)
+            );
         });
     }
 })();
 
-async function ankiConnected() {
-    const fulfilled = await ankiComm.isConnected();
-    return fulfilled;
-}
-
-function saveDefinition(wordResultElement) {
+function storeWord(wordResultElement) {
     parser.parseWord(wordResultElement);
     const newItem = [parser.wordObject];
-    db.bulkAdd('notes', newItem, 0, 1)
-    .then((value) => console.log(value), (error) => console.log(error));
-    console.log(window.md5(
-        parser.wordObject.expression + parser.wordObject.englishMeaning
-    ));
+    jpnStorage.set(newItem, ['expression', 'englishMeaning']);
 }
+
+// function saveDefinition(wordResultElement) {
+//     parser.parseWord(wordResultElement);
+//     const newItem = [parser.wordObject];
+//     db.bulkAdd('notes', newItem, 0, 1)
+//     .then((value) => console.log(value), (error) => console.log(error));
+//     console.log(window.md5(
+//         parser.wordObject.expression + parser.wordObject.englishMeaning
+//     ));
+// }

@@ -10,14 +10,14 @@ html, body {
     margin: 3% auto;
     padding: 4px;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
     cursor: pointer;
 }
 
-.open-db:hover {
+.action-open-db:hover {
     background-color: #CFF2F2;
 }
 
-.open-db {
+.action-open-db {
     background-color: #E5F2F2;
 }

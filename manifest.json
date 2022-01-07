@@ -34,7 +34,9 @@
 
     "content_scripts": [
         {
-            "matches": ["https://jisho.org/search/*"],
+            "matches": [
+                "https://jisho.org/search/*"
+            ],
             "js": [
                 "src/japanese-util.js",
                 "src/anki-util.js",

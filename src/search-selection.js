@@ -1,10 +1,16 @@
 /*
-** Author:      Andrew Smith
-** File:        search-selection.js
-** Project:     jisho-grabber-firefox
-** Description: This file contains functionality to add a search function to
-**              the right-click context menu in Firefox.
-*/
+ * Author:      Andrew Smith
+ * File:        search-selection.js
+ * Project:     jisho-grabber-firefox
+ * Description: This file contains functionality to add a search function to
+ *              the right-click context menu in Firefox.
+ */
+
+browser.storage.local.set({
+    testNote: {
+        reading: 'Worked!'
+    }
+}).then(() => console.log("Set success"), (error) => console.log(error));
 
 browser.contextMenus.create({
     id: "select-search",

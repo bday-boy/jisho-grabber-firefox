@@ -38,14 +38,15 @@
                 "https://jisho.org/search/*"
             ],
             "js": [
-                "src/storage/database.js",
+                "lib/utils/md5.js",
+                "lib/yomichan/database.js",
                 "src/storage/storage.js",
                 "src/jisho/japanese-util.js",
-                "src/anki/anki-util.js",
-                "src/anki/anki-connector.js",
+                "lib/yomichan/anki-util.js",
+                "lib/yomichan/anki-connector.js",
+                "lib/yomichan/anki-database.js",
                 "src/anki/anki.js",
-                "src/anki/anki-database.js",
-                "src/jisho/word-parser.js",
+                "src/anki/word-parser.js",
                 "src/jisho/meaning-selector.js",
                 "src/jisho/element-picker.js"
             ]

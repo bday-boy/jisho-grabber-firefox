@@ -44,4 +44,7 @@ function saveDefinition(wordResultElement) {
     const newItem = [parser.wordObject];
     db.bulkAdd('notes', newItem, 0, 1)
     .then((value) => console.log(value), (error) => console.log(error));
+    console.log(window.md5(
+        parser.wordObject.expression + parser.wordObject.englishMeaning
+    ));
 }

@@ -8,6 +8,7 @@
 
 let drawn = false;
 const parser = new WordParser();
+const jpnStorage = new JapaneseStorage(window.md5);
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -39,5 +40,8 @@ const parser = new WordParser();
 function storeWord(wordResultElement) {
     parser.parseWord(wordResultElement);
     const newItem = [parser.wordObject];
-    jpnStorage.set(newItem, ['expression', 'englishMeaning']);
+    jpnStorage.set(newItem, ['expression', 'englishMeaning']).then(
+        value => console.log(value),
+        jpnStorage._onError
+    );
 }

@@ -28,26 +28,62 @@ class JapaneseUtil {
         this.LAZY_BRACKETS = /\[.*?\]/g;
     }
 
+    /**
+     * Tests if the input char c is Hiragana. No error handling is done, so c
+     * is assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is Hiragana, false otherwise
+     */
     isHiragana(c) {
         return this.HIRAGANA.test(c);
     }
 
+    /**
+     * Tests if the input char c is Katakana. No error handling is done, so c
+     * is assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is Katakana, false otherwise
+     */
     isKatakana(c) {
         return this.KATAKANA.test(c);
     }
 
+    /**
+     * Tests if the input char c is Kana. No error handling is done, so c is
+     * assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is Kana, false otherwise
+     */
     isKana(c) {
         return this.isHiragana(c) || this.isKatakana(c);
     }
 
+    /**
+     * Tests if the input char c is Kanji. No error handling is done, so c is
+     * assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is Kanji, false otherwise
+     */
     isKanji(c) {
         return this.KANJI.test(c);
     }
 
+    /**
+     * Tests if the input char c is a Kanji radical. No error handling is done,
+     * so c is assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is a Kanji radical, false otherwise
+     */
     isKanjiRadical(c) {
         return this.KANJI_RADICALS.test(c);
     }
 
+    /**
+     * Tests if the input char c is Kana or Kanji. No error handling is done,
+     * so c is assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is Kana or Kanji, false otherwise
+     */
     isKanaOrKanji(c) {
         return this.isKana(c) || this.isKanji(c);
     }

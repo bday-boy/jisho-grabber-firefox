@@ -8,9 +8,6 @@
 
 let drawn = false;
 const parser = new WordParser();
-// const jpnStorage = new JapaneseStorage(window.md5);
-// const db = new AnkiDatabase();
-// db.loadDB().then((value) => console.log(value), (error) => console.log(error));
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
@@ -30,7 +27,6 @@ const parser = new WordParser();
             }
         });
         meaningWrapperElement.addEventListener("click", (event) => {
-            // saveDefinition(event.target);
             storeWord(event.target);
             jpnStorage.get(null).then(
                 value => console.log(value),
@@ -45,13 +41,3 @@ function storeWord(wordResultElement) {
     const newItem = [parser.wordObject];
     jpnStorage.set(newItem, ['expression', 'englishMeaning']);
 }
-
-// function saveDefinition(wordResultElement) {
-//     parser.parseWord(wordResultElement);
-//     const newItem = [parser.wordObject];
-//     db.bulkAdd('notes', newItem, 0, 1)
-//     .then((value) => console.log(value), (error) => console.log(error));
-//     console.log(window.md5(
-//         parser.wordObject.expression + parser.wordObject.englishMeaning
-//     ));
-// }

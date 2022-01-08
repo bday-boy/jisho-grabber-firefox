@@ -6,6 +6,7 @@ const storageLabel = document.querySelector("#storage-test");
 const changeLabelBtn = document.querySelector("#change-storage-label");
 const storagePrintBtn = document.querySelector("#print-storage");
 const addNotesBtn = document.querySelector("#add-anki-notes");
+const addNoteBtn = document.querySelector("#add-anki-note");
 
 changeLabelBtn.addEventListener("click", (event) => {
     let gettingItem = browser.storage.local.get();
@@ -26,6 +27,7 @@ storagePrintBtn.addEventListener("click", (event) => {
 addNotesBtn.addEventListener("click", (event) => {
     jpnStorage.get(null).then(
         items => {
+            const notes = [];
             for (const [hash, wordObj] of Object.entries(items)) {
                 const note = {
                     deckName: "Jisho Grabber Test",
@@ -35,15 +37,26 @@ addNotesBtn.addEventListener("click", (event) => {
                         Reading: wordObj.expressionWithReadings,
                         Meaning: wordObj.englishMeaning,
                         "Parts of speech": wordObj.partsOfSpeech,
-                        Tags: wordObj.common + wordObj.jlpt + wordObj.wanikani
+                        Tags: `${wordObj.common}, JLPT ${wordObj.jlpt.toUpperCase()}, Wanikani ${wordObj.wanikani}`
+                    },
+                    tags: [
+                        "jisho-grabber"
+                    ],
+                    options: {
+                        allowDuplicate: true
                     }
                 }
-                ankiConnect.addNote(note).then(
-                    value => console.log(value),
-                    error => console.log(error)
-                );
+                notes.push(note);
             }
-        },
+            return notes;
+        }
+    ).then(
+        notes => {
+            ankiConnect.addNotes(notes);
+        }
+    ).then(
+        value => console.log(value)
+    ).catch(
         error => console.log(error)
     );
 });

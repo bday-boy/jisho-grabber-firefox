@@ -3,7 +3,7 @@
     btnOpenDB.addEventListener('click', (e) => {
         try {
             const tab_data = {
-                url: '../index.html'
+                url: '../html/index.html'
             };
             browser.tabs.create(tab_data);
         } catch(e) {

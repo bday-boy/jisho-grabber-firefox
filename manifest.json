@@ -29,7 +29,7 @@
     "browser_action": {
         "default_icon": "icons/jisho-grabber.svg",
         "default_title": "Jisho Grabber",
-        "default_popup": "popup/popup.html"
+        "default_popup": "src/html/popup.html"
     },
 
     "content_scripts": [

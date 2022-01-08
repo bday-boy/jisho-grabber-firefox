@@ -1,1 +1,5 @@
-resources/
+# VS Code settings
+.vscode/
+
+# For files I will no longer be using in the project
+_dead/

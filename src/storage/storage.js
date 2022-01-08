@@ -23,27 +23,27 @@ class JapaneseStorage {
 	 * md5 hash
 	 * @returns {Promise} Promise to store items in local storage
 	 */
-	set(items, hashKeys) {
-		if (!items || items === []) {
-			throw new TypeError(`items array cannot have value ${items}`);
+	async set(items, hashKeys) {
+		if (!Array.isArray(items) || items === []) {
+			throw new TypeError("items must be a non-empty array of objects.");
 		}
-		if (!hashKeys || hashKeys.length === 0) {
+		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
 			throw new TypeError("hashKeys must be an array with length > 0.");
 		}
 		const setObject = {};
 		for (const item of items) {
 			setObject[this._getHash(item, hashKeys)] = item;
 		}
-		this._storage.set(setObject).then(
-			() => console.log(`Success storing ${items.length} items.`),
-			this._onError
-		);
+		this._storage.set(setObject);
 	}
 
 	/**
 	 * Gets objects from local storage. Objects are keyed by hash and that
 	 * hash is ideally produced by concatenating the Japanese expression and its
 	 * meaning.
+	 * 
+	 * When items has value null or undefined, all objects in storage are
+	 * retrieved.
 	 * @param {(Object[]|null|undefined)} items - Array of objects with
 	 * JSONifiable values
 	 * @param {string[]} [hashKeys=null] - String values of object keys to use
@@ -51,11 +51,13 @@ class JapaneseStorage {
 	 * @returns {Promise} Promise to get items from local storage
 	 */
 	async get(items, hashKeys) {
-		if (items === null | items === undefined || items.length === 0) {
-			return this._storage.get(null);
+		if (items === null || items === undefined || items.length === 0) {
+			// browser.storage.local.get returns all stored objects when no
+			// argument is passed in
+			return this._storage.get();
 		}
-		if (!hashKeys || hashKeys.length === 0) {
-			throw new TypeError("hashKeys must be an array with length > 0 items is null, undefined, or [].");
+		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
+			throw new TypeError("hashKeys must be an array with length > 0 unless items is null, undefined, or [].");
 		}
 		const keys = [];
 		for (let item of items) {
@@ -64,8 +66,39 @@ class JapaneseStorage {
 		return this._storage.get(keys);
 	}
 
+	/**
+	 * Takes an object and updates a single property of it and then puts it in
+	 * local storage.
+	 * @param {Object} item - the object to be update in storage
+	 * @param {string[]} hashKeys - string values of object keys to use in the
+	 * md5 hash
+	 * @param {string} property - the property to update
+	 * @param {*} newValue - JSONifiable new value for the property
+	 */
+	changeProperty(item, hashKeys, property, newValue) {
+		if (!isObject(item)) {
+			throw new TypeError("item must be an object.");
+		}
+		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
+			throw new TypeError("hashKeys must be an array with length > 0.");
+		}
+		const hash = this._getHash(item, hashKeys);
+		item[property] = newValue;
+		const changedItem = {
+			[hash]: item
+		};
+		this.set([changedItem], hashKeys).then(
+			value => console.log(value),
+			this._onError
+		);
+	}
+
+	/**
+	 * Logs an error from storage.js.
+	 * @param {Error} error 
+	 */
 	_onError(error) {
-		console.log("Something went wrong with my code! :(");
+		console.log("Something went wrong with my code in storage.js! :(");
 		console.log(error);
 	}
 

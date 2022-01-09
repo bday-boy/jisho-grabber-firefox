@@ -58,7 +58,8 @@ class WordParser {
             partsOfSpeech: meaning.tags,
             common: tags.common,
             jlpt: tags.jlpt,
-            wanikani: tags.wanikani
+            wanikani: tags.wanikani,
+            noteID: undefined
         };
     }
 

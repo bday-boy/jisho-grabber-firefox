@@ -1,10 +1,12 @@
 const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
 const ankiConnect = new AnkiConnect();
-ankiConnect.server = "http://127.0.0.1:8765/"
+ankiConnect.server = document.querySelector("#anki-connect-server").value;
 ankiConnect.enabled = true;
 
 const initTableBtn = document.querySelector("#init-table");
 const addNotesBtn = document.querySelector("#add-anki-notes");
+const ankiConnectStatus = document.querySelector("#anki-connect-status");
+const ankiConnectSwitch = document.querySelector("#anki-connect-switch");
 
 initTableBtn.addEventListener("click", (event) => {
     let gettingItem = browser.storage.local.get();
@@ -49,4 +51,33 @@ addNotesBtn.addEventListener("click", (event) => {
     ).catch(
         error => console.log(error)
     );
+});
+
+ankiConnectSwitch.addEventListener("change", (event) => {
+    if (event.target.checked) {
+        ankiConnect.server = document.querySelector("#anki-connect-server").value;
+        ankiConnect.isConnected().then(
+            isConnected => {
+                ankiConnect.enabled = isConnected;
+                if (isConnected) {
+                    ankiConnectStatus.style.display = "block";
+                    ankiConnectStatus.style.color = "green";
+                    ankiConnectStatus.textContent = "Connected to Anki";
+                } else {
+                    ankiConnectStatus.style.display = "block";
+                    ankiConnectStatus.style.color = "#ff4242";
+                    ankiConnectStatus.textContent = "Failed to connect, see console for error";
+                }
+            },
+            error => {
+                ankiConnect.enabled = false;
+                ankiConnectStatus.style.display = "block";
+                ankiConnectStatus.style.color = "#ff4242";
+                ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
+            }
+        );
+    } else {
+        ankiConnect.enabled = false;
+        ankiConnectStatus.style.display = "none";
+    }
 });

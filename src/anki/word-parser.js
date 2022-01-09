@@ -120,7 +120,7 @@ class WordParser {
                     wordTags.common = "Common word";
                     break;
                 case 'jlpt':
-                    wordTags.jlpt = tagText[tagText.length - 1];
+                    wordTags.jlpt = tagText[tagText.length - 1].toUpperCase();
                     break;
                 case 'wanikani':
                     wordTags.wanikani.push(tagText[tagText.length - 1]);

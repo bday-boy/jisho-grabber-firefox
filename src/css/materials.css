@@ -76,6 +76,7 @@ input:checked + .slider:before {
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   box-sizing: border-box;
   color: #FFFFFF;
+  cursor: pointer;
   display: flex;
   font-family: Garamond, Arial, Helvetica, sans-serif;
   font-size: var(--font-size);
@@ -90,7 +91,6 @@ input:checked + .slider:before {
   -webkit-user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
-  cursor: pointer;
 }
 .button-pretty:active,
 .button-pretty:hover {

@@ -18,14 +18,6 @@
     --font-size-header: 20px
 }
 
-/* Hide the plus svgs */
-#plus-svg-on {
-    visibility: hidden;
-}
-#plus-svg-off {
-    visibility: hidden;
-}
-
 body {
     font-family: Garamond, Arial, Helvetica, sans-serif;
     font-size: var(--font-size);

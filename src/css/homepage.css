@@ -1,7 +1,7 @@
 :root {
-    --content-margin: 15px;
+    --content-margin: 10px;
     --content-padding: 10px;
-    --content-width: 800px;
+    --content-width: 900px;
     --content-outline: 1px solid lightgray;
     --content-border-radius: 3px;
 
@@ -12,15 +12,17 @@
 
     --shadow-color: #5a5a5a88;
     --shadow-right-down: 4px 2px 4px var(--shadow-color);
-    --shadow-left-up: -1px -1px 2px var(--shadow-color);
 
     --font-size: 14px;
     --font-size-small: 12px;
     --font-size-header: 20px
 }
 
-/* Hide the plusSVG*/
-#plusSVG {
+/* Hide the plus svgs */
+#plus-svg {
+    visibility: hidden;
+}
+#plus-svg-grey {
     visibility: hidden;
 }
 
@@ -37,8 +39,9 @@ body {
 table {
     border-collapse: collapse;
     border: 2px solid rgb(200,200,200);
-    letter-spacing: 1px;
     font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin: var(--content-margin);
 }
 td, th {
     border: 1px solid rgb(190,190,190);
@@ -102,27 +105,28 @@ caption {
     display: flex;
     flex-direction: column;
     height: auto;
-    padding: var(--content-padding);
+    /* padding: var(--content-padding); */
     border-radius: var(--content-border-radius);
 }
 .content-item {
     display: flex;
     align-items: center;
     height: 40px;
-    outline: var(--content-outline);
+    /* outline: var(--content-outline); */
     padding: var(--content-padding);
 }
 .content-item-left {
+    display: flex;
     align-items: center;
-    justify-content: center;
     width: 80%;
 }
 .content-item-right {
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 20%;
 }
 /* Fixes 1px-wide outlines so they overlap rather than doubling */
 div.content-item + div.content-item {
-    margin-top: 1px;
+    border-top: var(--content-outline);
 }

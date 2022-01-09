@@ -40,7 +40,7 @@ class TableManager {
 }
 
 function newAddButtonElement() {
-    const addSVG = document.getElementById("plusSVG");
+    const addSVG = document.getElementById("plus-svg");
     const addSVGNew = addSVG.cloneNode();
     addSVGNew.removeAttribute("id");
     return addSVGNew;

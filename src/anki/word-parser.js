@@ -37,13 +37,14 @@ class WordParser {
     _setWordObject() {
         if (this._meaningElement === null || this._wordElement === null) {
             this.wordObject = {
-                expressionWithReadings: 'null',
-                expression: 'null',
-                englishMeaning: 'null',
-                partsOfSpeech: 'null',
-                common: 'null',
-                jlpt: 'null',
-                wanikani: 'null'
+                expressionWithReadings: '',
+                expression: '',
+                englishMeaning: '',
+                partsOfSpeech: '',
+                common: '',
+                jlpt: '',
+                wanikani: '',
+                noteID: -1
             };
             return;
         }

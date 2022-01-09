@@ -34,14 +34,23 @@ class TableManager {
             newCell.appendChild(newText);
         }
         newCell = newRow.insertCell();
-        const newAddBtn = newAddButtonElement();
+        const newAddBtn = newAddButtonElement(wordObj.noteID === undefined);
         newCell.appendChild(newAddBtn);
     }
 }
 
-function newAddButtonElement() {
-    const addSVG = document.getElementById("plus-svg");
-    const addSVGNew = addSVG.cloneNode();
-    addSVGNew.removeAttribute("id");
-    return addSVGNew;
+function newAddButtonElement(isOn) {
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.className += 'button-wrapper';
+    const addButton = document.createElement("button");
+    addButton.className += "button-pretty";
+    addButton.addEventListener("click", event => {
+        // do stuff here to add card to Anki
+        console.log("clicked an add button");
+    });
+    const addButtonText = document.createElement("span");
+    addButtonText.textContent = isOn ? "Add" : "Added";
+    addButton.appendChild(addButtonText);
+    buttonWrapper.appendChild(addButton);
+    return buttonWrapper;
 }

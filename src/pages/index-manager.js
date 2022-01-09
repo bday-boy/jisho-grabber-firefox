@@ -1,25 +1,15 @@
+const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
 const ankiConnect = new AnkiConnect();
 ankiConnect.server = "http://127.0.0.1:8765/"
 ankiConnect.enabled = true;
 
-const storageLabel = document.querySelector("#storage-test");
-const changeLabelBtn = document.querySelector("#change-storage-label");
-const storagePrintBtn = document.querySelector("#print-storage");
+const initTableBtn = document.querySelector("#init-table");
 const addNotesBtn = document.querySelector("#add-anki-notes");
-const addNoteBtn = document.querySelector("#add-anki-note");
 
-changeLabelBtn.addEventListener("click", (event) => {
+initTableBtn.addEventListener("click", (event) => {
     let gettingItem = browser.storage.local.get();
     gettingItem.then(
-        item => storageLabel.innerHTML = "got items",
-        error => console.log(error)
-    );
-});
-
-storagePrintBtn.addEventListener("click", (event) => {
-    jpnStorage.get(null).then(
-        value => console.log(value)
-    ).catch(
+        items => tableManager.initTable(items),
         error => console.log(error)
     );
 });
@@ -37,7 +27,7 @@ addNotesBtn.addEventListener("click", (event) => {
                         Reading: wordObj.expressionWithReadings,
                         Meaning: wordObj.englishMeaning,
                         "Parts of speech": wordObj.partsOfSpeech,
-                        Tags: `${wordObj.common}, JLPT ${wordObj.jlpt.toUpperCase()}, Wanikani ${wordObj.wanikani}`
+                        Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
                     },
                     tags: [
                         "jisho-grabber"

@@ -2,7 +2,7 @@
     --content-margin: 10px;
     --content-padding: 10px;
     --content-width: 900px;
-    --content-outline: 1px solid lightgray;
+    --content-outline: 2px solid lightgray;
     --content-border-radius: 3px;
 
     --background-color-main: #dddddd;
@@ -65,7 +65,6 @@ body {
     display: flex;
     flex-direction: column;
     height: auto;
-    /* padding: var(--content-padding); */
     border-radius: var(--content-border-radius);
 }
 .content-item {
@@ -77,12 +76,13 @@ body {
 }
 .content-item-left {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     width: 80%;
 }
 .content-item-right {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
     width: 20%;
 }

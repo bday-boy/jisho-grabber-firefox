@@ -41,13 +41,15 @@ class TableManager {
 
 function newAddButtonElement(isOn) {
     const buttonWrapper = document.createElement("div");
-    buttonWrapper.className += 'button-wrapper';
+    buttonWrapper.className += "button-wrapper";
     const addButton = document.createElement("button");
     addButton.className += "button-pretty";
     addButton.addEventListener("click", event => {
         // do stuff here to add card to Anki
-        console.log("clicked an add button");
+        console.log("Clicked an add button");
+        event.target.textContent = "Added";
     });
+    addButton.disabled = !isOn;
     const addButtonText = document.createElement("span");
     addButtonText.textContent = isOn ? "Add" : "Added";
     addButton.appendChild(addButtonText);

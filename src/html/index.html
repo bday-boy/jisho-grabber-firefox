@@ -20,7 +20,12 @@
           <div class="content-body">
             <div class="content-item">
               <div class="content-item-left">
-                Connect to Anki via AnkiConnect
+                <span>
+                  Connect to Anki via AnkiConnect (Required for Anki integration)
+                </span>
+                <label class="content-item-error">
+                  Required for cards to be sent to Anki.
+                </label>
               </div>
               <div class="content-item-right">
                 <label class="switch">
@@ -35,6 +40,16 @@
             <div class="content-item">
               Test item 2
             </div>
+          </div>
+        </div>
+        <div class="content-group">
+          <div class="content-header">
+            <object id="ankiSVG" type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
+            <span>
+              Anki note table
+            </span>
+          </div>
+          <div class="content-body">
             <div class="content-item">
               <div class="button-wrapper">
                 <button id="init-table" class="button-pretty">
@@ -51,16 +66,6 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="content-group">
-          <div class="content-header">
-            <object id="ankiSVG" type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
-            <span>
-              Anki note table
-            </span>
-          </div>
-          <div class="content-body">
             <table id="notes-table">
               <caption>
                 Table of all available Anki notes in local storage.

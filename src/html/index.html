@@ -24,7 +24,7 @@
                   Connect to Anki via AnkiConnect (Required for Anki integration)
                 </span>
                 <label class="content-item-error">
-                  Required for cards to be sent to Anki.
+                  Failed to connect. Error:
                 </label>
               </div>
               <div class="content-item-right">
@@ -35,7 +35,20 @@
               </div>
             </div>
             <div class="content-item">
-              Test item 1
+              <div class="content-item-left">
+                <span>
+                  AnkiConnect localhost URL and port
+                </span>
+                <label class="content-item-hint">
+                  Default is http://127.0.0.1:8765/ or http://localhost:8765/
+                </label>
+              </div>
+              <div class="content-item-right">
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
             </div>
             <div class="content-item">
               Test item 2
@@ -61,7 +74,7 @@
               <div class="button-wrapper">
                 <button id="add-anki-notes" class="button-pretty">
                   <span>
-                    Add Anki notes
+                    Add all notes
                   </span>
                 </button>
               </div>

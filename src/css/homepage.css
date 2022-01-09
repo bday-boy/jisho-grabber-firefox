@@ -93,6 +93,10 @@ body {
 }
 .content-item-error {
   color: var(--content-error-text-color);
+  display: none;
+}
+.content-item-text-input {
+  width: 100%;
 }
 /* Fixes 1px-wide outlines so they overlap rather than doubling */
 div.content-item + div.content-item {

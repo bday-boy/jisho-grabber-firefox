@@ -44,15 +44,31 @@ function newAddButtonElement(isOn) {
     buttonWrapper.className += "button-wrapper";
     const addButton = document.createElement("button");
     addButton.className += "button-pretty";
-    addButton.addEventListener("click", event => {
-        // do stuff here to add card to Anki
-        console.log("Clicked an add button");
-        event.target.textContent = "Added";
-    });
+    if (isOn) {
+        addButton.addEventListener("click", event => {
+            // do stuff here to add card to Anki
+            console.log("Clicked an add button");
+            let buttonElement = event.target;
+            while (!buttonElement.classList.contains("button-pretty")) {
+                buttonElement = buttonElement.parentNode;
+            }
+            turnOffButton(buttonElement);
+        });
+    } else {
+        turnOffButton(addButton);
+    }
     addButton.disabled = !isOn;
     const addButtonText = document.createElement("span");
     addButtonText.textContent = isOn ? "Add" : "Added";
     addButton.appendChild(addButtonText);
     buttonWrapper.appendChild(addButton);
     return buttonWrapper;
+}
+
+function turnOffButton(buttonElement) {
+    buttonElement.style.cursor = "not-allowed";
+    const buttonSpan = buttonElement.querySelector("span");
+    buttonSpan.textContent = "Added";
+    buttonSpan.style.color = "#00dd00";
+    buttonSpan.style.background = "none";
 }

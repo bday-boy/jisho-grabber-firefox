@@ -15,7 +15,7 @@
 
   --font-size: 14px;
   --font-size-small: 12px;
-  --font-size-header: 20px
+  --font-size-header: 20px;
 }
 
 /*
@@ -115,6 +115,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
 }
-td div.button-wrapper > span {
-
+/* Makes sure buttons in the table don't resize */
+td button.button-pretty > span {
+  min-width: 3em;
 }

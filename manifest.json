@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Jisho Grabber",
-    "version": "1.0",
+    "version": "0.1",
     "description": "Add a context menu option to highlighted text to highlighted text to search it on Jisho and get ",
 
     "icons": {

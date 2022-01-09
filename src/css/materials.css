@@ -107,6 +107,6 @@ td button.button-pretty > span {
   border-radius: 3px;
   font-family: var(--font-family);
   font-size: var(--font-size);
-  width: 80%;
+  width: 15em;
   height: 1.5em;
 }

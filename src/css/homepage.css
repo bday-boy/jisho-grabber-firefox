@@ -1,19 +1,16 @@
 :root {
-  --content-margin: 10px;
-  --content-padding: 10px;
-  --content-width: 900px;
-  --content-outline: 2px solid lightgray;
-  --content-border-radius: 3px;
-  --content-hint-text-color: #aaa;
-  --content-error-text-color: #ff4242;
-
   --background-color-main: #e5e5e5;
   --background-color-group: #f8f8f8;
   --background-color-table-even: #f0f0f0;
-  --background-color-table-odd: --background-color-main;
+  --background-color-table-odd: var(--background-color-main);
 
-  --shadow-color: #5a5a5a88;
-  --shadow-box: 4px 2px 4px var(--shadow-color);
+  --content-margin: 10px;
+  --content-padding: 10px;
+  --content-width: 900px;
+  --content-outline: 2px solid var(--background-color-main);
+  --content-border-radius: 8px;
+  --content-hint-text-color: #aaa;
+  --content-error-text-color: #ff4242;
 
   --font-color: #000000;
   --font-family: Garamond, Arial, Helvetica, sans-serif;
@@ -21,6 +18,9 @@
   --font-size-small: 12px;
   --font-size-header: 20px;
   --hover-text-color: rgb(0, 102, 204);
+
+  --shadow-color: #5a5a5a88;
+  --shadow-box: 4px 2px 4px var(--shadow-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,7 +28,8 @@
     --background-color-main: #1b1b1b;
     --background-color-group: #3a3a3a;
     --background-color-table-even: #222222;
-    --background-color-table-odd: --background-color-main;
+    --background-color-table-odd: var(--background-color-main);
+    --content-outline: 2px solid var(--background-color-main);
     --font-color: #cccccc;
     --shadow-color: #0084dd88;
     /* Dark mode shadow box adds a glow effect */
@@ -51,8 +52,8 @@ body {
   width: 100%;
 }
 table {
-  border-collapse: collapse;
   border: 2px solid rgb(200,200,200);
+  border-collapse: collapse;
   font-size: 0.8rem;
   letter-spacing: 1px;
   margin: var(--content-margin);
@@ -121,6 +122,7 @@ caption {
 .content-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 40px;
   padding: var(--content-padding);
 }
@@ -128,19 +130,18 @@ caption {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 70%;
+  width: auto;
 }
 .content-item-right {
   align-items: center;
   display: flex;
   justify-content: center;
-  width: 30%;
+  width: auto;
 }
 .content-item-hint {
   color: var(--content-hint-text-color);
 }
-.content-item-error {
-  color: var(--content-error-text-color);
+.content-item-hidden-text {
   display: none;
 }
 /* Fixes 1px-wide outlines so they overlap rather than doubling */

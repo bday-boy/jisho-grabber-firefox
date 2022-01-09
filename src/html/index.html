@@ -12,7 +12,7 @@
       <div class="content-center">
         <div class="content-group">
           <div class="content-header">
-            <object id="ankiSVG" type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
+            <object type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
             <span>
               Anki integration configuration
             </span>
@@ -21,15 +21,13 @@
             <div class="content-item">
               <div class="content-item-left">
                 <span>
-                  Connect to Anki via AnkiConnect (Required for Anki integration)
+                  Connect to Anki via AnkiConnect (required for Anki integration)
                 </span>
-                <label class="content-item-error">
-                  Failed to connect. Error:
-                </label>
+                <label id="anki-connect-status" class="content-item-hidden-text"></label>
               </div>
               <div class="content-item-right">
                 <label class="switch">
-                  <input type="checkbox">
+                  <input id="anki-connect-switch" type="checkbox">
                   <span class="slider"></span>
                 </label>
               </div>
@@ -44,17 +42,27 @@
                 </label>
               </div>
               <div class="content-item-right">
-                <input type="text" class="text-input" value="http://127.0.0.1:8765/">
+                <input id="anki-connect-server" type="text" class="text-input" value="http://127.0.0.1:8765/">
               </div>
             </div>
             <div class="content-item">
-              Test item 2
+              <div class="content-item-left">
+                <span>
+                  Card tags
+                </span>
+                <label class="content-item-hint">
+                  List of comma-separated tags
+                </label>
+              </div>
+              <div class="content-item-right">
+                <input id="anki-connect-server" type="text" class="text-input" value="jisho_grabber">
+              </div>
             </div>
           </div>
         </div>
         <div class="content-group">
           <div class="content-header">
-            <object id="ankiSVG" type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
+            <object type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
             <span>
               Anki note table
             </span>

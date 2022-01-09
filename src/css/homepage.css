@@ -15,13 +15,14 @@
   --shadow-color: #5a5a5a88;
   --shadow-right-down: 4px 2px 4px var(--shadow-color);
 
+  --font-family: Garamond, Arial, Helvetica, sans-serif;
   --font-size: 14px;
   --font-size-small: 12px;
   --font-size-header: 20px
 }
 
 body {
-  font-family: Garamond, Arial, Helvetica, sans-serif;
+  font-family: var(--font-family);
   font-size: var(--font-size);
   margin:0;
   padding:0;
@@ -94,9 +95,6 @@ body {
 .content-item-error {
   color: var(--content-error-text-color);
   display: none;
-}
-.content-item-text-input {
-  width: 100%;
 }
 /* Fixes 1px-wide outlines so they overlap rather than doubling */
 div.content-item + div.content-item {

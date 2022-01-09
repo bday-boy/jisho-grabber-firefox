@@ -1,23 +1,3 @@
-:root {
-  --content-margin: 10px;
-  --content-padding: 10px;
-  --content-width: 900px;
-  --content-outline: 1px solid lightgray;
-  --content-border-radius: 3px;
-
-  --background-color-main: #dddddd;
-  --background-color-group: #f8f8f8;
-  --hover-background-color: #999999;
-  --hover-text-color: rgb(0, 102, 204);
-
-  --shadow-color: #5a5a5a88;
-  --shadow-right-down: 4px 2px 4px var(--shadow-color);
-
-  --font-size: 14px;
-  --font-size-small: 12px;
-  --font-size-header: 20px;
-}
-
 /*
  * Modified code from https://www.w3schools.com/howto/howto_css_switch.asp
  * made to better fit my web page
@@ -118,4 +98,11 @@ input:checked + .slider:before {
 /* Makes sure buttons in the table don't resize */
 td button.button-pretty > span {
   min-width: 3em;
+}
+
+.text-input {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  width: 80%;
+  height: 1.5em;
 }

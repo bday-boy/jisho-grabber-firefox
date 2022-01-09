@@ -49,7 +49,7 @@ input:checked + .slider:before {
 
 .button-pretty {
   align-items: center;
-  background-image: linear-gradient(135deg,#787878, #0084dd 50%,#b7dcf5);
+  background-image: linear-gradient(135deg,#787878, #0084dd,#b7dcf5);
   border: 0;
   border-radius: 8px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
@@ -101,6 +101,10 @@ td button.button-pretty > span {
 }
 
 .text-input {
+  background-color: var(--background-color-main);
+  color: var(--font-color);
+  border: none;
+  border-radius: 3px;
   font-family: var(--font-family);
   font-size: var(--font-size);
   width: 80%;

@@ -1,7 +1,15 @@
 const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
-const ankiConnect = new AnkiConnect();
-ankiConnect.server = document.querySelector("#anki-connect-server").value;
-ankiConnect.enabled = true;
+const ankiSettings = {
+    deck: "Jisho Grabber Test",
+    model: "Yomichan",
+    fields: [
+        ["Expression", "expression"],
+        ["Reading", "expressionWithReadings"],
+        ["Meaning", "englishMeaning"],
+        ["Parts of speech", "partsOfSpeech"],
+        ["Tags", "common"]
+    ]
+};
 
 const initTableBtn = document.querySelector("#init-table");
 const addNotesBtn = document.querySelector("#add-anki-notes");
@@ -81,3 +89,86 @@ ankiConnectSwitch.addEventListener("change", (event) => {
         ankiConnectStatus.style.display = "none";
     }
 });
+
+/**
+ * 
+ * @param {string} word 
+ * @param {string} meaning 
+ * @param {string} deck 
+ * @param {string} model 
+ * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
+ * keys
+ */
+function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
+    ankiSettings.tags = document.querySelector("#anki-tags").value.split(",");
+    if ( /* Make sure ankiConnect works and ankiSettings is correct */
+        !ankiConnector.enabled
+        || !objectHasKeys(ankiSettings, ["deck", "model", "tags", "fields"])
+    ) {
+        return Promise.resolve(false);
+    }
+    const hashKeys = ["expression", "englishMeaning"];
+    const wordObj = {
+        expression: word,
+        englishMeaning: meaning
+    };
+    let item;
+    return jpnStorage.checkForNoteID(wordObj, hashKeys).then(hasID => {
+        if (hasID) { return {}; }
+        return jpnStorage.get([wordObj], hashKeys);
+    }).then(storageItem => {
+        if (isEmptyObject(storageItem)) { return {}; }
+        item = storageItem;
+        const wordObj = Object.entries(storageItem)[0][1];
+        const note = {
+            deckName: ankiSettings.deck,
+            modelName: ankiSettings.model,
+            fields: {},
+            tags: ankiSettings.tags,
+            options: {
+                allowDuplicate: true
+            }
+        };
+        for (const [fieldKey, wordObjKey] of ankiSettings.fields) {
+            if (wordObjKey) {
+                note.fields[fieldKey] = wordObj[wordObjKey];
+            } else {
+                note.fields[fieldKey] = '';
+            }
+        }
+        return note;
+    }).then(note => {
+        if (isEmptyObject(note)) { return {}; }
+        return ankiConnect.addNote(note);
+    }).then(response => {
+        if (response.result === undefined) { return false; }
+        item.noteID = response.result;
+        return jpnStorage.set([wordObj], hashKeys);
+    }).then(() => {
+        return true;
+    }).catch(error => {
+        console.log(error);
+        return false;
+    });
+}
+
+function addNoteOnClick(event) {
+    const buttonElement = event.target.closest("button.button-pretty");
+    const dataRow = event.target.closest("tr");
+    const rowCells = dataRow.querySelectorAll("td")
+    const word = rowCells[0].textContent;
+    const meaning = rowCells[1].textContent;
+    addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect).then(added => {
+        if (added) { turnOffButton(buttonElement); }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+function turnOffButton(buttonElement) {
+    buttonElement.style.cursor = "not-allowed";
+    const buttonSpan = buttonElement.querySelector("span");
+    buttonSpan.textContent = "Added";
+    buttonSpan.style.color = "#00dd00";
+    buttonSpan.style.background = "none";
+}

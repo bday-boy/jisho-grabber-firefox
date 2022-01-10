@@ -66,6 +66,23 @@ class JapaneseStorage {
 		return this._storage.get(keys);
 	}
 
+	async checkForNoteID(item, hashKeys) {
+		const foundItem = await this.get([item], hashKeys)
+			.then(foundItem => {
+				return foundItem;
+			})
+			.catch(error => {
+				throw error;
+			});
+		if (isEmptyObject(foundItem)) { return false; }
+		const wordObj = Object.entries(foundItem)[0][1];
+		if (wordObj.noteID !== '') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Takes an object and updates a single property of it and then puts it in
 	 * local storage.

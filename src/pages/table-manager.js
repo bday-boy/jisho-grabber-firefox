@@ -34,7 +34,7 @@ class TableManager {
             newCell.appendChild(newText);
         }
         newCell = newRow.insertCell();
-        const newAddBtn = newAddButtonElement(wordObj.noteID === undefined);
+        const newAddBtn = newAddButtonElement(wordObj.noteID === '');
         newCell.appendChild(newAddBtn);
     }
 }
@@ -44,31 +44,17 @@ function newAddButtonElement(isOn) {
     buttonWrapper.className += "button-wrapper";
     const addButton = document.createElement("button");
     addButton.className += "button-pretty";
-    if (isOn) {
-        addButton.addEventListener("click", event => {
-            // do stuff here to add card to Anki
-            console.log("Clicked an add button");
-            let buttonElement = event.target;
-            while (!buttonElement.classList.contains("button-pretty")) {
-                buttonElement = buttonElement.parentNode;
-            }
-            turnOffButton(buttonElement);
-        });
-    } else {
-        turnOffButton(addButton);
-    }
     addButton.disabled = !isOn;
     const addButtonText = document.createElement("span");
     addButtonText.textContent = isOn ? "Add" : "Added";
     addButton.appendChild(addButtonText);
     buttonWrapper.appendChild(addButton);
+    if (isOn) {
+        addButton.addEventListener("click", event => {
+            addNoteOnClick(event);
+        });
+    } else {
+        turnOffButton(addButton);
+    }
     return buttonWrapper;
-}
-
-function turnOffButton(buttonElement) {
-    buttonElement.style.cursor = "not-allowed";
-    const buttonSpan = buttonElement.querySelector("span");
-    buttonSpan.textContent = "Added";
-    buttonSpan.style.color = "#00dd00";
-    buttonSpan.style.background = "none";
 }

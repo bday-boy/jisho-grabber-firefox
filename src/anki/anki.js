@@ -1,8 +1,7 @@
-/** Class for preparing data for and communicating with Anki. */
+/** Class for preparing data for Anki. */
 class Anki {
     constructor() {
         this.jpnUtil = new JapaneseUtil();
-        this.ankiConnect = new AnkiConnect();
     }
 
     /**

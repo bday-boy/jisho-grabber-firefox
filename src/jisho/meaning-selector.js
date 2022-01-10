@@ -8,7 +8,6 @@
 
 let drawn = false;
 const parser = new WordParser();
-const jpnStorage = new JapaneseStorage(window.md5);
 
 (function() {
     let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");

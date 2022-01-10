@@ -46,7 +46,8 @@
                 "src/anki/anki.js",
                 "src/anki/word-parser.js",
                 "src/jisho/meaning-selector.js",
-                "src/jisho/element-picker.js"
+                "src/jisho/element-picker.js",
+                "src/core.js"
             ]
         }
     ]

@@ -1,3 +1,6 @@
+const jpnStorage = new JapaneseStorage(window.md5);
+const ankiConnect = new AnkiConnect();
+
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also
  * count as objects in JavaScript, so we need to first check that variable
@@ -19,4 +22,13 @@ function isEmptyObject(variable) {
         && Object.keys(variable).length === 0
         && Object.getPrototypeOf(variable) === Object.prototype
     );
+}
+
+function objectHasKeys(obj, keys) {
+    for (const key of keys) {
+        if (!obj.hasOwnProperty(key)) {
+            return false;
+        }
+    }
+    return true;
 }

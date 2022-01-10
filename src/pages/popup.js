@@ -1,6 +1,6 @@
 (function() {
-    const btnOpenDB = document.querySelector("div.button.action-open-db");
-    btnOpenDB.addEventListener('click', (e) => {
+    const openHomeBtn = document.querySelector("#home-button");
+    openHomeBtn.addEventListener('click', (e) => {
         try {
             const tab_data = {
                 url: '../html/index.html'

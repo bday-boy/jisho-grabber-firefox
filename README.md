@@ -10,7 +10,11 @@ In order for this program to send Anki notes to your Anki client, you must
 install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) and have Anki
 running in the background when trying to send notes from your browser.
 Additionally, you must be using a browser that has ECMAScript 6 support (most,
-if not all, up-to-date, modern browsers do).
+if not all, up-to-date, modern browsers do).  
+IMPORTANT:  
+Since user Anki settings are hard-coded right now, in order to use this
+extension at all, import the Jisho Grabber Test.apkg in default_deck. This will
+create the proper note type as needed by the extension.
 
 ## What it does
 - Adds a context menu (right-click menu) item for searching highlighted text on

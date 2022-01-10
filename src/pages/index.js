@@ -1,4 +1,8 @@
 const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
+jpnStorage.get().then(
+    items => tableManager.initTable(items),
+    error => console.log(error)
+);
 const ankiSettings = {
     deck: "Jisho Grabber Test",
     model: "Yomichan",
@@ -17,8 +21,7 @@ const ankiConnectStatus = document.querySelector("#anki-connect-status");
 const ankiConnectSwitch = document.querySelector("#anki-connect-switch");
 
 initTableBtn.addEventListener("click", (event) => {
-    let gettingItem = browser.storage.local.get();
-    gettingItem.then(
+    jpnStorage.get().then(
         items => tableManager.initTable(items),
         error => console.log(error)
     );

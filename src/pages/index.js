@@ -5,7 +5,7 @@ jpnStorage.get().then(
 );
 const ankiSettings = {
     deck: "Jisho Grabber Test",
-    model: "Yomichan",
+    model: "Jisho Test",
     fields: [
         ["Expression", "expression"],
         ["Reading", "expressionWithReadings"],
@@ -33,8 +33,8 @@ addNotesBtn.addEventListener("click", (event) => {
             const notes = [];
             for (const [hash, wordObj] of Object.entries(items)) {
                 const note = {
-                    deckName: "Jisho Grabber Test",
-                    modelName: "Yomichan",
+                    deckName: ankiSettings.deck,
+                    modelName: ankiSettings.model,
                     fields: {
                         Expression: wordObj.expression,
                         Reading: wordObj.expressionWithReadings,
@@ -42,9 +42,7 @@ addNotesBtn.addEventListener("click", (event) => {
                         "Parts of speech": wordObj.partsOfSpeech,
                         Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
                     },
-                    tags: [
-                        "jisho-grabber"
-                    ],
+                    tags: document.querySelector("#anki-tags").value.split(","),
                     options: {
                         allowDuplicate: true
                     }

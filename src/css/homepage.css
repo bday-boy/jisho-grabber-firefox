@@ -29,6 +29,7 @@
     --background-color-group: #3a3a3a;
     --background-color-table-even: #222222;
     --background-color-table-odd: var(--background-color-main);
+    --content-hint-text-color: #777;
     --content-outline: 2px solid var(--background-color-main);
     --font-color: #cccccc;
     --shadow-color: #0084dd88;

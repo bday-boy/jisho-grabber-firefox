@@ -84,7 +84,7 @@
                 </button>
               </div>
             </div>
-            <table id="notes-table">
+            <table id="notes-table" style="display: none;">
               <caption>
                 Table of all available Anki notes in local storage.
               </caption>
@@ -92,6 +92,56 @@
                 <col span="7">
               </colgroup>
               <thead>
+                <tr>
+                  <th scope="col">
+                    <span>
+                      Japanese:
+                    </span><br>
+                    <input id="filter-japanese" type="text" class="text-input">
+                  </th>
+                  <th scope="col">
+                    <span>
+                      English:
+                    </span><br>
+                    <input id="filter-english" type="text" class="text-input">
+                  </th>
+                  <th scope="col">
+                    <span>
+                      Parts of speech:
+                    </span><br>
+                    <input id="filter-partsOfSpeech" type="text" class="text-input">
+                  </th>
+                  <th scope="col">
+                    <span>
+                      Common?
+                    </span>
+                    <label class="switch">
+                      <input id="filter-common" type="checkbox">
+                      <span class="slider"></span>
+                    </label>
+                  </th>
+                  <th scope="col">
+                    <span>
+                      JLPT
+                    </span><br>
+                    <input id="filter-jlpt" type="text" class="text-input">
+                  </th>
+                  <th scope="col">
+                    <span>
+                      Wanikani
+                    </span><br>
+                    <input id="filter-wanikani" type="text" class="text-input">
+                  </th>
+                  <th scope="col">
+                    <span>
+                      Unadded?
+                    </span>
+                    <label class="switch">
+                      <input id="filter-added" type="checkbox">
+                      <span class="slider"></span>
+                    </label>
+                  </th>
+                </tr>
                 <tr>
                   <th scope="col">
                     Japanese word

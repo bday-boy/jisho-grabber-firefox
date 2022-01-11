@@ -1,17 +1,15 @@
-/*
- * Author:      Andrew Smith
- * File:        jisho-page-selector.js
- * Project:     jisho-grabber-firefox
- * Description: This file contains functionality to highlight a definition of
- *              a word on Jisho and save it locally.
+/**
+ * @author Andrew Smith
+ * @file This file contains functionality to highlight a definition of
+ * a word on Jisho and save it locally.
  */
 
 let drawn = false;
 const parser = new WordParser();
 
 (function() {
-    let meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
-    for (let meaningWrapperElement of meaningWrappers) {
+    const meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
+    for (const meaningWrapperElement of meaningWrappers) {
         meaningWrapperElement.style.cursor = "crosshair";
         meaningWrapperElement.addEventListener("mouseenter", (event) => {
             if (meaningWrapperElement !== null && !drawn) {
@@ -28,7 +26,7 @@ const parser = new WordParser();
         });
         meaningWrapperElement.addEventListener("click", (event) => {
             storeWord(event.target);
-            jpnStorage.get(null).then(
+            jpnStorage.get().then(
                 value => console.log(value),
                 error => console.log(error)
             );
@@ -38,9 +36,14 @@ const parser = new WordParser();
 
 function storeWord(wordResultElement) {
     parser.parseWord(wordResultElement);
-    const newItem = [parser.wordObject];
-    jpnStorage.set(newItem, ['expression', 'englishMeaning']).then(
-        value => console.log(value),
-        jpnStorage._onError
-    );
+    const newItem = parser.wordObject;
+    const hashKeys = ['expression', 'englishMeaning'];
+    jpnStorage.checkForNoteID(newItem, hashKeys)
+        .then(alreadyAdded => {
+            if (!alreadyAdded) {
+                return jpnStorage.set([newItem], hashKeys);
+            }
+        })
+        .then(value => console.log(value))
+        .catch(error => console.log(error));
 }

@@ -28,7 +28,7 @@ initTableBtn.addEventListener("click", (event) => {
 });
 
 addNotesBtn.addEventListener("click", (event) => {
-    jpnStorage.get(null).then(
+    jpnStorage.get().then(
         items => {
             const notes = [];
             for (const [hash, wordObj] of Object.entries(items)) {
@@ -62,6 +62,7 @@ addNotesBtn.addEventListener("click", (event) => {
     );
 });
 
+ankiConnectSwitch.checked = false;
 ankiConnectSwitch.addEventListener("change", (event) => {
     if (event.target.checked) {
         ankiConnect.server = document.querySelector("#anki-connect-server").value;

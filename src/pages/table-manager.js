@@ -12,10 +12,12 @@ class TableManager {
     }
 
     initTable(wordObjs) {
+        this._table.style.display = "none";
         while (this._table.firstChild) {
             this._table.removeChild(this._table.firstChild);
         }
         this.insertRows(wordObjs);
+        this._table.removeAttribute("style");
     }
 
     insertRows(wordObjs) {
@@ -34,22 +36,22 @@ class TableManager {
             newCell.appendChild(newText);
         }
         newCell = newRow.insertCell();
-        const newAddBtn = newAddButtonElement(wordObj.noteID === '');
+        const newAddBtn = newAddButtonElement(wordObj.noteID !== -1);
         newCell.appendChild(newAddBtn);
     }
 }
 
-function newAddButtonElement(isOn) {
+function newAddButtonElement(hasNoteID) {
     const buttonWrapper = document.createElement("div");
     buttonWrapper.className += "button-wrapper";
     const addButton = document.createElement("button");
     addButton.className += "button-pretty";
-    addButton.disabled = !isOn;
+    addButton.disabled = hasNoteID;
     const addButtonText = document.createElement("span");
-    addButtonText.textContent = isOn ? "Add" : "Added";
+    addButtonText.textContent = hasNoteID ? "Added" : "Add";
     addButton.appendChild(addButtonText);
     buttonWrapper.appendChild(addButton);
-    if (isOn) {
+    if (!hasNoteID) {
         addButton.addEventListener("click", event => {
             addNoteOnClick(event);
         });

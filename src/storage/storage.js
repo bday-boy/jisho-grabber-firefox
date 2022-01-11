@@ -88,9 +88,10 @@ class JapaneseStorage {
 		return this.get([item], hashKeys)
 			.then(foundItem => {
 				if (isEmptyObject(foundItem)) {
-					throw new Error("Couldn't find object in storage.");
+					return false;
 				}
-				return foundItem.noteID !== -1;
+				const wordObj = Object.entries(foundItem)[0][1];
+				return wordObj.noteID !== -1;
 			}, error => {
 				console.log("Couldn't check storage item for note ID.");
 				throw error;

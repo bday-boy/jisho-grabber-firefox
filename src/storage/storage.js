@@ -6,9 +6,19 @@
  */
 
 class JapaneseStorage {
-	constructor(hashFunc) {
-		browser.storage.onChanged.addListener(logChange);
-		this._storage = browser.storage.local;
+	constructor(hashFunc, storageArea) {
+		browser.storage.onChanged.addListener((changes, area) => {
+			if (area !== 'local') { return; }
+			console.log(`Change in storage area: ${area}`);
+			const changedItems = Object.keys(changes);
+			for (const item of changedItems) {
+				console.log(`${item} has changed:`);
+				console.log('Old value and new value shown below: ');
+				console.log(changes[item].oldValue);
+				console.log(changes[item].newValue);
+			}
+		});
+		this._storage = storageArea;
 		this._hashFunc = hashFunc;
 	}
 
@@ -77,8 +87,10 @@ class JapaneseStorage {
 	checkForNoteID(item, hashKeys) {
 		return this.get([item], hashKeys)
 			.then(foundItem => {
-				if (isEmptyObject(foundItem)) { return false; }
-				return true;
+				if (isEmptyObject(foundItem)) {
+					throw new Error("Couldn't find object in storage.");
+				}
+				return foundItem.noteID !== -1;
 			}, error => {
 				console.log("Couldn't check storage item for note ID.");
 				throw error;
@@ -142,20 +154,11 @@ class JapaneseStorage {
 				}
 				const hash = Object.entries(storageItem)[0][0];
 				storageItem[hash][property] = newValue;
-				this.set([storageItem], hashKeys);
+				this._storage.set(storageItem);
 			}, error => {
 				console.log("Could not change property in database.");
 				throw error;
 			});
-	}
-
-	/**
-	 * Logs an error from storage.js.
-	 * @param {Error} error 
-	 */
-	_onError(error) {
-		console.log("Something went wrong with my code in storage.js! :(");
-		console.log(error);
 	}
 
 	/**
@@ -172,21 +175,5 @@ class JapaneseStorage {
 			stringToHash += item[key];
 		}
 		return this._hashFunc(stringToHash);
-	}
-}
-
-function logChange(changes, area) {
-	if (area !== 'local') {
-		return;
-	}
-	console.log(`Change in storage area: ${area}`);
-
-	const changedItems = Object.keys(changes);
-
-	for (const item of changedItems) {
-		console.log(`${item} has changed:`);
-		console.log('Old value and new value shown below: ');
-		console.log(changes[item].oldValue);
-		console.log(changes[item].newValue);
 	}
 }

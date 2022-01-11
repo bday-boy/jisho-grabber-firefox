@@ -1,4 +1,4 @@
-const jpnStorage = new JapaneseStorage(window.md5);
+const jpnStorage = new JapaneseStorage(window.md5, browser.storage.local);
 
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also

@@ -23,7 +23,7 @@ class JapaneseStorage {
 	 * md5 hash
 	 * @returns {Promise} Promise to store items in local storage
 	 */
-	async set(items, hashKeys) {
+	set(items, hashKeys) {
 		if (!Array.isArray(items) || items === []) {
 			throw new TypeError("items must be a non-empty array of objects.");
 		}
@@ -34,7 +34,7 @@ class JapaneseStorage {
 		for (const item of items) {
 			setObject[this._getHash(item, hashKeys)] = item;
 		}
-		this._storage.set(setObject);
+		return this._storage.set(setObject);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class JapaneseStorage {
 	 * in the md5 hash
 	 * @returns {Promise} Promise to get items from local storage
 	 */
-	async get(items, hashKeys) {
+	get(items, hashKeys) {
 		if (items === null || items === undefined || items.length === 0) {
 			// browser.storage.local.get returns all stored objects when no
 			// argument is passed in
@@ -60,27 +60,64 @@ class JapaneseStorage {
 			throw new TypeError("hashKeys must be an array with length > 0 unless items is null, undefined, or [].");
 		}
 		const keys = [];
-		for (let item of items) {
+		for (const item of items) {
 			keys.push(this._getHash(item, hashKeys));
 		}
 		return this._storage.get(keys);
 	}
 
-	async checkForNoteID(item, hashKeys) {
-		const foundItem = await this.get([item], hashKeys)
+	/**
+	 * Checks local storage for the given item and sees if the noteID field is
+	 * not empty.
+	 * @param {Object} item 
+	 * @param {string[]} hashKeys 
+	 * @returns {Promise} A promise that resolve to true if the item has a note
+	 * ID, false otherwise, and throws an error on rejection
+	 */
+	checkForNoteID(item, hashKeys) {
+		return this.get([item], hashKeys)
 			.then(foundItem => {
-				return foundItem;
-			})
-			.catch(error => {
+				if (isEmptyObject(foundItem)) { return false; }
+				return true;
+			}, error => {
+				console.log("Couldn't check storage item for note ID.");
 				throw error;
 			});
-		if (isEmptyObject(foundItem)) { return false; }
-		const wordObj = Object.entries(foundItem)[0][1];
-		if (wordObj.noteID !== '') {
-			return true;
-		} else {
-			return false;
-		}
+	}
+
+	/**
+	 * 
+	 * @param {Object} item 
+	 * @param {string[]} hashKeys 
+	 * @returns {Promise} A promise that resolves to a new Anki note and rejects
+	 * with an error.
+	 */
+	createAnkiNote(item, hashKeys) {
+		return this.get([item], hashKeys)
+			.then(storageWordObj => {
+				if (isEmptyObject(storageWordObj)) { return {}; }
+				const wordObj = Object.entries(storageWordObj)[0][1];
+				const note = {
+					deckName: ankiSettings.deck,
+					modelName: ankiSettings.model,
+					fields: {},
+					tags: ankiSettings.tags,
+					options: {
+						allowDuplicate: true
+					}
+				};
+				for (const [fieldKey, wordObjKey] of ankiSettings.fields) {
+					if (wordObjKey) {
+						note.fields[fieldKey] = wordObj[wordObjKey];
+					} else {
+						note.fields[fieldKey] = '';
+					}
+				}
+				return note;
+			}, error => {
+				console.log("Couldn't create anki note from storage item.");
+				throw error;
+			});
 	}
 
 	/**
@@ -91,23 +128,25 @@ class JapaneseStorage {
 	 * md5 hash
 	 * @param {string} property - the property to update
 	 * @param {*} newValue - JSONifiable new value for the property
+	 * @returns {Promise} A promise to change the item's property in local
+	 * storage.
 	 */
 	changeProperty(item, hashKeys, property, newValue) {
 		if (!isObject(item)) {
 			throw new TypeError("item must be an object.");
 		}
-		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
-			throw new TypeError("hashKeys must be an array with length > 0.");
-		}
-		const hash = this._getHash(item, hashKeys);
-		item[property] = newValue;
-		const changedItem = {
-			[hash]: item
-		};
-		this.set([changedItem], hashKeys).then(
-			value => console.log(value),
-			this._onError
-		);
+		return this.get([item], hashKeys)
+			.then(storageItem => {
+				if (isEmptyObject(storageItem)) {
+					throw new Error("Object does not exist in storage.");
+				}
+				const hash = Object.entries(storageItem)[0][0];
+				storageItem[hash][property] = newValue;
+				this.set([storageItem], hashKeys);
+			}, error => {
+				console.log("Could not change property in database.");
+				throw error;
+			});
 	}
 
 	/**

@@ -1,3 +1,8 @@
+const initTableBtn = document.querySelector("#init-table");
+const addNotesBtn = document.querySelector("#add-anki-notes");
+const ankiConnectStatus = document.querySelector("#anki-connect-status");
+const ankiConnectSwitch = document.querySelector("#anki-connect-switch");
+const ankiConnect = new AnkiConnect();
 const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
 jpnStorage.get().then(
     items => tableManager.initTable(items),
@@ -14,11 +19,6 @@ const ankiSettings = {
         ["Tags", "common"]
     ]
 };
-
-const initTableBtn = document.querySelector("#init-table");
-const addNotesBtn = document.querySelector("#add-anki-notes");
-const ankiConnectStatus = document.querySelector("#anki-connect-status");
-const ankiConnectSwitch = document.querySelector("#anki-connect-switch");
 
 initTableBtn.addEventListener("click", (event) => {
     jpnStorage.get().then(
@@ -68,12 +68,11 @@ ankiConnectSwitch.addEventListener("change", (event) => {
         ankiConnect.isConnected().then(
             isConnected => {
                 ankiConnect.enabled = isConnected;
+                ankiConnectStatus.style.display = "block";
                 if (isConnected) {
-                    ankiConnectStatus.style.display = "block";
                     ankiConnectStatus.style.color = "green";
                     ankiConnectStatus.textContent = "Connected to Anki";
                 } else {
-                    ankiConnectStatus.style.display = "block";
                     ankiConnectStatus.style.color = "#ff4242";
                     ankiConnectStatus.textContent = "Failed to connect, see console for error";
                 }
@@ -83,6 +82,7 @@ ankiConnectSwitch.addEventListener("change", (event) => {
                 ankiConnectStatus.style.display = "block";
                 ankiConnectStatus.style.color = "#ff4242";
                 ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
+                throw error;
             }
         );
     } else {
@@ -113,44 +113,22 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
         expression: word,
         englishMeaning: meaning
     };
-    let item;
-    return jpnStorage.checkForNoteID(wordObj, hashKeys).then(hasID => {
-        if (hasID) { return {}; }
-        return jpnStorage.get([wordObj], hashKeys);
-    }).then(storageItem => {
-        if (isEmptyObject(storageItem)) { return {}; }
-        item = storageItem;
-        const wordObj = Object.entries(storageItem)[0][1];
-        const note = {
-            deckName: ankiSettings.deck,
-            modelName: ankiSettings.model,
-            fields: {},
-            tags: ankiSettings.tags,
-            options: {
-                allowDuplicate: true
-            }
-        };
-        for (const [fieldKey, wordObjKey] of ankiSettings.fields) {
-            if (wordObjKey) {
-                note.fields[fieldKey] = wordObj[wordObjKey];
-            } else {
-                note.fields[fieldKey] = '';
-            }
-        }
-        return note;
-    }).then(note => {
-        if (isEmptyObject(note)) { return {}; }
-        return ankiConnect.addNote(note);
-    }).then(response => {
-        if (response.result === undefined) { return false; }
-        item.noteID = response.result;
-        return jpnStorage.set([wordObj], hashKeys);
-    }).then(() => {
-        return true;
-    }).catch(error => {
-        console.log(error);
-        return false;
-    });
+    return jpnStorage.createAnkiNote(wordObj, hashKeys)
+        .then(note => {
+            if (isEmptyObject(note)) { return {}; }
+            return ankiConnector.addNote(note);
+        })
+        .then(response => {
+            if (response.result === undefined) { return false; }
+            return jpnStorage.changeProperty(wordObj, hashKeys, "noteID", response.result);
+        })
+        .then(() => {
+            return true;
+        })
+        .catch(error => {
+            console.log(error);
+            return false;
+        });
 }
 
 function addNoteOnClick(event) {
@@ -159,11 +137,13 @@ function addNoteOnClick(event) {
     const rowCells = dataRow.querySelectorAll("td")
     const word = rowCells[0].textContent;
     const meaning = rowCells[1].textContent;
-    addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect).then(added => {
-        if (added) { turnOffButton(buttonElement); }
-    }).catch(error => {
-        console.log(error);
-    });
+    addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect)
+        .then(added => {
+            if (added) { turnOffButton(buttonElement); }
+        })
+        .catch(error => {
+            console.log(error);
+        });
 }
 
 function turnOffButton(buttonElement) {

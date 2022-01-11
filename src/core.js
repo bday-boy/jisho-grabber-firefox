@@ -1,5 +1,4 @@
 const jpnStorage = new JapaneseStorage(window.md5);
-const ankiConnect = new AnkiConnect();
 
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also

@@ -21,35 +21,21 @@ class TableManager {
                 index: 1,
                 value: '',
                 filterFunc: (enteredVal, cellVal) => {
-                    const enteredLen = enteredVal.length;
-                    const words = cellVal.match(/[a-z]+/gi);
-                    for (const word of words) {
-                        if (word.slice(0, enteredLen).indexOf(enteredVal) > -1) {
-                            return true;
-                        }
-                    }
-                    return false;
+                    return cellVal.indexOf(enteredVal) > -1;
                 }
             },
             partsOfSpeech: {
                 index: 2,
                 value: '',
                 filterFunc: (enteredVal, cellVal) => {
-                    const enteredLen = enteredVal.length;
-                    const words = cellVal.match(/[a-z]+/gi);
-                    for (const word of words) {
-                        if (word.slice(0, enteredLen).indexOf(enteredVal) > -1) {
-                            return true;
-                        }
-                    }
-                    return false;
+                    return cellVal.indexOf(enteredVal) > -1;
                 }
             },
             common: {
                 index: 3,
                 value: '',
                 filterFunc: (enteredVal, cellVal) => {
-                    return cellVal !== "N/A";
+                    return cellVal !== "n/a";
                 }
             },
             jlpt: {

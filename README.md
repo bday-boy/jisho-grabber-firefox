@@ -54,6 +54,10 @@ of these future features are as follows:
     meanings listed on Jisho, so unless you want to shove all of those on one
     card, it makes more sense for duplicates to be allowed.
   - The definition selector part of the program will be able to be turned off.
+  - Enable filtering of the Japanese expressions by reading. For example,
+    typing "なか" will have "中" as a result (would be way too hard/annoying to
+    have ALL readings for all kanji work, so I would just use the ones that
+    are specific to the word in storage)
 - Primarily visual features:
   - A new dropdown/popup will be available to help the user select Anki deck,
     model, and fields.

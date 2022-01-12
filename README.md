@@ -61,10 +61,6 @@ of these future features are as follows:
 - Primarily visual features:
   - A new dropdown/popup will be available to help the user select Anki deck,
     model, and fields.
-  - The table will be searchable.
-  - The table will have its own page element and be scrollable within a box
-    with absolute size. Currently, table content that overflows past the current
-    size of the page just makes the entire page scrollable.
 
 ## Notes for nerds
 I really like thorough documentation, so I'm going to use this area to dump

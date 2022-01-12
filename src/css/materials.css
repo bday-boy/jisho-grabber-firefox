@@ -90,14 +90,15 @@ input:checked + .slider:before {
   border: 0px;
   margin: 0px;
   padding: 0px;
-  width: auto;
   height: auto;
+  width: auto;
   display: flex;
   justify-content: center;
 }
 /* Makes sure buttons in the table don't resize */
 td button.button-pretty > span {
-  min-width: 3em;
+  font-size: 2em;
+  padding: 5px 5px;
 }
 
 .text-input {

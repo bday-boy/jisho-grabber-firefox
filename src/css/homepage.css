@@ -179,7 +179,3 @@ th:nth-child(7), td:nth-child(7) {
 .content-item-hidden-text {
   display: none;
 }
-/* Fixes 1px-wide outlines so they overlap rather than doubling */
-/* div.content-item + div.content-item {
-  border-top: var(--content-outline);
-} */

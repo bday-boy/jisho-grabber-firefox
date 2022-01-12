@@ -150,7 +150,7 @@ function addNoteOnClick(event) {
 function turnOffButton(buttonElement) {
     buttonElement.style.cursor = "not-allowed";
     const buttonSpan = buttonElement.querySelector("span");
-    buttonSpan.textContent = "Added";
+    buttonSpan.textContent = ADDED;
     buttonSpan.style.color = "#00dd00";
     buttonSpan.style.background = "none";
 }

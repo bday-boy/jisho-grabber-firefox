@@ -142,7 +142,7 @@ class TableManager {
         addButton.className += "button-pretty";
         addButton.disabled = hasNoteID;
         const addButtonText = document.createElement("span");
-        addButtonText.textContent = hasNoteID ? "Added" : "Add";
+        addButtonText.textContent = hasNoteID ? ADDED : ADD;
         addButton.appendChild(addButtonText);
         buttonWrapper.appendChild(addButton);
         if (!hasNoteID) {

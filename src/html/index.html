@@ -85,7 +85,7 @@
             </div>
           </div>
         </div>
-        <div class="content-group">
+        <div id="table-group" class="content-group">
           <div class="content-header">
             <object type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
             <span>
@@ -107,6 +107,18 @@
                 </svg>
               </div>
               <div class="button-wrapper">
+                <button id="remove-rows" class="button-pretty">
+                  <span>
+                    Remove row mode
+                  </span>
+                </button>
+              </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
+              <div class="button-wrapper">
                 <button id="add-anki-notes" class="button-pretty">
                   <span>
                     Add all notes
@@ -119,67 +131,75 @@
                 <rect class="content-border-horizontal" rx="2"></rect>
               </svg>
             </div>
-            <table id="notes-table" style="display: none;">
-              <caption>
-                Table of all available Anki notes in local storage.
-              </caption>
-              <colgroup>
-                <col span="7">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <span>
-                      Japanese<br>expression
-                    </span><br>
-                    <input id="filter-japanese" type="text" class="text-input" placeholder="Filter...">
-                  </th>
-                  <th scope="col">
-                    <span>
-                      English<br>meaning(s)
-                    </span><br>
-                    <input id="filter-english" type="text" class="text-input" placeholder="Filter...">
-                  </th>
-                  <th scope="col">
-                    <span>
-                      Part(s) of<br>speech
-                    </span><br>
-                    <input id="filter-partsOfSpeech" type="text" class="text-input" placeholder="Filter...">
-                  </th>
-                  <th scope="col">
-                    <span>
-                      Common word
-                    </span>
-                    <label class="switch">
-                      <input id="filter-common" type="checkbox">
-                      <span class="slider"></span>
-                    </label>
-                  </th>
-                  <th scope="col">
-                    <span>
-                      JLPT level
-                    </span><br>
-                    <input id="filter-jlpt" type="text" class="text-input" placeholder="Filter...">
-                  </th>
-                  <th scope="col">
-                    <span>
-                      WaniKani level(s)
-                    </span><br>
-                    <input id="filter-wanikani" type="text" class="text-input" placeholder="Filter...">
-                  </th>
-                  <th scope="col">
-                    <span>
-                      Add to Anki
-                    </span>
-                    <label class="switch">
-                      <input id="filter-added" type="checkbox">
-                      <span class="slider"></span>
-                    </label>
-                  </th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div class="content-item">
+              <span>
+                Below is a table of all available Anki notes in local storage. Fields can be filtered and the table can
+                be scrolled even though no scrollbar is present.
+              </span>
+            </div>
+            <div class="table-wrapper disable-scrollbars">
+              <table id="notes-table" style="display: none;">
+                <!-- <caption>
+                  Table of all available Anki notes in local storage.
+                </caption> -->
+                <colgroup>
+                  <col span="7">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span>
+                        Japanese<br>expression
+                      </span><br>
+                      <input id="filter-japanese" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        English<br>meaning(s)
+                      </span><br>
+                      <input id="filter-english" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        Part(s) of<br>speech
+                      </span><br>
+                      <input id="filter-partsOfSpeech" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        Common word
+                      </span>
+                      <label class="switch">
+                        <input id="filter-common" type="checkbox">
+                        <span class="slider"></span>
+                      </label>
+                    </th>
+                    <th scope="col">
+                      <span>
+                        JLPT level
+                      </span><br>
+                      <input id="filter-jlpt" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        WaniKani level(s)
+                      </span><br>
+                      <input id="filter-wanikani" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        Add to Anki
+                      </span>
+                      <label class="switch">
+                        <input id="filter-added" type="checkbox">
+                        <span class="slider"></span>
+                      </label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

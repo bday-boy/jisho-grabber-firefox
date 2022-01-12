@@ -113,10 +113,7 @@ td button.button-pretty > span {
 }
 th .text-input {
   background-color: var(--background-color-group);
-  border: none;
-  font-family: var(--font-family);
   font-size: inherit;
-  height: 1.5em;
   width: 80%;
 }
 th .text-input::placeholder {

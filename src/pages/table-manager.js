@@ -9,7 +9,7 @@ class TableManager {
             "jlpt",
             "wanikani"
         ];
-        this._tableSearchFields = {
+        this._tableFilters = {
             japanese: {
                 index: 0,
                 value: '',
@@ -56,7 +56,7 @@ class TableManager {
                 index: 6,
                 value: '',
                 filterFunc: (enteredVal, cellVal) => {
-                    return cellVal === "add";
+                    return cellVal === ADD;
                 }
             }
         };
@@ -98,30 +98,30 @@ class TableManager {
         newCell.appendChild(newAddBtn);
     }
 
-    _updateSearchValues() {
-        for (const filterType of Object.keys(this._tableSearchFields)) {
+    _updateFilterValues() {
+        for (const filterType of Object.keys(this._tableFilters)) {
             const input = document.querySelector(`#filter-${filterType}`);
             if (input.type === "text") {
-                this._tableSearchFields[filterType].value = input.value.toLowerCase();
+                this._tableFilters[filterType].value = input.value.toLowerCase();
             } else if (input.type === "checkbox") {
-                this._tableSearchFields[filterType].value = input.checked ? "y" : "";
+                this._tableFilters[filterType].value = input.checked ? "y" : "";
             }
         }
     }
 
     _filterTable() {
-        this._updateSearchValues();
+        this._updateFilterValues();
         const rows = document.querySelectorAll("tbody tr");
+        const activeFilters = {};
+        for (const [key, searchFilter] of Object.entries(this._tableFilters)) {
+            if (searchFilter.value != '') { activeFilters[key] = searchFilter; }
+        }
         for (const row of rows) {
             let show = true;
-            for (const [key, searchFilter] of Object.entries(this._tableSearchFields)) {
-                if (searchFilter.value !== '') {
-                    const cellVal = this._getRowColumnValue(row, searchFilter.index);
-                    show &= searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
-                    if (!show) { break; }
-                } else {
-                    show &= true;
-                }
+            for (const [key, searchFilter] of Object.entries(activeFilters)) {
+                const cellVal = this._getRowColumnValue(row, searchFilter.index);
+                show &= searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
+                if (!show) { break; }
             }
             this._hideOrUnhideRow(row, show);
         }

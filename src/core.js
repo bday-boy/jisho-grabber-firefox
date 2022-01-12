@@ -1,5 +1,6 @@
 const jpnStorage = new JapaneseStorage(window.md5, browser.storage.local);
 const ADD = "+", ADDED = "✓";
+const NO_NOTEID = -1;
 
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also
@@ -22,6 +23,12 @@ function isEmptyObject(variable) {
         && Object.keys(variable).length === 0
         && Object.getPrototypeOf(variable) === Object.prototype
     );
+}
+
+function filterObject(obj, predicate) {
+    Object.keys(obj)
+        .filter(key => predicate(obj[key]))
+        .reduce((red, key) => (res[key] = obj[key], res), {});
 }
 
 function objectHasKeys(obj, keys) {

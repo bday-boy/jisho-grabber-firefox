@@ -44,7 +44,7 @@ class WordParser {
                 common: '',
                 jlpt: '',
                 wanikani: '',
-                noteID: -1
+                noteID: NO_NOTEID
             };
             return;
         }
@@ -59,7 +59,7 @@ class WordParser {
             common: tags.common,
             jlpt: tags.jlpt,
             wanikani: tags.wanikani,
-            noteID: -1
+            noteID: NO_NOTEID
         };
     }
 

@@ -20,6 +20,7 @@ class JapaneseStorage {
 		});
 		this._storage = storageArea;
 		this._hashFunc = hashFunc;
+		this._hashKeys = ["expression", "englishMeaning"];
 	}
 
 	/**
@@ -161,6 +162,50 @@ class JapaneseStorage {
 				throw error;
 			});
 	}
+
+	// ankiSync(ankiConnect, hashKeys, hashFields) {
+	// 	if (ankiConnect.enabled !== true) { return; }
+	// 	const addedItems = {};
+	// 	this.get()
+	// 	    .then(storageItems => {
+	// 			const allNoteIDs = [];
+	// 			for (const [hash, wordObj] of Object.entries(storageItems)) {
+	// 				if (wordObj.noteID !== NO_NOTEID) {
+	// 					addedItems[wordObj.noteID] = {
+	// 						hash: hash,
+	// 						wordObj: wordObj
+	// 					};
+	// 					allNoteIDs.push(wordObj.noteID);
+	// 				}
+	// 			}
+	// 			return allNoteIDs;
+	// 		})
+	// 		.then(allNoteIDs => {
+	// 			return ankiConnect.notesInfo(allNoteIDs);
+	// 		})
+	// 		.then(response => {
+	// 			if (response.result === undefined) { return; }
+	// 			for (const note of response.result) {
+	// 				const wordObj = {
+	// 					[hashFields[0]]: note.fields[hashFields[0]],
+	// 					[hashFields[1]]: note.fields[hashFields[1]]
+	// 				};
+	// 				const noteHash = this._getHash(wordObj, hashFields);
+	// 				const itemHash = addedItems[note.noteId].hash;
+	// 				if (noteHash !== itemHash) {
+	// 					addedItems[note.noteId].wordObj[hashKeys[0]] = wordObj[hashFields[0]];
+	// 					addedItems[note.noteId].wordObj[hashKeys[1]] = wordObj[hashFields[1]];
+	// 					const newItem = {
+	// 						noteHash: addedItems[note.noteId].wordObj
+	// 					};
+	// 					Promise.all(
+	// 						this._storage.remove(itemHash),
+	// 						this.set([newItem])
+	// 					);
+	// 				}
+	// 			}
+	// 		})
+	// }
 
 	/**
 	 * Uses an object and a list of keys to concatenate values from the object

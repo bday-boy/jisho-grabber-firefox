@@ -25,12 +25,22 @@
                 </span>
                 <label id="anki-connect-status" class="content-item-hidden-text"></label>
               </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
               <div class="content-item-right">
                 <label class="switch">
                   <input id="anki-connect-switch" type="checkbox">
                   <span class="slider"></span>
                 </label>
               </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
             </div>
             <div class="content-item">
               <div class="content-item-left">
@@ -41,9 +51,19 @@
                   Default is http://127.0.0.1:8765/ or http://localhost:8765/
                 </label>
               </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
               <div class="content-item-right">
                 <input id="anki-connect-server" type="text" class="text-input" value="http://127.0.0.1:8765/">
               </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
             </div>
             <div class="content-item">
               <div class="content-item-left">
@@ -53,6 +73,11 @@
                 <label class="content-item-hint">
                   List of comma-separated tags
                 </label>
+              </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
               </div>
               <div class="content-item-right">
                 <input id="anki-tags" type="text" class="text-input" value="jisho_grabber">
@@ -76,6 +101,11 @@
                   </span>
                 </button>
               </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
               <div class="button-wrapper">
                 <button id="add-anki-notes" class="button-pretty">
                   <span>
@@ -83,6 +113,11 @@
                   </span>
                 </button>
               </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
             </div>
             <table id="notes-table" style="display: none;">
               <caption>
@@ -95,25 +130,25 @@
                 <tr>
                   <th scope="col">
                     <span>
-                      Japanese:
+                      Japanese word
                     </span><br>
-                    <input id="filter-japanese" type="text" class="text-input">
+                    <input id="filter-japanese" type="text" class="text-input" placeholder="Filter...">
                   </th>
                   <th scope="col">
                     <span>
-                      English:
+                      English meaning(s)
                     </span><br>
-                    <input id="filter-english" type="text" class="text-input">
+                    <input id="filter-english" type="text" class="text-input" placeholder="Filter...">
                   </th>
                   <th scope="col">
                     <span>
-                      Parts of speech:
+                      Part(s) of speech
                     </span><br>
-                    <input id="filter-partsOfSpeech" type="text" class="text-input">
+                    <input id="filter-partsOfSpeech" type="text" class="text-input" placeholder="Filter...">
                   </th>
                   <th scope="col">
                     <span>
-                      Common?
+                      Common word
                     </span>
                     <label class="switch">
                       <input id="filter-common" type="checkbox">
@@ -122,47 +157,24 @@
                   </th>
                   <th scope="col">
                     <span>
-                      JLPT
+                      JLPT level
                     </span><br>
-                    <input id="filter-jlpt" type="text" class="text-input">
+                    <input id="filter-jlpt" type="text" class="text-input" placeholder="Filter...">
                   </th>
                   <th scope="col">
                     <span>
-                      Wanikani
+                      WaniKani level(s)
                     </span><br>
-                    <input id="filter-wanikani" type="text" class="text-input">
+                    <input id="filter-wanikani" type="text" class="text-input" placeholder="Filter...">
                   </th>
                   <th scope="col">
                     <span>
-                      Unadded?
+                      Add to Anki deck
                     </span>
                     <label class="switch">
                       <input id="filter-added" type="checkbox">
                       <span class="slider"></span>
                     </label>
-                  </th>
-                </tr>
-                <tr>
-                  <th scope="col">
-                    Japanese word
-                  </th>
-                  <th scope="col">
-                    English meaning(s)
-                  </th>
-                  <th scope="col">
-                    Parts of speech
-                  </th>
-                  <th scope="col">
-                    Common word
-                  </th>
-                  <th scope="col">
-                    JLPT level
-                  </th>
-                  <th scope="col">
-                    Wanikani level
-                  </th>
-                  <th scope="col">
-                    Add to Anki deck
                   </th>
                 </tr>
               </thead>

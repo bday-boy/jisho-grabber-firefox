@@ -64,17 +64,15 @@ class TableManager {
 
     initTable(wordObjs) {
         const table = this._table.closest("table");
-        table.style.display = "none";
         while (this._table.firstChild) {
             this._table.removeChild(this._table.firstChild);
         }
         this.insertRows(wordObjs);
         table.style.display = "";
-        table.style["table-layout"] = "fixed";
-        table.style["word-wrap"] = "break-word";
+        table.style.tableLayout = "fixed";
         const searchFilters = document.querySelector("thead > tr");
         for (const searchFilter of searchFilters.querySelectorAll("input")) {
-            searchFilter.oninput = event => {
+            searchFilter.oninput = (event) => {
                 this._filterTable();
             };
         }

@@ -58,11 +58,12 @@ table {
   font-size: 0.8rem;
   letter-spacing: 1px;
   margin: var(--content-margin);
+  table-layout: fixed;
 }
 tbody {
   overflow-y: scroll;
 }
-td, th {
+th, td {
   border: 1px solid rgb(190,190,190);
   padding: 10px 10px;
 }
@@ -80,6 +81,27 @@ tr:nth-child(odd) td {
 }
 caption {
   padding: 10px;
+}
+th:nth-child(1), td:nth-child(1) {
+  width: 15%;
+}
+th:nth-child(2), td:nth-child(2) {
+  width: 25%;
+}
+th:nth-child(3), td:nth-child(3) {
+  width: 20%;
+}
+th:nth-child(4), td:nth-child(4) {
+  width: 10%;
+}
+th:nth-child(5), td:nth-child(5) {
+  width: 10%;
+}
+th:nth-child(6), td:nth-child(6) {
+  width: 10%;
+}
+th:nth-child(7), td:nth-child(7) {
+  width: 10%;
 }
 
 .button {
@@ -124,20 +146,32 @@ caption {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
+  height: 45px;
   padding: var(--content-padding);
 }
 .content-item-left {
   display: flex;
   flex-direction: column;
+  height: inherit;
   justify-content: center;
-  width: auto;
+  margin-left: 10px;
+  width: 55%;
 }
 .content-item-right {
   align-items: center;
   display: flex;
+  flex-direction: column;
+  height: inherit;
   justify-content: center;
-  width: auto;
+  margin-right: 10px;
+  width: 30%;
+}
+.content-item-cell {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .content-item-hint {
   color: var(--content-hint-text-color);
@@ -146,6 +180,6 @@ caption {
   display: none;
 }
 /* Fixes 1px-wide outlines so they overlap rather than doubling */
-div.content-item + div.content-item {
+/* div.content-item + div.content-item {
   border-top: var(--content-outline);
-}
+} */

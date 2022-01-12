@@ -67,9 +67,9 @@ input:checked + .slider:before {
   position: relative;
   text-decoration: none;
   user-select: none;
-  -webkit-user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
+  -webkit-user-select: none;
 }
 .button-pretty:active,
 .button-pretty:hover {
@@ -115,6 +115,39 @@ th .text-input {
   border: none;
   font-family: var(--font-family);
   font-size: inherit;
-  width: 50%;
   height: 1.5em;
+  width: 80%;
+}
+th .text-input::placeholder {
+  color: var(--content-hint-text-color);
+}
+th .text-input, th .switch {
+  margin-top: 3px;
+}
+
+svg.border-horizontal {
+  height: 3px;
+  width: 95%;
+}
+svg.border-vertical {
+  height: 95%;
+  width: 3px;
+}
+svg > rect {
+  fill: var(--background-color-main);
+}
+svg > rect.content-border-horizontal {
+  height: inherit;
+  width: 100%;
+}
+svg > rect.content-border-vertical {
+  height: 100%;
+  width: inherit;
+}
+.content-border-wrapper {
+  align-items: center;
+  display: flex;
+  height: inherit;
+  justify-content: center;
+  width: inherit;
 }

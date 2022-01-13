@@ -108,7 +108,7 @@ td button.button-pretty > span {
   border-radius: 3px;
   font-family: var(--font-family);
   font-size: var(--font-size);
-  width: 15em;
+  width: 100%;
   height: 1.5em;
 }
 th .text-input {

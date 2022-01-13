@@ -136,8 +136,8 @@ function addNoteOnClick(event) {
     const buttonElement = event.target.closest("button.button-pretty");
     const dataRow = event.target.closest("tr");
     const rowCells = dataRow.querySelectorAll("td")
-    const word = rowCells[0].textContent;
-    const meaning = rowCells[1].textContent;
+    const word = rowCells[0].childNodes[0].textContent;
+    const meaning = rowCells[1].childNodes[0].textContent;
     addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect)
         .then(added => {
             if (added) { turnOffButton(buttonElement); }

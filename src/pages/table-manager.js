@@ -60,6 +60,7 @@ class TableManager {
                 }
             }
         };
+        this._anki = new Anki();
     }
 
     initTable(wordObjs) {
@@ -93,6 +94,12 @@ class TableManager {
             const newText = document.createTextNode(text);
             newCell.appendChild(newText);
         }
+        const hiddenReading = document.createElement("span");
+        const reading = this._anki.makeKana(wordObj["expressionWithReadings"]);
+        hiddenReading.textContent = reading;
+        hiddenReading.classList += "hidden-reading";
+        newRow.childNodes[0].appendChild(hiddenReading);
+        newRow.childNodes[0].title = reading;
         newCell = newRow.insertCell();
         const newAddBtn = this._newAddButtonElement(wordObj.noteID !== -1);
         newCell.appendChild(newAddBtn);
@@ -101,10 +108,23 @@ class TableManager {
     _updateFilterValues() {
         for (const filterType of Object.keys(this._tableFilters)) {
             const input = document.querySelector(`#filter-${filterType}`);
-            if (input.type === "text") {
-                this._tableFilters[filterType].value = input.value.toLowerCase();
-            } else if (input.type === "checkbox") {
-                this._tableFilters[filterType].value = input.checked ? "y" : "";
+            switch (filterType) {
+                case "japanese":
+                    this._tableFilters[filterType].value = this._anki.makeKana(input.value);
+                    break;
+                case "english":
+                case "partsOfSpeech":
+                case "jlpt":
+                case "wanikani":
+                    this._tableFilters[filterType].value = input.value.toLowerCase();
+                    break;
+                case "added":
+                case "common":
+                    this._tableFilters[filterType].value = input.checked ? "y" : "";
+                    break;
+                default:
+                    console.log(`Filter type ${filterType} has not been added yet.`)
+                    break;
             }
         }
     }

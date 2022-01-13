@@ -134,12 +134,29 @@ class TableManager {
         const rows = document.querySelectorAll("tbody tr");
         const activeFilters = {};
         for (const [key, searchFilter] of Object.entries(this._tableFilters)) {
-            if (searchFilter.value != '') { activeFilters[key] = searchFilter; }
+            if (searchFilter.value !== '') { activeFilters[key] = searchFilter; }
         }
         for (const row of rows) {
             let show = true;
             for (const [key, searchFilter] of Object.entries(activeFilters)) {
-                const cellVal = this._getRowColumnValue(row, searchFilter.index);
+                let cellVal = this._getRowColumnValue(row, searchFilter.index);
+                switch (key) {
+                    case "japanese":
+                        cellVal += " " + row.cells[searchFilter.index].querySelector("span").textContent;
+                        break;
+                    case "jlpt":
+                        cellVal = (cellVal === "N/A") ? "" : cellVal;
+                        break;
+                    case "common":
+                    case "english":
+                    case "partsOfSpeech":
+                    case "wanikani":
+                    case "added":
+                        break;
+                    default:
+                        console.log(`Filter type ${key} has not been added yet.`)
+                        break;
+                }
                 show &= searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
                 if (!show) { break; }
             }
@@ -152,7 +169,7 @@ class TableManager {
     }
 
     _getRowColumnValue(row, colIndex) {
-        return row.cells[colIndex].textContent || row.cells[colIndex].innerText;
+        return row.cells[colIndex].innerText || row.cells[colIndex].textContent;
     }
 
     _newAddButtonElement(hasNoteID) {

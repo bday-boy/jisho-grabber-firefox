@@ -92,7 +92,7 @@ class JapaneseStorage {
 					return false;
 				}
 				const wordObj = Object.entries(foundItem)[0][1];
-				return wordObj.noteID !== -1;
+				return wordObj.noteID !== NO_NOTEID;
 			}, error => {
 				console.log("Couldn't check storage item for note ID.");
 				throw error;

@@ -6,7 +6,8 @@
 
     "icons": {
         "48": "icons/jisho-grabber.svg",
-        "96": "icons/jisho-grabber.svg"
+        "96": "icons/jisho-grabber.svg",
+        "128": "icons/jisho-grabber.svg"
     },
 
     "permissions": [
@@ -22,7 +23,7 @@
 
     "background": {
         "scripts": [
-            "src/background/search-selection.js"
+            "src/js/background/search-selection.js"
         ]
     },
 
@@ -38,16 +39,16 @@
                 "https://jisho.org/search/*"
             ],
             "js": [
-                "lib/utils/md5.js",
-                "src/storage/storage.js",
-                "src/jisho/japanese-util.js",
-                "lib/yomichan/anki-util.js",
-                "lib/yomichan/anki-connector.js",
-                "src/anki/anki.js",
-                "src/anki/word-parser.js",
-                "src/jisho/meaning-selector.js",
-                "src/jisho/element-picker.js",
-                "src/core.js"
+                "lib/js/utils/md5.js",
+                "src/js/common/storage.js",
+                "src/js/anki/japanese-util.js",
+                "lib/js/yomichan/anki-util.js",
+                "lib/js/yomichan/anki-connector.js",
+                "src/js/anki/anki.js",
+                "src/js/jisho/word-parser.js",
+                "src/js/jisho/meaning-selector.js",
+                "src/js/jisho/element-picker.js",
+                "src/js/common/globals.js"
             ]
         }
     ]

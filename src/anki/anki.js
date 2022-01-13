@@ -12,19 +12,10 @@ class Anki {
      * @returns {string} The Japanese expression with only kana
      */
     makeKana(expression) {
-        if (!expression) {
-            throw new Error(`${expression} is a null-type value.`);
-        } else if (typeof expression !== 'string') {
-            throw new Error(`${expression} is not a string.`);
-        } else {
-            const allKana = [];
-            for (const jpnchar of expression) {
-                if (this.jpnUtil.isKana(jpnchar)) {
-                    allKana.push(jpnchar);
-                }
-            }
-            return allKana.join('');
-        }
+        return this._filterString(
+            expression,
+            str => this.jpnUtil.isKana(str)
+        );
     }
 
     /**
@@ -35,20 +26,40 @@ class Anki {
      * @returns {string} The Japanese expression without readings
      */
     makeKanji(expression) {
-        if (!expression) {
-            throw new Error(`${expression} is a null-type value.`);
-        } else if (typeof expression !== 'string') {
-            throw new Error(`${expression} is not a string.`);
+        expression = expression.replace(this.jpnUtil.LAZY_BRACKETS, '').replaceAll(' ', '')
+        return this._filterString(
+            expression,
+            str => this.jpnUtil.isKanaOrKanji(str)
+        );
+    }
+
+    /**
+     * Filter out non-kana or -kanji characters from a string.
+     * @param {string} expression - The Japanese expression
+     * @returns {string} The Japanese expression without readings
+     */
+    makeJapanese(expression) {
+        return this._filterString(
+            expression,
+            str => this.jpnUtil.isKanaOrKanji(str)
+        );
+    }
+
+    _filterString(str, filterFunc) {
+        if (str === "") {
+            return "";
+        } else if (!str) {
+            throw new Error(`${str} is a null-type value.`);
+        } else if (typeof str !== 'string') {
+            throw new Error(`${str} is not a string.`);
         } else {
-            // Get rid of kanji furigana in between brackets
-            expression = expression.replace(this.jpnUtil.LAZY_BRACKETS, '').replaceAll(' ', '');
-            const allJpnChars = [];
-            for (const jpnchar of expression) {
-                if (this.jpnUtil.isKanaOrKanji(jpnchar)) {
-                    allJpnChars.push(jpnchar);
+            let allJpnChars = '';
+            for (const c of str) {
+                if (filterFunc(c)) {
+                    allJpnChars += c;
                 }
             }
-            return allJpnChars.join('');
+            return allJpnChars;
         }
     }
 }

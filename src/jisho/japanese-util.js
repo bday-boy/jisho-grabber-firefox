@@ -18,7 +18,7 @@ class JapaneseUtil {
 
         this.FULLWIDTH_ROMAN = /[\uff01-\uff5e]/;
 
-        this.KANJI = /[\u3400-\u4db5\u4e00-\u9fcb\uf900-\ufa6a]/;
+        this.KANJI = /[\u3400-\u4db5\u4e00-\u9fcb\uf900-\ufa6a\u3005\u3006]/;
         this.KANJI_RADICALS = /[\u2e80-\u2fd5]/;
 
         // katakana variants, characters in circles, numbers in parentheses,
@@ -65,7 +65,7 @@ class JapaneseUtil {
      * @returns {boolean} true if c is Kanji, false otherwise
      */
     isKanji(c) {
-        return this.KANJI.test(c);
+        return this.KANJI.test(c) || this.KANJI_RADICALS.test(c);
     }
 
     /**
@@ -86,5 +86,22 @@ class JapaneseUtil {
      */
     isKanaOrKanji(c) {
         return this.isKana(c) || this.isKanji(c);
+    }
+
+    /**
+     * Tests if the input char c is Kana or Kanji. No error handling is done,
+     * so c is assumed to already only be a 1-length string.
+     * @param {string} c - Character to test
+     * @returns {boolean} true if c is a Japanese character, false otherwise
+     */
+    isJapanese(c) {
+        return (
+            this.isKanaOrKanji(c)
+            || this.SYMBOLS_AND_PUNCTUATION.test(c)
+            || this.KATAKANA_PUNCTUATION.test(c)
+            || this.HALFWIDTH_KATAKANA.test(c)
+            || this.FULLWIDTH_ROMAN.test(c)
+            || this.MISC.test(c)
+        );
     }
 }

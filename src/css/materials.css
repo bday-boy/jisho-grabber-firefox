@@ -54,7 +54,7 @@ input:checked + .slider:before {
   border-radius: 8px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: var(--font-color-high-emphasis);
   cursor: pointer;
   display: flex;
   font-family: Garamond, Arial, Helvetica, sans-serif;
@@ -76,7 +76,7 @@ input:checked + .slider:before {
   outline: 0;
 }
 .button-pretty span {
-  background-color: rgb(5, 6, 45);
+  background-color: var(--background-color-main);
   padding: 10px 10px;
   border-radius: 6px;
   width: inherit;
@@ -97,13 +97,13 @@ input:checked + .slider:before {
 }
 /* Makes sure buttons in the table don't resize */
 td button.button-pretty > span {
-  font-size: 2em;
+  font-size: 2rem;
   padding: 5px 5px;
 }
 
 .text-input {
   background-color: var(--background-color-main);
-  color: var(--font-color);
+  color: var(--font-color-high-emphasis);
   border: none;
   border-radius: 3px;
   font-family: var(--font-family);
@@ -117,7 +117,7 @@ th .text-input {
   width: 80%;
 }
 th .text-input::placeholder {
-  color: var(--content-hint-text-color);
+  color: var(--font-color-low-emphasis);
 }
 th .text-input, th .switch {
   margin-top: 5px;
@@ -149,3 +149,64 @@ svg > rect.content-border-vertical {
   justify-content: center;
   width: inherit;
 }
+
+/* .symbol-wrapper {
+  align-items: center;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+The + sign for buttons (maybe)
+.add-symbol {
+  --dimensions: 20px;
+  --thickness: 3px;
+  background: white;
+  height: var(--dimensions);
+  position: relative;
+  width: var(--thickness);
+}
+.add-symbol::after {
+  background: white;
+  content: "";
+  height: var(--thickness);
+  left: calc((var(--thickness) - var(--dimensions)) / 2);
+  position: absolute;
+  top: calc((var(--dimensions) - var(--thickness)) / 2);
+  width: var(--dimensions);
+}
+
+The check mark for already-added words/buttons (also maybe)
+.checkmark {
+  --width: 15px;
+  --height: var(--width);
+  --thickness: 3px;
+  display: inline-block;
+  width: var(--width);
+  height: var(--height);
+  background: none;
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.checkmark:before{
+  content:"";
+  position: absolute;
+  width: var(--thickness);
+  height: var(--height);
+  background-color:#5e7900;
+  left: calc((var(--width) - var(--thickness)) / 2);
+  top: 0px;
+}
+
+.checkmark:after{
+  content:"";
+  position: absolute;
+  width: calc(var(--width) / 2);
+  height: var(--thickness);
+  background-color:#5e7900;
+  left: 0px;
+  top: calc(var(--width) - var(--thickness));
+} */

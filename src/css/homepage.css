@@ -9,10 +9,10 @@
   --content-width: 900px;
   --content-outline: 2px solid var(--background-color-main);
   --content-border-radius: 8px;
-  --content-hint-text-color: #aaa;
   --content-error-text-color: #ff4242;
 
-  --font-color: #000000;
+  --font-color-high-emphasis: #000;
+  --font-color-low-emphasis: #aaa;
   --font-family: Garamond, Arial, Helvetica, sans-serif;
   --font-size: 16px;
   --font-size-small: 12px;
@@ -25,13 +25,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color-main: #1b1b1b;
-    --background-color-group: #3a3a3a;
+    --background-color-main: #121212;
+    --background-color-group: #212121;
     --background-color-table-even: #222222;
     --background-color-table-odd: var(--background-color-main);
-    --content-hint-text-color: #777;
     --content-outline: 2px solid var(--background-color-main);
-    --font-color: #cccccc;
+    --font-color-high-emphasis: rgba(255, 255, 255, 0.87);
+    --font-color-low-emphasis: rgba(255, 255, 255, 0.38);
     --shadow-color: #0084dd88;
     /* Dark mode shadow box adds a glow effect */
     --shadow-box: 2px  0px 8px var(--shadow-color),
@@ -42,7 +42,7 @@
 }
 
 body {
-  color: var(--font-color);
+  color: var(--font-color-high-emphasis);
   background-color: var(--background-color-main);
   font-family: var(--font-family);
   font-size: var(--font-size);
@@ -76,14 +76,8 @@ th {
 td {
   text-align: center;
 }
-tr:nth-child(even) td {
-  background-color: var(--background-color-table-even);
-}
-tr:nth-child(odd) td {
-  background-color: var(--background-color-table-odd);
-}
-caption {
-  padding: 10px;
+tr:hover {
+  background-color: var(--background-color-group);
 }
 th:nth-child(1), td:nth-child(1) {
   width: 15%;
@@ -109,7 +103,7 @@ th:nth-child(7), td:nth-child(7) {
 .table-wrapper {
   background-color: var(--background-color-main);
   border: 2px solid rgb(200,200,200);
-  height: 600px;
+  height: 800px;
   margin: var(--content-margin);
   overflow-y: scroll;
 }
@@ -198,7 +192,7 @@ th:nth-child(7), td:nth-child(7) {
   margin-right: 10px;
 }
 .content-item-hint {
-  color: var(--content-hint-text-color);
+  color: var(--font-color-low-emphasis);
 }
 .content-item-hidden-text {
   display: none;

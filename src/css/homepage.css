@@ -74,6 +74,7 @@ th {
   z-index: 1;
 }
 td {
+  min-height: 50px;
   text-align: center;
 }
 tr:hover {

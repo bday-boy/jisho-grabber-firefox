@@ -47,60 +47,7 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-.button-pretty {
-  align-items: center;
-  background-image: linear-gradient(135deg,#787878, #0084dd,#b7dcf5);
-  border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-  box-sizing: border-box;
-  color: var(--font-color-high-emphasis);
-  cursor: pointer;
-  display: flex;
-  font-family: Garamond, Arial, Helvetica, sans-serif;
-  font-size: var(--font-size);
-  justify-content: center;
-  line-height: 1em;
-  max-width: 100%;
-  min-width: 30px;
-  padding: 3px;
-  position: relative;
-  text-decoration: none;
-  user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  -webkit-user-select: none;
-}
-.button-pretty:active,
-.button-pretty:hover {
-  outline: 0;
-}
-.button-pretty span {
-  background-color: var(--background-color-main);
-  padding: 10px 10px;
-  border-radius: 6px;
-  width: inherit;
-  height: inherit;
-  transition: 300ms;
-}
-.button-pretty:hover span {
-  background: none;
-}
-.button-wrapper {
-  border: 0px;
-  margin: 0px;
-  padding: 0px;
-  height: auto;
-  width: auto;
-  display: flex;
-  justify-content: center;
-}
-/* Makes sure buttons in the table don't resize */
-td button.button-pretty > span {
-  font-size: 2rem;
-  padding: 5px 5px;
-}
-
+/* Text input section */
 .text-input {
   background-color: var(--background-color-main);
   color: var(--font-color-high-emphasis);
@@ -150,63 +97,96 @@ svg > rect.content-border-vertical {
   width: inherit;
 }
 
-/* .symbol-wrapper {
-  align-items: center;
-  display: flex;
-  height: 32px;
-  justify-content: center;
-  width: 32px;
+/**
+ * Pushable button section
+ */
+button {
+  --border-rad: 8px;
 }
-
-The + sign for buttons (maybe)
-.add-symbol {
-  --dimensions: 20px;
-  --thickness: 3px;
-  background: white;
-  height: var(--dimensions);
+.button-pushable {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline-offset: 4px;
+  padding: 0;
   position: relative;
-  width: var(--thickness);
+  touch-action: manipulation;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.add-symbol::after {
-  background: white;
-  content: "";
-  height: var(--thickness);
-  left: calc((var(--thickness) - var(--dimensions)) / 2);
+.button-pushable-shadow {
+  background: #00000070;
+  border-radius: var(--border-rad);
+  height: 100%;
+  left: 0;
   position: absolute;
-  top: calc((var(--dimensions) - var(--thickness)) / 2);
-  width: var(--dimensions);
+  top: 0;
+  transform: translateY(2px);
+  transition: transform 300ms ease;
+  width: 100%;
+  will-change: transform;
 }
-
-The check mark for already-added words/buttons (also maybe)
-.checkmark {
-  --width: 15px;
-  --height: var(--width);
-  --thickness: 3px;
-  display: inline-block;
-  width: var(--width);
-  height: var(--height);
-  background: none;
-  -ms-transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-.checkmark:before{
-  content:"";
+.button-pushable-edge {
+  background: linear-gradient(
+    to left,
+    #243b53 0%,
+    #334e68 8%,
+    #334e68 92%,
+    #243b53 100%
+  );
+  border-radius: var(--border-rad);
+  height: 100%;
+  left: 0;
   position: absolute;
-  width: var(--thickness);
-  height: var(--height);
-  background-color:#5e7900;
-  left: calc((var(--width) - var(--thickness)) / 2);
-  top: 0px;
+  top: 0;
+  width: 100%;
 }
-
-.checkmark:after{
-  content:"";
-  position: absolute;
-  width: calc(var(--width) / 2);
-  height: var(--thickness);
-  background-color:#5e7900;
-  left: 0px;
-  top: calc(var(--width) - var(--thickness));
-} */
+.button-pushable-front {
+  background: #486581;
+  border-radius: var(--border-rad);
+  color: white;
+  display: block;
+  font-size: var(--font-size);
+  padding: 5px 5px;
+  position: relative;
+  transform: translateY(-4px);
+  transition: transform 300ms ease;
+  will-change: transform;
+}
+.add-button {
+    font-size: 1.75rem;
+    padding: 0px 8.09px;
+}
+.added-button {
+    font-size: 1.25rem;
+    padding: 4.5px 8.45px;
+}
+.button-pushable:hover {
+  filter: brightness(150%);
+}
+.button-pushable:hover .button-pushable-front {
+  transform: translateY(-6px);
+  transition: transform 250ms ease;
+}
+.button-pushable:active .button-pushable-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+.button-pushable:hover .button-pushable-shadow {
+  transform: translateY(4px);
+  transition: transform 250ms ease;
+}
+.button-pushable:active .button-pushable-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+.button-pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+/* Pushable button can no longer be pushed >:) */
+.button-pushable:disabled,
+.button-pushable:disabled [class*="button-pushable"] {
+  transform: none;
+  filter: none;
+}

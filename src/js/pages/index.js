@@ -133,7 +133,7 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
 }
 
 function addNoteOnClick(event) {
-    const buttonElement = event.target.closest("button.button-pretty");
+    const buttonElement = event.target.closest("button.button-pushable");
     const dataRow = event.target.closest("tr");
     const rowCells = dataRow.querySelectorAll("td")
     const word = rowCells[0].childNodes[0].textContent;
@@ -150,8 +150,8 @@ function addNoteOnClick(event) {
 function turnOffButton(buttonElement) {
     buttonElement.style.cursor = "not-allowed";
     buttonElement.disabled = "disabled";
-    const buttonSpan = buttonElement.querySelector("span");
+    const buttonSpan = buttonElement.querySelector("span.button-pushable-front");
     buttonSpan.textContent = ADDED;
-    buttonSpan.style.color = "#00dd00";
-    buttonSpan.style.background = "none";
+    buttonSpan.classList.remove("add-button");
+    buttonSpan.classList.add("added-button");
 }

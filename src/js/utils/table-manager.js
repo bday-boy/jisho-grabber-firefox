@@ -97,7 +97,7 @@ class TableManager {
         const hiddenReading = document.createElement("span");
         const reading = this._anki.makeKana(wordObj["expressionWithReadings"]);
         hiddenReading.textContent = reading;
-        hiddenReading.classList += "hidden-reading";
+        hiddenReading.classList.add("hidden-reading");
         newRow.childNodes[0].appendChild(hiddenReading);
         newRow.childNodes[0].title = reading;
         newCell = newRow.insertCell();
@@ -170,23 +170,48 @@ class TableManager {
         return row.cells[colIndex].innerText || row.cells[colIndex].textContent;
     }
 
+    // _newAddButtonElement(hasNoteID) {
+    //     const buttonWrapper = document.createElement("div");
+    //     buttonWrapper.className += "button-wrapper";
+    //     const addButton = document.createElement("button");
+    //     addButton.className += "button-pretty";
+    //     addButton.disabled = hasNoteID;
+    //     const addButtonText = document.createElement("span");
+    //     addButtonText.textContent = hasNoteID ? ADDED : ADD;
+    //     addButton.appendChild(addButtonText);
+    //     buttonWrapper.appendChild(addButton);
+        // if (!hasNoteID) {
+        //     addButton.addEventListener("click", event => {
+        //         addNoteOnClick(event);
+        //     });
+        // } else {
+        //     turnOffButton(addButton);
+        // }
+    //     return buttonWrapper;
+    // }
+
     _newAddButtonElement(hasNoteID) {
-        const buttonWrapper = document.createElement("div");
-        buttonWrapper.className += "button-wrapper";
-        const addButton = document.createElement("button");
-        addButton.className += "button-pretty";
-        addButton.disabled = hasNoteID;
-        const addButtonText = document.createElement("span");
-        addButtonText.textContent = hasNoteID ? ADDED : ADD;
-        addButton.appendChild(addButtonText);
-        buttonWrapper.appendChild(addButton);
+        const newAddBtn = document.createElement("button");
+        newAddBtn.classList.add("button-pushable");
+        newAddBtn.role = "button";
+        const spanShadow = document.createElement("span");
+        spanShadow.classList.add("button-pushable-shadow");
+        const spanEdge = document.createElement("span");
+        spanEdge.classList.add("button-pushable-edge");
+        const spanText = document.createElement("span");
+        spanText.classList.add("button-pushable-front");
+        spanText.classList.add("add-button");
+        spanText.textContent = hasNoteID ? ADDED : ADD;
+        newAddBtn.appendChild(spanShadow);
+        newAddBtn.appendChild(spanEdge);
+        newAddBtn.appendChild(spanText);
         if (!hasNoteID) {
-            addButton.addEventListener("click", event => {
+            newAddBtn.addEventListener("click", event => {
                 addNoteOnClick(event);
             });
         } else {
-            turnOffButton(addButton);
+            turnOffButton(newAddBtn);
         }
-        return buttonWrapper;
+        return newAddBtn;
     }
 }

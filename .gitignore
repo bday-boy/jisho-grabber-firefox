@@ -2,7 +2,7 @@
 .vscode/
 
 # For files I will no longer be using in the project
-_dead/
+.dead/
 
 # Various project information
-_notes/
+.notes/

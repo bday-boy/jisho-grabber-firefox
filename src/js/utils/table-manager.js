@@ -35,7 +35,7 @@ class TableManager {
                 index: 3,
                 value: '',
                 filterFunc: (enteredVal, cellVal) => {
-                    return cellVal !== "n/a";
+                    return cellVal !== NO_VAL_STRING;
                 }
             },
             jlpt: {
@@ -90,7 +90,7 @@ class TableManager {
         let newCell;
         for (const key of this._tableKeys) {
             newCell = newRow.insertCell();
-            const text = wordObj[key] ? wordObj[key] : "N/A";
+            const text = wordObj[key] ? wordObj[key] : NO_VAL_STRING;
             const newText = document.createTextNode(text);
             newCell.appendChild(newText);
         }
@@ -145,8 +145,6 @@ class TableManager {
                         cellVal += " " + row.cells[searchFilter.index].querySelector("span").textContent;
                         break;
                     case "jlpt":
-                        cellVal = (cellVal === "N/A") ? "" : cellVal;
-                        break;
                     case "common":
                     case "english":
                     case "partsOfSpeech":

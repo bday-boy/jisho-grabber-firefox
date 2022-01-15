@@ -28,38 +28,45 @@ initTableBtn.addEventListener("click", (event) => {
 });
 
 addNotesBtn.addEventListener("click", (event) => {
-    jpnStorage.get().then(
-        items => {
-            const notes = [];
-            for (const [hash, wordObj] of Object.entries(items)) {
-                const note = {
-                    deckName: ankiSettings.deck,
-                    modelName: ankiSettings.model,
-                    fields: {
-                        Expression: wordObj.expression,
-                        Reading: wordObj.expressionWithReadings,
-                        Meaning: wordObj.englishMeaning,
-                        "Parts of speech": wordObj.partsOfSpeech,
-                        Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
-                    },
-                    tags: document.querySelector("#anki-tags").value.split(","),
-                    options: {
-                        allowDuplicate: true
-                    }
-                }
-                notes.push(note);
-            }
-            return notes;
+    const addButtons = document.querySelectorAll("#notes-table tbody tr button");
+    let count = 1;
+    for (const button of addButtons) {
+        if (!button.disabled) {
+            setTimeout(button.click(), 200 * count);
         }
-    ).then(
-        notes => {
-            ankiConnect.addNotes(notes);
-        }
-    ).then(
-        value => console.log(value)
-    ).catch(
-        error => console.log(error)
-    );
+    }
+    // jpnStorage.get().then(
+    //     items => {
+    //         const notes = [];
+    //         for (const [hash, wordObj] of Object.entries(items)) {
+    //             const note = {
+    //                 deckName: ankiSettings.deck,
+    //                 modelName: ankiSettings.model,
+    //                 fields: {
+    //                     Expression: wordObj.expression,
+    //                     Reading: wordObj.expressionWithReadings,
+    //                     Meaning: wordObj.englishMeaning,
+    //                     "Parts of speech": wordObj.partsOfSpeech,
+    //                     Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
+    //                 },
+    //                 tags: document.querySelector("#anki-tags").value.split(","),
+    //                 options: {
+    //                     allowDuplicate: true
+    //                 }
+    //             }
+    //             notes.push(note);
+    //         }
+    //         return notes;
+    //     }
+    // ).then(
+    //     notes => {
+    //         ankiConnect.addNotes(notes);
+    //     }
+    // ).then(
+    //     value => console.log(value)
+    // ).catch(
+    //     error => console.log(error)
+    // );
 });
 
 ankiConnectSwitch.checked = false;

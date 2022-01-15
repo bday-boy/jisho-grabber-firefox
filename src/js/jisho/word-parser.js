@@ -141,6 +141,9 @@ class WordParser {
         let meaningTags = '';
         if (prevSibling !== null && prevSibling.className === "meaning-tags") {
             meaningTags = prevSibling.textContent.trim();
+            if (meaningTags.indexOf("Wikipedia") > -1) {
+                meaningTags = '';
+            }
         }
         return {
             meaning: meaning,

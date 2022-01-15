@@ -65,10 +65,10 @@ class WordParser {
 
     _getWordAndReading(wordResult) {
         // wordResult should be an element like below:
-        // const wordResult = document.querySelector("div.concept_light.clearfix");
-        const wordInfo = wordResult.querySelector("div.concept_light-representation");
-        const wordSpans = wordInfo.querySelectorAll("span.text");
-        let word = "";
+        // const wordResult = document.querySelector('div.concept_light.clearfix');
+        const wordInfo = wordResult.querySelector('div.concept_light-representation');
+        const wordSpans = wordInfo.querySelectorAll('span.text');
+        let word = '';
         for (let span of wordSpans) {
             word += span.textContent.trim();
         }
@@ -76,13 +76,13 @@ class WordParser {
         // trying my damnedest to get furigana for the word
         let furigana = [];
         let furiTags;
-        if (wordResult.querySelector("ruby.furigana-justify") === null) {
-            furiTags = wordInfo.querySelectorAll("span.furigana span");
+        if (wordResult.querySelector('ruby.furigana-justify') === null) {
+            furiTags = wordInfo.querySelectorAll('span.furigana span');
             for (let furi of furiTags) {
                 furigana.push(furi.textContent.trim());
             }
         } else {
-            furiTags = wordResult.querySelectorAll("ruby.furigana-justify rt");
+            furiTags = wordResult.querySelectorAll('ruby.furigana-justify rt');
             for (let furi of furiTags) {
                 furigana.push(furi.textContent.trim());
             }
@@ -93,7 +93,7 @@ class WordParser {
         for (let c of word) { if (!this._anki.jpnUtil.isKana(c)) { numKanji++; } }
         for (let furi of furigana) { if (furi) { numFuri++; } }
 
-        let finalWord = "";
+        let finalWord = '';
         if (word.length === furigana.length && numKanji === numFuri) {
             // attempt to assign readings to each kanji
             for (let i = 0; i < word.length; i++) {
@@ -101,14 +101,14 @@ class WordParser {
             }
         } else {
             // assign reading to whole word in worst case
-            finalWord = `${word}[${furigana.join("")}]`;
+            finalWord = `${word}[${furigana.join('')}]`;
         }
 
         return finalWord.trim();
     }
 
     _getWordTags(wordResult) {
-        const wordTagsElement = wordResult.querySelectorAll("div.concept_light-status span.concept_light-tag");
+        const wordTagsElement = wordResult.querySelectorAll('div.concept_light-status span.concept_light-tag');
         const wordTags = {
             common: '',
             jlpt: '',
@@ -118,7 +118,7 @@ class WordParser {
             const tagText = tag.textContent.toLowerCase().trim().split(' ');
             switch(tagText[0]) {
                 case 'common':
-                    wordTags.common = "Common word";
+                    wordTags.common = 'Common word';
                     break;
                 case 'jlpt':
                     wordTags.jlpt = tagText[tagText.length - 1].toUpperCase();
@@ -136,18 +136,15 @@ class WordParser {
     }
 
     _getMeaning(meaningWrapper) {
-        const meaning = meaningWrapper.querySelector("span.meaning-meaning").textContent;
+        const meaning = meaningWrapper.querySelector('span.meaning-meaning').textContent;
         const prevSibling = meaningWrapper.previousSibling;
         let meaningTags = '';
-        if (prevSibling !== null && prevSibling.className === "meaning-tags") {
+        if (prevSibling !== null && prevSibling.className === 'meaning-tags') {
             meaningTags = prevSibling.textContent.trim();
-            if (meaningTags.indexOf("Wikipedia") > -1) {
-                meaningTags = '';
-            }
         }
         return {
             meaning: meaning,
-            tags: meaningTags
+            tags: meaningTags.replace('Wikipedia definition', '')
         };
     }
 }

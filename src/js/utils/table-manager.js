@@ -2,11 +2,11 @@ class TableManager {
     constructor(tableBody) {
         this._table = tableBody;
         this._tableKeys = [
-            "expression",
-            "englishMeaning",
-            "partsOfSpeech",
-            "common",
-            "jlpt",
+            'expression',
+            'englishMeaning',
+            'partsOfSpeech',
+            'common',
+            'jlpt',
             "wanikani"
         ];
         this._tableFilters = {
@@ -64,15 +64,15 @@ class TableManager {
     }
 
     initTable(wordObjs) {
-        const table = this._table.closest("table");
+        const table = this._table.closest('table');
         while (this._table.firstChild) {
             this._table.removeChild(this._table.firstChild);
         }
         this.insertRows(wordObjs);
-        table.style.display = "";
-        table.style.tableLayout = "fixed";
-        const searchFilters = document.querySelector("thead > tr");
-        for (const searchFilter of searchFilters.querySelectorAll("input")) {
+        table.style.display = '';
+        table.style.tableLayout = 'fixed';
+        const searchFilters = document.querySelector('thead > tr');
+        for (const searchFilter of searchFilters.querySelectorAll('input')) {
             searchFilter.oninput = (event) => {
                 this._filterTable();
             };
@@ -94,10 +94,10 @@ class TableManager {
             const newText = document.createTextNode(text);
             newCell.appendChild(newText);
         }
-        const hiddenReading = document.createElement("span");
-        const reading = this._anki.makeKana(wordObj["expressionWithReadings"]);
+        const hiddenReading = document.createElement('span');
+        const reading = this._anki.makeKana(wordObj['expressionWithReadings']);
         hiddenReading.textContent = reading;
-        hiddenReading.classList.add("hidden-reading");
+        hiddenReading.classList.add('hidden-reading');
         newRow.childNodes[0].appendChild(hiddenReading);
         newRow.childNodes[0].title = reading;
         newCell = newRow.insertCell();
@@ -109,18 +109,18 @@ class TableManager {
         for (const filterType of Object.keys(this._tableFilters)) {
             const input = document.querySelector(`#filter-${filterType}`);
             switch (filterType) {
-                case "japanese":
+                case 'japanese':
                     this._tableFilters[filterType].value = this._anki.makeKana(input.value);
                     break;
-                case "english":
-                case "partsOfSpeech":
-                case "jlpt":
-                case "wanikani":
+                case 'english':
+                case 'partsOfSpeech':
+                case 'jlpt':
+                case 'wanikani':
                     this._tableFilters[filterType].value = input.value.toLowerCase();
                     break;
-                case "added":
-                case "common":
-                    this._tableFilters[filterType].value = input.checked ? "y" : "";
+                case 'added':
+                case 'common':
+                    this._tableFilters[filterType].value = input.checked ? 'y' : '';
                     break;
                 default:
                     console.log(`Filter type ${filterType} has not been added yet.`)
@@ -131,7 +131,7 @@ class TableManager {
 
     _filterTable() {
         this._updateFilterValues();
-        const rows = document.querySelectorAll("tbody tr");
+        const rows = document.querySelectorAll('tbody tr');
         const activeFilters = {};
         for (const [key, searchFilter] of Object.entries(this._tableFilters)) {
             if (searchFilter.value !== '') { activeFilters[key] = searchFilter; }
@@ -141,15 +141,15 @@ class TableManager {
             for (const [key, searchFilter] of Object.entries(activeFilters)) {
                 let cellVal = this._getRowColumnValue(row, searchFilter.index);
                 switch (key) {
-                    case "japanese":
-                        cellVal += " " + row.cells[searchFilter.index].querySelector("span").textContent;
+                    case 'japanese':
+                        cellVal += ' ' + row.cells[searchFilter.index].querySelector('span').textContent;
                         break;
-                    case "jlpt":
-                    case "common":
-                    case "english":
-                    case "partsOfSpeech":
-                    case "wanikani":
-                    case "added":
+                    case 'jlpt':
+                    case 'common':
+                    case 'english':
+                    case 'partsOfSpeech':
+                    case 'wanikani':
+                    case 'added':
                         break;
                     default:
                         console.log(`Filter type ${key} has not been added yet.`)
@@ -163,7 +163,7 @@ class TableManager {
     }
 
     _hideOrUnhideRow(row, shouldShow) {
-        row.style.display = shouldShow ? "" : "none";
+        row.style.display = shouldShow ? '' : 'none';
     }
 
     _getRowColumnValue(row, colIndex) {
@@ -171,17 +171,17 @@ class TableManager {
     }
 
     // _newAddButtonElement(hasNoteID) {
-    //     const buttonWrapper = document.createElement("div");
-    //     buttonWrapper.className += "button-wrapper";
-    //     const addButton = document.createElement("button");
-    //     addButton.className += "button-pretty";
+    //     const buttonWrapper = document.createElement('div');
+    //     buttonWrapper.className += 'button-wrapper';
+    //     const addButton = document.createElement('button');
+    //     addButton.className += 'button-pretty';
     //     addButton.disabled = hasNoteID;
-    //     const addButtonText = document.createElement("span");
+    //     const addButtonText = document.createElement('span');
     //     addButtonText.textContent = hasNoteID ? ADDED : ADD;
     //     addButton.appendChild(addButtonText);
     //     buttonWrapper.appendChild(addButton);
         // if (!hasNoteID) {
-        //     addButton.addEventListener("click", event => {
+        //     addButton.addEventListener('click', event => {
         //         addNoteOnClick(event);
         //     });
         // } else {
@@ -191,22 +191,22 @@ class TableManager {
     // }
 
     _newAddButtonElement(hasNoteID) {
-        const newAddBtn = document.createElement("button");
-        newAddBtn.classList.add("button-pushable");
-        newAddBtn.role = "button";
-        const spanShadow = document.createElement("span");
-        spanShadow.classList.add("button-pushable-shadow");
-        const spanEdge = document.createElement("span");
-        spanEdge.classList.add("button-pushable-edge");
-        const spanText = document.createElement("span");
-        spanText.classList.add("button-pushable-front");
-        spanText.classList.add("add-button");
+        const newAddBtn = document.createElement('button');
+        newAddBtn.classList.add('button-pushable');
+        newAddBtn.role = 'button';
+        const spanShadow = document.createElement('span');
+        spanShadow.classList.add('button-pushable-shadow');
+        const spanEdge = document.createElement('span');
+        spanEdge.classList.add('button-pushable-edge');
+        const spanText = document.createElement('span');
+        spanText.classList.add('button-pushable-front');
+        spanText.classList.add('add-button');
         spanText.textContent = hasNoteID ? ADDED : ADD;
         newAddBtn.appendChild(spanShadow);
         newAddBtn.appendChild(spanEdge);
         newAddBtn.appendChild(spanText);
         if (!hasNoteID) {
-            newAddBtn.addEventListener("click", event => {
+            newAddBtn.addEventListener('click', event => {
                 addNoteOnClick(event);
             });
         } else {

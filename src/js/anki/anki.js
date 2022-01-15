@@ -46,8 +46,8 @@ class Anki {
     }
 
     _filterString(str, filterFunc) {
-        if (str === "") {
-            return "";
+        if (str === '') {
+            return '';
         } else if (!str) {
             throw new Error(`${str} is a null-type value.`);
         } else if (typeof str !== 'string') {

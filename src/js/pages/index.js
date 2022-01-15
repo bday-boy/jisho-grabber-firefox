@@ -1,34 +1,34 @@
-const initTableBtn = document.querySelector("#init-table");
-const addNotesBtn = document.querySelector("#add-anki-notes");
-const ankiConnectStatus = document.querySelector("#anki-connect-status");
-const ankiConnectSwitch = document.querySelector("#anki-connect-switch");
+const initTableBtn = document.querySelector('#init-table');
+const addNotesBtn = document.querySelector('#add-anki-notes');
+const ankiConnectStatus = document.querySelector('#anki-connect-status');
+const ankiConnectSwitch = document.querySelector('#anki-connect-switch');
 const ankiConnect = new AnkiConnect();
-const tableManager = new TableManager(document.querySelector("#notes-table tbody"));
+const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
 jpnStorage.get().then(
     items => tableManager.initTable(items),
     error => console.log(error)
 );
 const ankiSettings = {
-    deck: "Jisho Grabber Test",
-    model: "Jisho Test",
+    deck: 'Jisho Grabber Test',
+    model: 'Jisho Test',
     fields: [
-        ["Expression", "expression"],
-        ["Reading", "expressionWithReadings"],
-        ["Meaning", "englishMeaning"],
-        ["Parts of speech", "partsOfSpeech"],
-        ["Tags", "common"]
+        ['Expression', 'expression'],
+        ['Reading', 'expressionWithReadings'],
+        ['Meaning', 'englishMeaning'],
+        ['Parts of speech', 'partsOfSpeech'],
+        ['Tags', 'common']
     ]
 };
 
-initTableBtn.addEventListener("click", (event) => {
+initTableBtn.addEventListener('click', (event) => {
     jpnStorage.get().then(
         items => tableManager.initTable(items),
         error => console.log(error)
     );
 });
 
-addNotesBtn.addEventListener("click", (event) => {
-    const addButtons = document.querySelectorAll("#notes-table tbody tr button");
+addNotesBtn.addEventListener('click', (event) => {
+    const addButtons = document.querySelectorAll('#notes-table tbody tr button');
     let count = 1;
     for (const button of addButtons) {
         if (!button.disabled) {
@@ -46,10 +46,10 @@ addNotesBtn.addEventListener("click", (event) => {
     //                     Expression: wordObj.expression,
     //                     Reading: wordObj.expressionWithReadings,
     //                     Meaning: wordObj.englishMeaning,
-    //                     "Parts of speech": wordObj.partsOfSpeech,
+    //                     'Parts of speech': wordObj.partsOfSpeech,
     //                     Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
     //                 },
-    //                 tags: document.querySelector("#anki-tags").value.split(","),
+    //                 tags: document.querySelector('#anki-tags').value.split(','),
     //                 options: {
     //                     allowDuplicate: true
     //                 }
@@ -70,32 +70,32 @@ addNotesBtn.addEventListener("click", (event) => {
 });
 
 ankiConnectSwitch.checked = false;
-ankiConnectSwitch.addEventListener("change", (event) => {
+ankiConnectSwitch.addEventListener('change', (event) => {
     if (event.target.checked) {
-        ankiConnect.server = document.querySelector("#anki-connect-server").value;
+        ankiConnect.server = document.querySelector('#anki-connect-server').value;
         ankiConnect.isConnected().then(
             isConnected => {
                 ankiConnect.enabled = isConnected;
-                ankiConnectStatus.style.display = "block";
+                ankiConnectStatus.style.display = 'block';
                 if (isConnected) {
-                    ankiConnectStatus.style.color = "green";
-                    ankiConnectStatus.textContent = "Connected to Anki";
+                    ankiConnectStatus.style.color = 'green';
+                    ankiConnectStatus.textContent = 'Connected to Anki';
                 } else {
-                    ankiConnectStatus.style.color = "#ff4242";
-                    ankiConnectStatus.textContent = "Failed to connect, see console for error";
+                    ankiConnectStatus.style.color = '#ff4242';
+                    ankiConnectStatus.textContent = 'Failed to connect, see console for error';
                 }
             },
             error => {
                 ankiConnect.enabled = false;
-                ankiConnectStatus.style.display = "block";
-                ankiConnectStatus.style.color = "#ff4242";
+                ankiConnectStatus.style.display = 'block';
+                ankiConnectStatus.style.color = '#ff4242';
                 ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
                 throw error;
             }
         );
     } else {
         ankiConnect.enabled = false;
-        ankiConnectStatus.style.display = "none";
+        ankiConnectStatus.style.display = 'none';
     }
 });
 
@@ -109,14 +109,14 @@ ankiConnectSwitch.addEventListener("change", (event) => {
  * keys
  */
 function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
-    ankiSettings.tags = document.querySelector("#anki-tags").value.split(",");
+    ankiSettings.tags = document.querySelector('#anki-tags').value.split(',');
     if ( /* Make sure ankiConnect works and ankiSettings is correct */
         !ankiConnector.enabled
-        || !objectHasKeys(ankiSettings, ["deck", "model", "tags", "fields"])
+        || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
     ) {
         return Promise.resolve(false);
     }
-    const hashKeys = ["expression", "englishMeaning"];
+    const hashKeys = ['expression', 'englishMeaning'];
     const wordObj = {
         expression: word,
         englishMeaning: meaning
@@ -128,7 +128,7 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
         })
         .then(response => {
             if (response.result === undefined) { return false; }
-            return jpnStorage.changeProperty(wordObj, hashKeys, "noteID", response.result);
+            return jpnStorage.changeProperty(wordObj, hashKeys, 'noteID', response.result);
         })
         .then(() => {
             return true;
@@ -140,9 +140,9 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
 }
 
 function addNoteOnClick(event) {
-    const buttonElement = event.target.closest("button.button-pushable");
-    const dataRow = event.target.closest("tr");
-    const rowCells = dataRow.querySelectorAll("td")
+    const buttonElement = event.target.closest('button.button-pushable');
+    const dataRow = event.target.closest('tr');
+    const rowCells = dataRow.querySelectorAll('td')
     const word = rowCells[0].childNodes[0].textContent;
     const meaning = rowCells[1].childNodes[0].textContent;
     addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect)
@@ -155,10 +155,10 @@ function addNoteOnClick(event) {
 }
 
 function turnOffButton(buttonElement) {
-    buttonElement.style.cursor = "not-allowed";
-    buttonElement.disabled = "disabled";
-    const buttonSpan = buttonElement.querySelector("span.button-pushable-front");
+    buttonElement.style.cursor = 'not-allowed';
+    buttonElement.disabled = 'disabled';
+    const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
     buttonSpan.textContent = ADDED;
-    buttonSpan.classList.remove("add-button");
-    buttonSpan.classList.add("added-button");
+    buttonSpan.classList.remove('add-button');
+    buttonSpan.classList.add('added-button');
 }

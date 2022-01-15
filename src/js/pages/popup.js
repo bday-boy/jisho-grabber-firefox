@@ -1,5 +1,5 @@
 (function() {
-    const openHomeBtn = document.querySelector("#home-button");
+    const openHomeBtn = document.querySelector('#home-button');
     openHomeBtn.addEventListener('click', (e) => {
         try {
             const tab_data = {

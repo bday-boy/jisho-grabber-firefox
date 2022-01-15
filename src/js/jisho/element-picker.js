@@ -17,11 +17,11 @@ function createCanvasOverlay() {
         if (canvasContainer === undefined) {
             canvasContainer = document.createElement('div'); 
             document.body.appendChild(canvasContainer);
-            canvasContainer.style.position = "absolute";
-            canvasContainer.style.left = "0px";
-            canvasContainer.style.top = "0px";
-            canvasContainer.style.width = "100%";
-            canvasContainer.style.height = "100%";
+            canvasContainer.style.position = 'absolute';
+            canvasContainer.style.left = '0px';
+            canvasContainer.style.top = '0px';
+            canvasContainer.style.width = '100%';
+            canvasContainer.style.height = '100%';
             canvasContainer.style.zIndex = 10000;
             canvasContainer.style.pointerEvents = 'none';
         }
@@ -90,7 +90,7 @@ function highlightElement(elem) {
     const rect = getElementBoundingClientRect(elem);
     createCanvasOverlay();
     let ctx = myCanvas.getContext('2d', {alpha: true});
-    ctx.fillStyle = "rgba(144, 238, 144, 0.4)";
+    ctx.fillStyle = 'rgba(144, 238, 144, 0.4)';
     ctx.fillRect(rect.left - offsetX, rect.top + window.scrollY - offsetY,
         rect.width, rect.height);
 };

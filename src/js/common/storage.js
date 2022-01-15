@@ -20,7 +20,7 @@ class JapaneseStorage {
 		});
 		this._storage = storageArea;
 		this._hashFunc = hashFunc;
-		this._hashKeys = ["expression", "englishMeaning"];
+		this._hashKeys = ['expression', 'englishMeaning'];
 	}
 
 	/**
@@ -36,10 +36,10 @@ class JapaneseStorage {
 	 */
 	set(items, hashKeys) {
 		if (!Array.isArray(items) || items === []) {
-			throw new TypeError("items must be a non-empty array of objects.");
+			throw new TypeError('items must be a non-empty array of objects.');
 		}
 		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
-			throw new TypeError("hashKeys must be an array with length > 0.");
+			throw new TypeError('hashKeys must be an array with length > 0.');
 		}
 		const setObject = {};
 		for (const item of items) {
@@ -68,7 +68,7 @@ class JapaneseStorage {
 			return this._storage.get();
 		}
 		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
-			throw new TypeError("hashKeys must be an array with length > 0 unless items is null, undefined, or [].");
+			throw new TypeError('hashKeys must be an array with length > 0 unless items is null, undefined, or [].');
 		}
 		const keys = [];
 		for (const item of items) {
@@ -147,18 +147,18 @@ class JapaneseStorage {
 	 */
 	changeProperty(item, hashKeys, property, newValue) {
 		if (!isObject(item)) {
-			throw new TypeError("item must be an object.");
+			throw new TypeError('item must be an object.');
 		}
 		return this.get([item], hashKeys)
 			.then(storageItem => {
 				if (isEmptyObject(storageItem)) {
-					throw new Error("Object does not exist in storage.");
+					throw new Error('Object does not exist in storage.');
 				}
 				const hash = Object.entries(storageItem)[0][0];
 				storageItem[hash][property] = newValue;
 				this._storage.set(storageItem);
 			}, error => {
-				console.log("Could not change property in database.");
+				console.log('Could not change property in database.');
 				throw error;
 			});
 	}

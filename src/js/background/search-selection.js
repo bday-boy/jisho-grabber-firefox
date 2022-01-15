@@ -7,13 +7,13 @@
  */
 
 browser.contextMenus.create({
-    id: "select-search",
-    title: "Search %s on Jisho",
-    contexts: ["selection"],
+    id: 'select-search',
+    title: 'Search %s on Jisho',
+    contexts: ['selection'],
 });
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "select-search") {
+    if (info.menuItemId === 'select-search') {
         let search_text = info.selectionText;
         search_jisho(search_text);
     }
@@ -21,7 +21,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 
 function search_jisho(word) {
     if (word.length > 40) {
-        throw new Error(`Word "${word}" is too long to search.`)
+        throw new Error(`Word '${word}' is too long to search.`)
     }
     else {
         let tab_data = {

@@ -8,23 +8,23 @@ let drawn = false;
 const parser = new WordParser();
 
 (function() {
-    const meaningWrappers = document.querySelectorAll("div.meaning-wrapper");
+    const meaningWrappers = document.querySelectorAll('div.meaning-wrapper');
     for (const meaningWrapperElement of meaningWrappers) {
-        meaningWrapperElement.style.cursor = "crosshair";
-        meaningWrapperElement.addEventListener("mouseenter", (event) => {
+        meaningWrapperElement.style.cursor = 'crosshair';
+        meaningWrapperElement.addEventListener('mouseenter', (event) => {
             if (meaningWrapperElement !== null && !drawn) {
                 highlightElement(meaningWrapperElement);
                 drawn = true;
             }
         });
-        meaningWrapperElement.addEventListener("mouseleave", (event) => {
+        meaningWrapperElement.addEventListener('mouseleave', (event) => {
             if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
                 let ctx = myCanvas.getContext('2d', {alpha: true});
                 ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                 drawn = false;
             }
         });
-        meaningWrapperElement.addEventListener("click", (event) => {
+        meaningWrapperElement.addEventListener('click', (event) => {
             storeWord(event.target);
             jpnStorage.get().then(
                 value => console.log(value),

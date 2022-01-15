@@ -1,7 +1,7 @@
 const jpnStorage = new JapaneseStorage(window.md5, browser.storage.local);
-const ADD = "+", ADDED = "✓";
+const ADD = '+', ADDED = '✓';
 const NO_NOTEID = -1;
-const NO_VAL_STRING = "—";
+const NO_VAL_STRING = '—';
 
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also

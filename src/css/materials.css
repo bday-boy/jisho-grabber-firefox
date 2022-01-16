@@ -52,7 +52,9 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-/* Text input section */
+/**
+ * Text input section
+ */
 .text-input {
   background-color: var(--background-color-main);
   color: var(--font-color-high-emphasis);
@@ -75,6 +77,23 @@ th .text-input, th .switch {
   margin-top: 5px;
 }
 
+/**
+ * Select dropdown section
+ */
+.select-input {
+  background-color: var(--background-color-main);
+  color: var(--font-color-high-emphasis);
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  width: 100%;
+  height: 2em;
+}
+
+/*
+ * Group borders section
+ */
 svg.border-horizontal {
   height: 3px;
   width: 95%;

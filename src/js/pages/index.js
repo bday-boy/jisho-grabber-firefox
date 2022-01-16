@@ -1,14 +1,41 @@
-const ankiConfig = document.querySelector('#anki-config');
-const initTableBtn = document.querySelector('#init-table');
-const addNotesBtn = document.querySelector('#add-anki-notes');
+/**
+ * ANKI CONNECT SETUP
+ */
+const ankiConnect = new AnkiConnect();
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
 const ankiConnectSwitch = document.querySelector('#anki-connect-switch');
-const ankiConnect = new AnkiConnect();
-const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
-jpnStorage.get().then(
-    items => tableManager.initTable(items),
-    error => console.log(error)
-);
+
+ankiConnectSwitch.checked = false;
+ankiConnectSwitch.addEventListener('change', (event) => {
+    if (event.target.checked) {
+        ankiConnect.server = document.querySelector('#anki-connect-server').value;
+        ankiConnect.isConnected()
+            .then(isConnected => {
+                ankiConnect.enabled = isConnected;
+                ankiConnectStatus.style.display = 'block';
+                if (isConnected) {
+                    ankiConnectStatus.style.color = 'green';
+                    ankiConnectStatus.textContent = 'Connected to Anki';
+                } else {
+                    ankiConnectStatus.style.color = '#ff4242';
+                    ankiConnectStatus.textContent = 'Failed to connect, see console for error';
+                }
+            }, error => {
+                ankiConnect.enabled = false;
+                ankiConnectStatus.style.display = 'block';
+                ankiConnectStatus.style.color = '#ff4242';
+                ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
+                throw error;
+            });
+    } else {
+        ankiConnect.enabled = false;
+        ankiConnectStatus.style.display = 'none';
+    }
+});
+
+/**
+ * ANKI CONFIGURATION
+ */
 const ankiSettings = {
     deck: 'Jisho Grabber Test',
     model: 'Jisho Test',
@@ -21,15 +48,28 @@ const ankiSettings = {
     ]
 };
 
+const ankiConfig = document.querySelector('#anki-config');
+ankiConfig.addEventListener('click', (event) => {
+    document.querySelector('#anki-config-modal').style.display = 'block';
+});
+
+/**
+ * JAPANESE VOCAB TABLE SETUP
+ */
+const initTableBtn = document.querySelector('#init-table');
+const addNotesBtn = document.querySelector('#add-anki-notes');
+const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
+
+jpnStorage.get().then(
+    items => tableManager.initTable(items),
+    error => console.log(error)
+);
+
 initTableBtn.addEventListener('click', (event) => {
     jpnStorage.get().then(
         items => tableManager.initTable(items),
         error => console.log(error)
     );
-});
-
-ankiConfig.addEventListener('click', (event) => {
-    document.querySelector('#anki-config-modal').style.display = 'block';
 });
 
 addNotesBtn.addEventListener('click', (event) => {
@@ -40,69 +80,11 @@ addNotesBtn.addEventListener('click', (event) => {
             setTimeout(button.click(), 200 * count);
         }
     }
-    // jpnStorage.get().then(
-    //     items => {
-    //         const notes = [];
-    //         for (const [hash, wordObj] of Object.entries(items)) {
-    //             const note = {
-    //                 deckName: ankiSettings.deck,
-    //                 modelName: ankiSettings.model,
-    //                 fields: {
-    //                     Expression: wordObj.expression,
-    //                     Reading: wordObj.expressionWithReadings,
-    //                     Meaning: wordObj.englishMeaning,
-    //                     'Parts of speech': wordObj.partsOfSpeech,
-    //                     Tags: `${wordObj.common}, JLPT ${wordObj.jlpt}, Wanikani ${wordObj.wanikani}`
-    //                 },
-    //                 tags: document.querySelector('#anki-tags').value.split(','),
-    //                 options: {
-    //                     allowDuplicate: true
-    //                 }
-    //             }
-    //             notes.push(note);
-    //         }
-    //         return notes;
-    //     }
-    // ).then(
-    //     notes => {
-    //         ankiConnect.addNotes(notes);
-    //     }
-    // ).then(
-    //     value => console.log(value)
-    // ).catch(
-    //     error => console.log(error)
-    // );
 });
 
-ankiConnectSwitch.checked = false;
-ankiConnectSwitch.addEventListener('change', (event) => {
-    if (event.target.checked) {
-        ankiConnect.server = document.querySelector('#anki-connect-server').value;
-        ankiConnect.isConnected().then(
-            isConnected => {
-                ankiConnect.enabled = isConnected;
-                ankiConnectStatus.style.display = 'block';
-                if (isConnected) {
-                    ankiConnectStatus.style.color = 'green';
-                    ankiConnectStatus.textContent = 'Connected to Anki';
-                } else {
-                    ankiConnectStatus.style.color = '#ff4242';
-                    ankiConnectStatus.textContent = 'Failed to connect, see console for error';
-                }
-            },
-            error => {
-                ankiConnect.enabled = false;
-                ankiConnectStatus.style.display = 'block';
-                ankiConnectStatus.style.color = '#ff4242';
-                ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
-                throw error;
-            }
-        );
-    } else {
-        ankiConnect.enabled = false;
-        ankiConnectStatus.style.display = 'none';
-    }
-});
+/**
+ * FUNCTIONS FOR PAGE FUNCTIONALITY
+ */
 
 /**
  * 

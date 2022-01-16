@@ -1,6 +1,7 @@
 :root {
   --background-color-main: #e5e5e5;
   --background-color-group: #f8f8f8;
+  --background-color-hover: #ddd;
   --background-color-table-even: #f0f0f0;
   --background-color-table-odd: var(--background-color-main);
 
@@ -27,7 +28,8 @@
   :root {
     --background-color-main: #121212;
     --background-color-group: #212121;
-    --background-color-table-even: #222222;
+    --background-color-hover: #333;
+    --background-color-table-even: #222;
     --background-color-table-odd: var(--background-color-main);
     --content-outline: 2px solid var(--background-color-main);
     --font-color-high-emphasis: rgba(255, 255, 255, 0.87);
@@ -78,7 +80,7 @@ td {
   text-align: center;
 }
 tr:hover {
-  background-color: var(--background-color-group);
+  background-color: var(--background-color-hover);
 }
 th:nth-child(1), td:nth-child(1) {
   width: 15%;
@@ -123,13 +125,6 @@ th:nth-child(7), td:nth-child(7) {
   padding: 0;
 }
 
-.button {
-  margin: auto;
-  padding: 2px;
-  text-align: center;
-  font-size: 1em;
-  cursor: pointer;
-}
 .content-center {
   width: var(--content-width);
   align-items: center;
@@ -155,18 +150,17 @@ th:nth-child(7), td:nth-child(7) {
 }
 .content-body {
   background-color: var(--background-color-group);
+  border-radius: var(--content-border-radius);
   box-shadow: var(--shadow-box);
   display: flex;
   flex-direction: column;
-  height: auto;
-  border-radius: var(--content-border-radius);
 }
 .content-item {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
+  display: flex;
   height: 45px;
-  padding: var(--content-padding);
+  justify-content: space-between;
+  margin: var(--content-padding);
 }
 .content-item-left {
   display: flex;
@@ -177,7 +171,7 @@ th:nth-child(7), td:nth-child(7) {
   width: 55%;
 }
 .content-item-right {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
   flex-direction: column;
   height: inherit;
@@ -205,4 +199,8 @@ th:nth-child(7), td:nth-child(7) {
 }
 #table-group .content-item span {
   text-align: center;
+}
+#anki-config:hover {
+  background-color: var(--background-color-hover);
+  cursor: pointer;
 }

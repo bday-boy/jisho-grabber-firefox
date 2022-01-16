@@ -15,10 +15,23 @@
           <div class="content-header">
             <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
             <span>
-              Anki model, deck, and note configuration
+              Anki deck and model configuration
             </span>
           </div>
           <div class="content-body">
+            <div class="content-item">
+              <div class="content-item-cell">
+                <select id="select-deck" class="select-input">
+                  <option value="">Select deck</option>
+                </select>
+              </div>
+              <div class="content-item-cell">
+                <select id="select model" class="select-input">
+                  <option value="">Select model</option>
+                </select>
+              </div>
+            </div>
+            <div id="select-note-fields" class="content-item"></div>
             <div class="content-item">
               <button id="cancel-config" class="button-pushable" role="button">
                 <span class="button-pushable-shadow"></span>
@@ -129,7 +142,7 @@
             <div id="anki-config" class="content-item">
               <div class="content-item-left">
                 <span>
-                  Configure Anki model, deck, and note settings
+                  Set Anki deck and model settings
                 </span>
               </div>
               <div class="content-item-right">

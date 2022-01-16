@@ -3,16 +3,54 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../css/homepage.css"/>
-    <link rel="stylesheet" href="../css/materials.css"/>
+    <link rel="stylesheet" href="/src/css/homepage.css"/>
+    <link rel="stylesheet" href="/src/css/materials.css"/>
+    <link rel="stylesheet" href="/src/css/modal.css"/>
   </head>
 
   <body>
+    <div id="anki-config-modal" class="modal">
+      <div class="modal-content">
+        <div class="content-group">
+          <div class="content-header">
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
+            <span>
+              Anki model, deck, and note configuration
+            </span>
+          </div>
+          <div class="content-body">
+            <div class="content-item">
+              <button id="cancel-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Cancel
+                </span>
+              </button>
+              <button id="refresh-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Refresh
+                </span>
+              </button>
+              <button id="save-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Save
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="content-main">
       <div class="content-center">
         <div class="content-group">
           <div class="content-header">
-            <object type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
             <span>
               Anki integration configuration
             </span>
@@ -83,11 +121,26 @@
                 <input id="anki-tags" type="text" class="text-input" value="jisho_grabber">
               </div>
             </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
+            </div>
+            <div id="anki-config" class="content-item">
+              <div class="content-item-left">
+                <span>
+                  Configure Anki model, deck, and note settings
+                </span>
+              </div>
+              <div class="content-item-right">
+                <div class="arrow-right"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div id="table-group" class="content-group">
           <div class="content-header">
-            <object type="image/svg+xml" data="../../icons/anki-icon.svg" width="32" height="32"></object>
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
             <span>
               Anki note table
             </span>
@@ -101,11 +154,6 @@
                   Refresh table
                 </span>
               </button>
-              <div class="content-border-wrapper">
-                <svg class="border-vertical">
-                  <rect class="content-border-vertical" rx="2"></rect>
-                </svg>
-              </div>
               <button id="remove-rows" class="button-pushable" role="button">
                 <span class="button-pushable-shadow"></span>
                 <span class="button-pushable-edge"></span>
@@ -113,11 +161,6 @@
                   Remove row mode
                 </span>
               </button>
-              <div class="content-border-wrapper">
-                <svg class="border-vertical">
-                  <rect class="content-border-vertical" rx="2"></rect>
-                </svg>
-              </div>
               <button id="add-anki-notes" class="button-pushable" role="button">
                 <span class="button-pushable-shadow"></span>
                 <span class="button-pushable-edge"></span>

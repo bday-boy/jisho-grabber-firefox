@@ -1,0 +1,48 @@
+/* This file uses globals from homepage.css */
+.modal {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  height: 100%;
+  left: 0;
+  padding-top: 50px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.modal-content {
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  background: var(--background-color-main);
+  border-radius: var(--content-border-radius);
+  margin: auto;
+  padding: 20px;
+  position: relative;
+  width: 50%;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+}
+
+@-webkit-keyframes animatetop {
+  from {
+    top:-300px;
+    opacity:0
+  }
+  to {
+    top:0;
+    opacity:1
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top:-300px;
+    opacity:0
+  }
+  to {
+    top:0;
+    opacity:1
+  }
+}

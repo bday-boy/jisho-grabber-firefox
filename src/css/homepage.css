@@ -165,7 +165,6 @@ th:nth-child(7), td:nth-child(7) {
 .content-item-left {
   display: flex;
   flex-direction: column;
-  height: inherit;
   justify-content: center;
   margin-left: 8px;
   width: 55%;
@@ -174,15 +173,12 @@ th:nth-child(7), td:nth-child(7) {
   align-items: flex-end;
   display: flex;
   flex-direction: column;
-  height: inherit;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 8px;
   width: 30%;
 }
 .content-item-cell {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
+  flex: 1;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -203,4 +199,7 @@ th:nth-child(7), td:nth-child(7) {
 #anki-config:hover {
   background-color: var(--background-color-hover);
   cursor: pointer;
+}
+#anki-config-modal .content-body .content-item:last-child {
+  justify-content: space-around;
 }

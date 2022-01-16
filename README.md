@@ -39,11 +39,6 @@ of these future features are as follows:
   - The "Add all notes" button actually works properly lmao. Right now, it DOES
     add all definitions to Anki as notes, but it doesn't update the buttons and
     it doesn't save the note IDs in local browser storage.
-  - The extension's local browser storage will be synced (upon opening the
-    extension homepage) with Anki. This feature will actually probably be
-    available pretty soon as I doubt it'll be that difficult to implement. This
-    means if you change the definition and such of a note in Anki, it will be
-    changed in local storage.
   - Rows from the table on the homepage will be able to be deleted.
   - Anki deck, model, and fields will be customizable. Right now, I have them
     hard-coded in because I just wanted to test program functionality.

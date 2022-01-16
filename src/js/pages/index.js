@@ -1,3 +1,4 @@
+const ankiConfig = document.querySelector('#anki-config');
 const initTableBtn = document.querySelector('#init-table');
 const addNotesBtn = document.querySelector('#add-anki-notes');
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
@@ -25,6 +26,10 @@ initTableBtn.addEventListener('click', (event) => {
         items => tableManager.initTable(items),
         error => console.log(error)
     );
+});
+
+ankiConfig.addEventListener('click', (event) => {
+    document.querySelector('#anki-config-modal').style.display = 'block';
 });
 
 addNotesBtn.addEventListener('click', (event) => {

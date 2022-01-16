@@ -2,6 +2,16 @@ const jpnStorage = new JapaneseStorage(window.md5, browser.storage.local);
 const ADD = '+', ADDED = '✓';
 const NO_NOTEID = -1;
 const NO_VAL_STRING = '—';
+const WORDOBJ_KEYS = [
+    'expressionWithReadings',
+    'expression',
+    'englishMeaning',
+    'partsOfSpeech',
+    'common',
+    'jlpt',
+    'wanikani',
+    'noteID'
+];
 
 /**
  * Thoroughly checks if variable is an {} object. Arrays and null also

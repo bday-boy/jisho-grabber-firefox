@@ -34,8 +34,16 @@ ankiConnectSwitch.addEventListener('change', (event) => {
 });
 
 /**
- * ANKI CONFIGURATION
+ * ANKI CONFIGURATION AND CONFIG MODAL SETUP
  */
+const ankiConfig = new AnkiConfig(ankiConnect);
+const ankiConfigSelect = document.querySelector('#anki-config');
+const configModal = document.querySelector('#anki-config-modal');
+const configDeckSelect = document.querySelector('#select-deck');
+const configModelSelect = document.querySelector('#select-model');
+const configCancelBtn = document.querySelector('#cancel-config');
+const configRefreshBtn = document.querySelector('#refresh-config');
+const configSaveBtn = document.querySelector('#save-config');
 const ankiSettings = {
     deck: 'Jisho Grabber Test',
     model: 'Jisho Test',
@@ -48,15 +56,39 @@ const ankiSettings = {
     ]
 };
 
-const ankiConfig = document.querySelector('#anki-config');
-ankiConfig.addEventListener('click', (event) => {
-    document.querySelector('#anki-config-modal').style.display = 'block';
+configDeckSelect.addEventListener('change', (event) =>{
+    ankiConfig.deck = configDeckSelect.value;
+});
+
+configModelSelect.addEventListener('change', (event) => {
+    ankiConfig.model = configModelSelect.value;
+    ankiConfig.initFieldOptions();
+});
+
+configCancelBtn.addEventListener('click', (event) => {
+    configModal.style.display = 'none';
+});
+
+configRefreshBtn.addEventListener('click', (event) => {
+    // refresh code here
+    return;
+});
+
+configSaveBtn.addEventListener('click', (event) => {
+    // save code here
+    return;
+});
+
+ankiConfigSelect.addEventListener('click', (event) => {
+    configModal.style.display = 'block';
+    ankiConfig.initDeckOptions();
+    ankiConfig.initModelOptions();
 });
 
 /**
  * JAPANESE VOCAB TABLE SETUP
  */
-const initTableBtn = document.querySelector('#init-table');
+const refreshTableBtn = document.querySelector('#init-table');
 const addNotesBtn = document.querySelector('#add-anki-notes');
 const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
 
@@ -65,7 +97,7 @@ jpnStorage.get().then(
     error => console.log(error)
 );
 
-initTableBtn.addEventListener('click', (event) => {
+refreshTableBtn.addEventListener('click', (event) => {
     jpnStorage.get().then(
         items => tableManager.initTable(items),
         error => console.log(error)

@@ -1,3 +1,8 @@
+/**
+ * This file contains various graphical and user-interactable elements for the
+ * web page.
+ */
+
 /*
  * Modified code from https://www.w3schools.com/howto/howto_css_switch.asp
  * made to better fit my web page
@@ -189,6 +194,18 @@ button {
 .button-pushable:disabled [class*="button-pushable"] {
   transform: none;
   filter: none;
+}
+
+/*
+ * Right-triangle for selection boxes
+ */
+.arrow-right {
+  --size: 8px;
+  border-bottom: var(--size) solid transparent;
+  border-left: var(--size) solid var(--background-color-main);
+  border-top: var(--size) solid transparent;
+  height: 0;
+  width: 0;
 }
 
 /**

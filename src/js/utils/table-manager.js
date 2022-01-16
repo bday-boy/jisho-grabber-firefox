@@ -170,26 +170,6 @@ class TableManager {
         return row.cells[colIndex].innerText || row.cells[colIndex].textContent;
     }
 
-    // _newAddButtonElement(hasNoteID) {
-    //     const buttonWrapper = document.createElement('div');
-    //     buttonWrapper.className += 'button-wrapper';
-    //     const addButton = document.createElement('button');
-    //     addButton.className += 'button-pretty';
-    //     addButton.disabled = hasNoteID;
-    //     const addButtonText = document.createElement('span');
-    //     addButtonText.textContent = hasNoteID ? ADDED : ADD;
-    //     addButton.appendChild(addButtonText);
-    //     buttonWrapper.appendChild(addButton);
-        // if (!hasNoteID) {
-        //     addButton.addEventListener('click', event => {
-        //         addNoteOnClick(event);
-        //     });
-        // } else {
-        //     turnOffButton(addButton);
-        // }
-    //     return buttonWrapper;
-    // }
-
     _newAddButtonElement(hasNoteID) {
         const newAddBtn = document.createElement('button');
         newAddBtn.classList.add('button-pushable');

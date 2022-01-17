@@ -18,6 +18,8 @@
   background: var(--background-color-main);
   border-radius: var(--content-border-radius);
   margin: auto;
+  max-height: 700px;
+  overflow-y: scroll;
   padding: 20px;
   position: relative;
   width: 50%;
@@ -45,4 +47,8 @@
     top:0;
     opacity:1
   }
+}
+
+#config-buttons {
+  justify-content: space-around;
 }

@@ -39,6 +39,11 @@ class AnkiConfig {
         this._fields.push(fieldKeyMap);
     }
 
+    /**
+     * Initializes a an HTML select of deck options for the user based on the
+     * decks in their AnkiConnect. If the user has already selected a deck,
+     * nothing happens.
+     */
     initDeckOptions() {
         if (this._deck !== undefined) return;
         this._ankiConnect.getDeckNames()
@@ -57,6 +62,11 @@ class AnkiConfig {
             });
     }
 
+    /**
+     * Initializes a an HTML select of model options for the user based on the
+     * models in their AnkiConnect. If the user has already selected a model,
+     * nothing happens.
+     */
     initModelOptions() {
         if (this._model !== undefined) return;
         this._ankiConnect.getModelNames()
@@ -75,35 +85,45 @@ class AnkiConfig {
             });
     }
 
+    /**
+     * Initializes several HTML selects of field options based on the user's
+     * model selection.
+     */
     initFieldOptions() {
+        const modelFieldSelector = document.querySelector('#select-model-fields');
+        while (modelFieldSelector.firstChild) {
+            modelFieldSelector.removeChild(modelFieldSelector.firstChild);
+        }
         if (this._model === undefined) return;
         this._ankiConnect.getModelFieldNames(this._model)
             .then((response) => {
                 if (response.result === undefined) return;
-                const modelFieldSelector = document.querySelector('#select-model-fields');
-                while (modelFieldSelector.firstChild) {
-                    modelFieldSelector.removeChild(modelFieldSelector.firstChild);
-                }
                 for (const fieldName of response.result) {
                     this._insertFieldSelection(fieldName, modelFieldSelector);
                 }
             })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     _insertFieldSelection(field, modelFieldSelector) {
+        // create wrapper elements for the span and select
         const fieldItem = document.createElement('div');
         fieldItem.classList.add('content-item')
         const fieldLeft = document.createElement('div');
-        fieldItem.classList.add('content-item-left')
+        fieldLeft.classList.add('content-item-left')
         const fieldRight = document.createElement('div');
-        fieldItem.classList.add('content-item-right')
+        fieldRight.classList.add('content-item-right')
 
+        // span with Anki note field
         const fieldName = document.createElement('span');
         fieldName.textContent = field;
 
+        // select with all wordObj keys as options, plus the empty string
         const selectKey = document.createElement('select');
         selectKey.classList.add('select-input');
-        for (const wordObjKey of WORDOBJ_KEYS) {
+        for (const wordObjKey of WORDOBJ_KEY_OPTIONS) {
             const keyOption = document.createElement('option');
             keyOption.value = wordObjKey;
             keyOption.textContent = wordObjKey;

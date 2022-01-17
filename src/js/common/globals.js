@@ -10,7 +10,19 @@ const WORDOBJ_KEYS = [
     'common',
     'jlpt',
     'wanikani',
+    'allTags',
     'noteID'
+];
+const WORDOBJ_KEY_OPTIONS = [
+    '',
+    'expressionWithReadings',
+    'expression',
+    'englishMeaning',
+    'partsOfSpeech',
+    'common',
+    'jlpt',
+    'wanikani',
+    'allTags'
 ];
 
 /**

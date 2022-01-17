@@ -49,6 +49,8 @@ of these future features are as follows:
     meanings listed on Jisho, so unless you want to shove all of those on one
     card, it makes more sense for duplicates to be allowed.
   - The definition selector part of the program will be able to be turned off.
+  - Users will be able to save Anki integration configuration settings, or at
+    least the most recent configuration will save automatically.
 - Primarily visual features:
   - A new dropdown/popup will be available to help the user select Anki deck,
     model, and fields.

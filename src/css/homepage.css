@@ -175,7 +175,7 @@ th:nth-child(7), td:nth-child(7) {
   flex-direction: column;
   justify-content: center;
   margin-right: 8px;
-  width: 30%;
+  width: 35%;
 }
 .content-item-cell {
   flex: 1;
@@ -199,7 +199,4 @@ th:nth-child(7), td:nth-child(7) {
 #anki-config:hover {
   background-color: var(--background-color-hover);
   cursor: pointer;
-}
-#anki-config-modal .content-body .content-item:last-child {
-  justify-content: space-around;
 }

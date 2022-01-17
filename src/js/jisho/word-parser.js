@@ -44,13 +44,27 @@ class WordParser {
                 common: '',
                 jlpt: '',
                 wanikani: '',
+                allTags: '',
                 noteID: NO_NOTEID
             };
             return;
         }
+
         const word = this._getWordAndReading(this._wordElement);
         const meaning = this._getMeaning(this._meaningElement);
         const tags = this._getWordTags(this._wordElement);
+
+        const allTags = [];
+        if (tags.common) {
+            allTags.push(tags.common);
+        }
+        if (tags.jlpt) {
+            allTags.push(`JLPT level: ${tags.jlpt}`);
+        }
+        if (tags.wanikani) {
+            allTags.push(`WaniKani level(s): ${tags.wanikani}`);
+        }
+
         this.wordObject = {
             expressionWithReadings: word,
             expression: this._anki.makeKanji(word),
@@ -59,6 +73,7 @@ class WordParser {
             common: tags.common,
             jlpt: tags.jlpt,
             wanikani: tags.wanikani,
+            allTags: allTags.join('<br>'),
             noteID: NO_NOTEID
         };
     }

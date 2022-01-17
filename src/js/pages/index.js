@@ -52,7 +52,7 @@ const ankiSettings = {
         ['Reading', 'expressionWithReadings'],
         ['Meaning', 'englishMeaning'],
         ['Parts of speech', 'partsOfSpeech'],
-        ['Tags', 'common']
+        ['Tags', 'allTags']
     ]
 };
 

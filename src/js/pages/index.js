@@ -70,13 +70,15 @@ configCancelBtn.addEventListener('click', (event) => {
 });
 
 configRefreshBtn.addEventListener('click', (event) => {
-    // refresh code here
-    return;
+    configDeckSelect.selectedIndex = 0;
+    configModelSelect.selectedIndex = 0;
+    ankiConfig.refreshOptions();
 });
 
 configSaveBtn.addEventListener('click', (event) => {
-    // save code here
-    return;
+    if (ankiConfig.saveOptions()) {
+        configModal.style.display = 'none';
+    }
 });
 
 ankiConfigSelect.addEventListener('click', (event) => {

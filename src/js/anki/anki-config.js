@@ -3,6 +3,7 @@ class AnkiConfig {
         this._deck = undefined;
         this._model = undefined;
         this._fields = [];
+        this._tags = [];
         this._ankiConnect = ankiConnect;
     }
 
@@ -11,7 +12,7 @@ class AnkiConfig {
     }
 
     set deck(deckName) {
-        if (deckName === '') {
+        if (!deckName) {
             this._deck = undefined;
         } else {
             this._deck = deckName
@@ -23,7 +24,7 @@ class AnkiConfig {
     }
 
     set model(modelName) {
-        if (modelName === '') {
+        if (!modelName) {
             this._model = undefined;
         } else {
             this._model = modelName
@@ -37,6 +38,21 @@ class AnkiConfig {
 
     set fields(fieldKeyMap) {
         this._fields.push(fieldKeyMap);
+    }
+
+    get tags() {
+        return this._tags;
+    }
+
+    set tags(tagsString) {
+        if (!tagsString) {
+            this._tags = [];
+        } else {
+            const tagsList = tagsString.split(',');
+            for (const tag of tagsList) {
+                this._tags.push(tag.trim());
+            }
+        }
     }
 
     /**
@@ -105,6 +121,72 @@ class AnkiConfig {
             .catch((error) => {
                 console.log(error);
             });
+    }
+
+    loadOptions() {
+        browser.storage.local.get('prevConfig')
+            .then(prevConfig => {
+                if (prevConfig === undefined) {
+                    return;
+                }
+                this.fromString(prevConfig);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    saveOptions() {
+        if (!(
+            this.deck
+            || this.model
+            || this.fields.length > 0
+        )) {
+            alert('Deck, model, and fields needed');
+            return false;
+        }
+        const fields = document.querySelectorAll('#select-model-fields .content-item');
+        for (const field of fields) {
+            const noteField = field.querySelector('span').textContent;
+            const wordObjKey = field.querySelector('select').value;
+            this.fields = [noteField, wordObjKey];
+        }
+        this.tags = document.querySelector('#anki-tags').value;
+        browser.storage.local.set({ prevConfig: this.toString() })
+            .then(() => {
+                console.log("Saved Anki config to storage.")
+            })
+            .catch(e => {
+                console.log('Could not save Anki config to storage.')
+            });
+        return true;
+    }
+
+    refreshOptions() {
+        this.deck = undefined;
+        this.model = undefined;
+        this.tags = undefined;
+        this.initDeckOptions();
+        this.initModelOptions();
+        this.initFieldOptions();
+    }
+
+    toString() {
+        const jsonObj = {
+            deck: this.deck ? this.deck : null,
+            model: this.model ? this.model : null,
+            fields: this.fields,
+            tags: this.tags
+        };
+        return JSON.stringify(jsonObj);
+    }
+
+    fromString(jsonString) {
+        const jsonObj = JSON.parse(jsonString);
+        this.deck = jsonObj.deck;
+        this.model = jsonObj.model;
+        this._fields = jsonObj.fields;
+        this._tags = jsonObj.tags;
     }
 
     _insertFieldSelection(field, modelFieldSelector) {

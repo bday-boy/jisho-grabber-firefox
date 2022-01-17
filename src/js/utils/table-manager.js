@@ -134,7 +134,9 @@ class TableManager {
         const rows = document.querySelectorAll('tbody tr');
         const activeFilters = {};
         for (const [key, searchFilter] of Object.entries(this._tableFilters)) {
-            if (searchFilter.value !== '') { activeFilters[key] = searchFilter; }
+            if (searchFilter.value !== '') {
+                activeFilters[key] = searchFilter;
+            }
         }
         for (const row of rows) {
             let show = true;
@@ -156,7 +158,9 @@ class TableManager {
                         break;
                 }
                 show &= searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
-                if (!show) { break; }
+                if (!show) {
+                    break;
+                }
             }
             this._hideOrUnhideRow(row, show);
         }

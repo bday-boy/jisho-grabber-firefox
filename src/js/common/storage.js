@@ -8,7 +8,9 @@
 class JapaneseStorage {
 	constructor(hashFunc, storageArea) {
 		browser.storage.onChanged.addListener((changes, area) => {
-			if (area !== 'local') { return; }
+			if (area !== 'local') {
+				return;
+			}
 			console.log(`Change in storage area: ${area}`);
 			const changedItems = Object.keys(changes);
 			for (const item of changedItems) {
@@ -100,7 +102,7 @@ class JapaneseStorage {
 	}
 
 	/**
-	 * 
+	 * Gets an item from storage and creates a note object to be sent to Anki.
 	 * @param {Object} item 
 	 * @param {string[]} hashKeys 
 	 * @returns {Promise} A promise that resolves to a new Anki note and rejects
@@ -109,7 +111,9 @@ class JapaneseStorage {
 	createAnkiNote(item, hashKeys) {
 		return this.get([item], hashKeys)
 			.then(storageWordObj => {
-				if (isEmptyObject(storageWordObj)) { return {}; }
+				if (isEmptyObject(storageWordObj)) {
+					return {};
+				}
 				const wordObj = Object.entries(storageWordObj)[0][1];
 				const note = {
 					deckName: ankiSettings.deck,
@@ -121,7 +125,7 @@ class JapaneseStorage {
 					}
 				};
 				for (const [fieldKey, wordObjKey] of ankiSettings.fields) {
-					if (wordObjKey) {
+					if (wordObjKey !== NO_VAL_STRING) {
 						note.fields[fieldKey] = wordObj[wordObjKey];
 					} else {
 						note.fields[fieldKey] = '';

@@ -7,14 +7,16 @@ select a definition within the Jisho webpage directly.
 
 ## Dependencies
 In order for this program to send Anki notes to your Anki client, you must
-install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) and have Anki
-running in the background when trying to send notes from your browser.
-Additionally, you must be using a browser that has ECMAScript 6 support (most,
-if not all, up-to-date, modern browsers do).  
+install the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on
+into your Anki and have Anki running in the background when trying to send
+notes from your browser.  
 IMPORTANT:  
-Since user Anki settings are hard-coded right now, in order to use this
+~~Since user Anki settings are hard-coded right now, in order to use this
 extension at all, import the Jisho Grabber Test.apkg in default_deck. This will
-create the proper note type as needed by the extension.
+create the proper note type as needed by the extension.~~ Update: I have
+implemented user-configurable Anki settings, so this is no longer a requirement.
+However, the Jisho Grabber Test.apkg Anki package does have a note type that
+fits the data from my program very well, so it's still not a bad idea to have.
 
 ## What it does
 - Adds a context menu (right-click menu) item for searching highlighted text on
@@ -28,8 +30,8 @@ create the proper note type as needed by the extension.
 - In order to send saved Jisho data to Anki, one must open the Jisho Grabber
   home page by clicking on the
   <img src="./icons/jisho-grabber.svg" width="12" height="12"/> icon in the
-  toolbar and pressing the button. Once on the home page, there is a way of
-  sending notes over to Anki.
+  toolbar and pressing the button. Once on the home page, you can connect to
+  Anki via AnkiConnect and start sending notes over.
 
 ## Future functionality
 As jisho-grabber-firefox is still in beta, it currently works, but much of my
@@ -40,20 +42,9 @@ of these future features are as follows:
     add all definitions to Anki as notes, but it doesn't update the buttons and
     it doesn't save the note IDs in local browser storage.
   - Rows from the table on the homepage will be able to be deleted.
-  - Anki deck, model, and fields will be customizable. Right now, I have them
-    hard-coded in because I just wanted to test program functionality.
-  - Maybe sometime in the far future, other Anki options will be customizable.
-    Right now, I have them set up in a way that makes sense for the program.
-    The most important of hard-coded options being that you CAN make duplicate
-    cards, which is an important feature because the word "掛ける" has 25
-    meanings listed on Jisho, so unless you want to shove all of those on one
-    card, it makes more sense for duplicates to be allowed.
   - The definition selector part of the program will be able to be turned off.
-  - Users will be able to save Anki integration configuration settings, or at
     least the most recent configuration will save automatically.
 - Primarily visual features:
-  - A new dropdown/popup will be available to help the user select Anki deck,
-    model, and fields.
   - Better-looking buttons/animations and such
 
 ## Notes for nerds

@@ -2,6 +2,7 @@
  * ANKI CONNECT SETUP
  */
 const ankiConnect = new AnkiConnect();
+const ankiConfig = new AnkiConfig(ankiConnect);
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
 const ankiConnectSwitch = document.querySelector('#anki-connect-switch');
 
@@ -16,6 +17,9 @@ ankiConnectSwitch.addEventListener('change', (event) => {
                 if (isConnected) {
                     ankiConnectStatus.style.color = 'green';
                     ankiConnectStatus.textContent = 'Connected to Anki';
+                    ankiConfig.initDeckOptions();
+                    ankiConfig.initModelOptions();
+                    ankiConfig.loadOptions();
                 } else {
                     ankiConnectStatus.style.color = '#ff4242';
                     ankiConnectStatus.textContent = 'Failed to connect, see console for error';
@@ -36,13 +40,12 @@ ankiConnectSwitch.addEventListener('change', (event) => {
 /**
  * ANKI CONFIGURATION AND CONFIG MODAL SETUP
  */
-const ankiConfig = new AnkiConfig(ankiConnect);
 const ankiConfigSelect = document.querySelector('#anki-config');
 const configModal = document.querySelector('#anki-config-modal');
 const configDeckSelect = document.querySelector('#select-deck');
 const configModelSelect = document.querySelector('#select-model');
-const configCancelBtn = document.querySelector('#cancel-config');
-const configRefreshBtn = document.querySelector('#refresh-config');
+const configCloseBtn = document.querySelector('#cancel-config');
+const configResetBtn = document.querySelector('#refresh-config');
 const configSaveBtn = document.querySelector('#save-config');
 const ankiSettings = {
     deck: 'Jisho Grabber Test',
@@ -56,35 +59,30 @@ const ankiSettings = {
     ]
 };
 
-configDeckSelect.addEventListener('change', (event) =>{
-    ankiConfig.deck = configDeckSelect.value;
-});
-
 configModelSelect.addEventListener('change', (event) => {
-    ankiConfig.model = configModelSelect.value;
-    ankiConfig.initFieldOptions();
+    ankiConfig.initFieldOptions(configModelSelect.value);
 });
 
-configCancelBtn.addEventListener('click', (event) => {
+configCloseBtn.addEventListener('click', (event) => {
     configModal.style.display = 'none';
 });
 
-configRefreshBtn.addEventListener('click', (event) => {
+configResetBtn.addEventListener('click', (event) => {
     configDeckSelect.selectedIndex = 0;
     configModelSelect.selectedIndex = 0;
-    ankiConfig.refreshOptions();
+    ankiConfig.resetOptions();
 });
 
 configSaveBtn.addEventListener('click', (event) => {
-    if (ankiConfig.saveOptions()) {
-        configModal.style.display = 'none';
+    if (ankiConfig.saveOptions(configDeckSelect.value, configModelSelect.value)) {
+        alert('Successfully saved Anki configuration.');
+    } else {
+        alert('There was an error.');
     }
 });
 
 ankiConfigSelect.addEventListener('click', (event) => {
     configModal.style.display = 'block';
-    ankiConfig.initDeckOptions();
-    ankiConfig.initModelOptions();
 });
 
 /**
@@ -130,7 +128,6 @@ addNotesBtn.addEventListener('click', (event) => {
  * keys
  */
 function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
-    ankiSettings.tags = document.querySelector('#anki-tags').value.split(',');
     if ( /* Make sure ankiConnect works and ankiSettings is correct */
         !ankiConnector.enabled
         || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
@@ -142,7 +139,7 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
         expression: word,
         englishMeaning: meaning
     };
-    return jpnStorage.createAnkiNote(wordObj, hashKeys)
+    return jpnStorage.createAnkiNote(wordObj, hashKeys, ankiSettings)
         .then(note => {
             if (isEmptyObject(note)) { return {}; }
             return ankiConnector.addNote(note);
@@ -166,7 +163,7 @@ function addNoteOnClick(event) {
     const rowCells = dataRow.querySelectorAll('td')
     const word = rowCells[0].childNodes[0].textContent;
     const meaning = rowCells[1].childNodes[0].textContent;
-    addNote(word, meaning, ankiSettings, jpnStorage, ankiConnect)
+    addNote(word, meaning, ankiConfig.toObject(), jpnStorage, ankiConnect)
         .then(added => {
             if (added) { turnOffButton(buttonElement); }
         })

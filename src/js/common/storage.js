@@ -67,7 +67,11 @@ class JapaneseStorage {
 		if (items === null || items === undefined || items.length === 0) {
 			// browser.storage.local.get returns all stored objects when no
 			// argument is passed in
-			return this._storage.get();
+			return this._storage.get()
+				.then((results) => {
+					delete results['prevConfig'];
+					return results;
+				});
 		}
 		if (!Array.isArray(hashKeys) || hashKeys.length === 0) {
 			throw new TypeError('hashKeys must be an array with length > 0 unless items is null, undefined, or [].');
@@ -108,7 +112,7 @@ class JapaneseStorage {
 	 * @returns {Promise} A promise that resolves to a new Anki note and rejects
 	 * with an error.
 	 */
-	createAnkiNote(item, hashKeys) {
+	createAnkiNote(item, hashKeys, ankiSettings) {
 		return this.get([item], hashKeys)
 			.then(storageWordObj => {
 				if (isEmptyObject(storageWordObj)) {

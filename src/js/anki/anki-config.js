@@ -12,9 +12,8 @@ class AnkiConfig {
     }
 
     set deck(deckName) {
-        if (!deckName) {
-            this._deck = undefined;
-        } else {
+        this._deck = undefined;
+        if (deckName && typeof deckName === 'string') {
             this._deck = deckName
         }
     }
@@ -24,11 +23,10 @@ class AnkiConfig {
     }
 
     set model(modelName) {
-        if (!modelName) {
-            this._model = undefined;
-        } else {
+        this._model = undefined;
+        this._fields = [];
+        if (modelName && typeof modelName === 'string') {
             this._model = modelName
-            this._fields = [];
         }
     }
 
@@ -37,7 +35,10 @@ class AnkiConfig {
     }
 
     set fields(fieldKeyMap) {
-        this._fields.push(fieldKeyMap);
+        this._fields = [];
+        if (fieldKeyMap && Array.isArray(fieldKeyMap)) {
+            this._fields = fieldKeyMap;
+        }
     }
 
     get tags() {
@@ -45,9 +46,8 @@ class AnkiConfig {
     }
 
     set tags(tagsString) {
-        if (!tagsString) {
-            this._tags = [];
-        } else {
+        this._tags = [];
+        if (tagsString && typeof tagsString === 'string') {
             const tagsList = tagsString.split(',');
             for (const tag of tagsList) {
                 this._tags.push(tag.trim());
@@ -56,12 +56,15 @@ class AnkiConfig {
     }
 
     /**
-     * Initializes a an HTML select of deck options for the user based on the
+     * Initializes an HTML select of deck options for the user based on the
      * decks in their AnkiConnect. If the user has already selected a deck,
      * nothing happens.
      */
-    initDeckOptions() {
-        if (this._deck !== undefined) return;
+    initDeckOptions(loadedVal) {
+        const options = document.querySelectorAll('#select-deck :not([id="default-deck"])');
+        for (const deckOption of options) {
+            deckOption.parentNode.removeChild(deckOption);
+        }
         this._ankiConnect.getDeckNames()
             .then((response) => {
                 if (response.result === undefined) return;
@@ -72,6 +75,9 @@ class AnkiConfig {
                     deckOption.value = deckName;
                     selectDeck.appendChild(deckOption);
                 }
+                if (loadedVal) {
+                    selectDeck.value = loadedVal;
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -79,21 +85,27 @@ class AnkiConfig {
     }
 
     /**
-     * Initializes a an HTML select of model options for the user based on the
+     * Initializes an HTML select of model options for the user based on the
      * models in their AnkiConnect. If the user has already selected a model,
      * nothing happens.
      */
-    initModelOptions() {
-        if (this._model !== undefined) return;
+    initModelOptions(loadedVal) {
+        const options = document.querySelectorAll('#select-model :not([id="default-model"])');
+        for (const modelOption of options) {
+            modelOption.parentNode.removeChild(modelOption);
+        }
         this._ankiConnect.getModelNames()
             .then((response) => {
                 if (response.result === undefined) return;
-                const selectDeck = document.querySelector('#select-model');
+                const selectModel = document.querySelector('#select-model');
                 for (const modelName of response.result) {
-                    const deckOption = document.createElement('option');
-                    deckOption.textContent = modelName;
-                    deckOption.value = modelName;
-                    selectDeck.appendChild(deckOption);
+                    const modelOption = document.createElement('option');
+                    modelOption.textContent = modelName;
+                    modelOption.value = modelName;
+                    selectModel.appendChild(modelOption);
+                }
+                if (loadedVal) {
+                    selectModel.value = loadedVal;
                 }
             })
             .catch((error) => {
@@ -105,17 +117,24 @@ class AnkiConfig {
      * Initializes several HTML selects of field options based on the user's
      * model selection.
      */
-    initFieldOptions() {
+    initFieldOptions(model, loadedVals) {
         const modelFieldSelector = document.querySelector('#select-model-fields');
         while (modelFieldSelector.firstChild) {
             modelFieldSelector.removeChild(modelFieldSelector.firstChild);
         }
-        if (this._model === undefined) return;
-        this._ankiConnect.getModelFieldNames(this._model)
+        if (!model) {
+            return;
+        }
+        if (!isObject(loadedVals)) {
+            loadedVals = {};
+        }
+        this._ankiConnect.getModelFieldNames(model)
             .then((response) => {
                 if (response.result === undefined) return;
                 for (const fieldName of response.result) {
-                    this._insertFieldSelection(fieldName, modelFieldSelector);
+                    this._insertFieldSelection(
+                        fieldName, modelFieldSelector, loadedVals[fieldName]
+                    );
                 }
             })
             .catch((error) => {
@@ -126,33 +145,34 @@ class AnkiConfig {
     loadOptions() {
         browser.storage.local.get('prevConfig')
             .then(prevConfig => {
-                if (prevConfig === undefined) {
+                if (!prevConfig || isEmptyObject(prevConfig)) {
                     return;
                 }
-                this.fromString(prevConfig);
+                this._fromObject(prevConfig);
+                this.initDeckOptions(this.deck);
+                this.initModelOptions(this.model);
+                this.initFieldOptions(this.model, this.fieldsToObject());
+                document.querySelector('#anki-tags').value = this._tags.join(',');
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    saveOptions() {
-        if (!(
-            this.deck
-            || this.model
-            || this.fields.length > 0
-        )) {
-            alert('Deck, model, and fields needed');
+    saveOptions(deckVal, modelVal) {
+        this.deck = deckVal;
+        this.model = modelVal;
+        if (!(this.deck && this.model)) {
             return false;
         }
         const fields = document.querySelectorAll('#select-model-fields .content-item');
         for (const field of fields) {
             const noteField = field.querySelector('span').textContent;
             const wordObjKey = field.querySelector('select').value;
-            this.fields = [noteField, wordObjKey];
+            this._fields.push([noteField, wordObjKey]);
         }
         this.tags = document.querySelector('#anki-tags').value;
-        browser.storage.local.set({ prevConfig: this.toString() })
+        browser.storage.local.set({ prevConfig: this.toObject() })
             .then(() => {
                 console.log("Saved Anki config to storage.")
             })
@@ -162,34 +182,47 @@ class AnkiConfig {
         return true;
     }
 
-    refreshOptions() {
-        this.deck = undefined;
-        this.model = undefined;
-        this.tags = undefined;
+    resetOptions() {
+        this._resetConfig();
         this.initDeckOptions();
         this.initModelOptions();
         this.initFieldOptions();
     }
 
-    toString() {
-        const jsonObj = {
+    fieldsToObject() {
+        const fieldsObj = {};
+        for (const fieldKeyMap of this._fields) {
+            fieldsObj[fieldKeyMap[0]] = fieldKeyMap[1];
+        }
+        return fieldsObj;
+    }
+
+    toObject() {
+        const ankiConfigObj = {
             deck: this.deck ? this.deck : null,
             model: this.model ? this.model : null,
             fields: this.fields,
             tags: this.tags
         };
-        return JSON.stringify(jsonObj);
+        return ankiConfigObj;
     }
 
-    fromString(jsonString) {
-        const jsonObj = JSON.parse(jsonString);
-        this.deck = jsonObj.deck;
-        this.model = jsonObj.model;
-        this._fields = jsonObj.fields;
-        this._tags = jsonObj.tags;
+    _resetConfig() {
+        this.deck = undefined;
+        this.model = undefined;
+        this.tags = [];
+        this.fields = [];
     }
 
-    _insertFieldSelection(field, modelFieldSelector) {
+    _fromObject(prevConfig) {
+        const ankiConfigObj = prevConfig['prevConfig'];
+        this.deck = ankiConfigObj.deck;
+        this.model = ankiConfigObj.model;
+        this._fields = ankiConfigObj.fields;
+        this._tags = ankiConfigObj.tags;
+    }
+
+    _insertFieldSelection(field, modelFieldSelector, loadedVal) {
         // create wrapper elements for the span and select
         const fieldItem = document.createElement('div');
         fieldItem.classList.add('content-item')
@@ -210,6 +243,9 @@ class AnkiConfig {
             keyOption.value = wordObjKey;
             keyOption.textContent = wordObjKey;
             selectKey.appendChild(keyOption);
+        }
+        if (loadedVal) {
+            selectKey.value = loadedVal;
         }
 
         fieldRight.appendChild(selectKey);

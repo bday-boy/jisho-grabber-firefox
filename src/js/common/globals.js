@@ -14,7 +14,7 @@ const WORDOBJ_KEYS = [
     'noteID'
 ];
 const WORDOBJ_KEY_OPTIONS = [
-    '',
+    NO_VAL_STRING,
     'expressionWithReadings',
     'expression',
     'englishMeaning',

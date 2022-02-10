@@ -21,9 +21,26 @@ browser.storage.onChanged.addListener((changes, area) => {
 
 class JapaneseStorage {
   constructor(hashFunc, storageArea) {
+    this._japanese = null;
     this._storage = storageArea;
     this._hashFunc = hashFunc;
     this._hashKeys = ['expression', 'englishMeaning'];
+  }
+
+  load() {
+    this._storage.get('japanese')
+      .then((jpnObj) => {
+        this._japanese = jpnObj;
+      }, (error) => {
+        console.log(error);
+      });
+  }
+
+  save() {
+    this._storage.set({ japanese: this._japanese })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   /**
@@ -45,9 +62,7 @@ class JapaneseStorage {
       throw new TypeError('hashKeys must be an array with length > 0.');
     }
     const setObject = {};
-    for (const item of items) {
-      setObject[this._getHash(item, hashKeys)] = item;
-    }
+    items.forEach((item) => { setObject[this._getHash(item)] = item; });
     return this._storage.set(setObject);
   }
 
@@ -78,9 +93,7 @@ class JapaneseStorage {
       throw new TypeError('hashKeys must be an array with length > 0 unless items is null, undefined, or [].');
     }
     const keys = [];
-    for (const item of items) {
-      keys.push(this._getHash(item, hashKeys));
-    }
+    items.forEach((item) => keys.push(this._getHash(item)));
     return this._storage.get(keys);
   }
 
@@ -181,11 +194,8 @@ class JapaneseStorage {
    * md5 hash
    * @returns {string} Hex string MD5 hash
    */
-  _getHash(item, hashKeys) {
-    let stringToHash = '';
-    for (const key of hashKeys) {
-      stringToHash += item[key];
-    }
-    return this._hashFunc(stringToHash);
+  _getHash(item) {
+    const hashString = this._hashKeys.reduce((prevHash, key) => prevHash + item[key], '');
+    return this._hashFunc(hashString);
   }
 }

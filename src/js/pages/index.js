@@ -120,6 +120,15 @@ addNotesBtn.addEventListener('click', () => {
  * FUNCTIONS FOR PAGE FUNCTIONALITY
  */
 
+const turnOffButton = function (buttonElement) {
+  buttonElement.style.cursor = 'not-allowed';
+  buttonElement.disabled = 'disabled';
+  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
+  buttonSpan.textContent = ADDED;
+  buttonSpan.classList.remove('add-button');
+  buttonSpan.classList.add('added-button');
+};
+
 /**
  * Adds a single note to Anki.
  * @param {string} word
@@ -129,7 +138,7 @@ addNotesBtn.addEventListener('click', () => {
  * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
  * keys
  */
-function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
+const addNote = function (word, meaning, ankiSettings, jpnStorage, ankiConnector) {
   if (/* Make sure ankiConnect works and ankiSettings is correct */
     !ankiConnector.enabled
     || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
@@ -155,9 +164,9 @@ function addNote(word, meaning, ankiSettings, jpnStorage, ankiConnector) {
       console.log(error);
       return false;
     });
-}
+};
 
-function addNoteOnClick(event) {
+const addNoteOnClick = function (event) {
   const buttonElement = event.target.closest('button.button-pushable');
   const dataRow = event.target.closest('tr');
   const rowCells = dataRow.querySelectorAll('td');
@@ -170,16 +179,7 @@ function addNoteOnClick(event) {
     .catch((error) => {
       console.log(error);
     });
-}
-
-function turnOffButton(buttonElement) {
-  buttonElement.style.cursor = 'not-allowed';
-  buttonElement.disabled = 'disabled';
-  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
-  buttonSpan.textContent = ADDED;
-  buttonSpan.classList.remove('add-button');
-  buttonSpan.classList.add('added-button');
-}
+};
 
 let jpnStorageTest;
 window.addEventListener('focus', () => {

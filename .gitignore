@@ -1,5 +1,7 @@
-# VS Code settings
+# VS Code/Nodejs settings
 .vscode/
+node_modules/
+package-lock.json
 
 # For files I will no longer be using in the project
 .dead/

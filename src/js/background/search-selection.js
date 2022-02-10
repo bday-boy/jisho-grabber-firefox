@@ -6,27 +6,26 @@
  *              the right-click context menu in Firefox.
  */
 
-browser.contextMenus.create({
-    id: 'select-search',
-    title: 'Search %s on Jisho',
-    contexts: ['selection'],
-});
-
-browser.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'select-search') {
-        let search_text = info.selectionText;
-        search_jisho(search_text);
-    }
-});
-
-function search_jisho(word) {
-    if (word.length > 40) {
-        throw new Error(`Word '${word}' is too long to search.`)
-    }
-    else {
-        let tab_data = {
-            url: `https://jisho.org/search/${encodeURIComponent(word)}`
-        };
-        browser.tabs.create(tab_data);
-    }
+const searchJisho = function (word) {
+  if (word.length > 40) {
+    throw new Error(`Word '${word}' is too long to search.`);
+  } else {
+    const tabData = {
+      url: `https://jisho.org/search/${encodeURIComponent(word)}`,
+    };
+    browser.tabs.create(tabData);
+  }
 };
+
+browser.contextMenus.create({
+  id: 'select-search',
+  title: 'Search %s on Jisho',
+  contexts: ['selection'],
+});
+
+browser.contextMenus.onClicked.addListener((info) => {
+  if (info.menuItemId === 'select-search') {
+    const searchText = info.selectionText;
+    searchJisho(searchText);
+  }
+});

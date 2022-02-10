@@ -40,10 +40,10 @@
             ],
             "js": [
                 "lib/js/utils/md5.js",
-                "src/js/common/storage.js",
-                "src/js/anki/japanese-util.js",
                 "lib/js/yomichan/anki-util.js",
                 "lib/js/yomichan/anki-connector.js",
+                "src/js/common/storage.js",
+                "src/js/anki/japanese-util.js",
                 "src/js/anki/anki.js",
                 "src/js/jisho/word-parser.js",
                 "src/js/jisho/meaning-selector.js",

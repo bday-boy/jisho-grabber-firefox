@@ -10,16 +10,9 @@ const parser = new WordParser();
 const storeWord = function (wordResultElement) {
   parser.parseWord(wordResultElement);
   const newItem = parser.wordObject;
-  const hashKeys = ['expression', 'englishMeaning'];
-  jpnStorage.checkForNoteID(newItem, hashKeys)
-    .then((alreadyAdded) => {
-      if (!alreadyAdded) {
-        return jpnStorage.set([newItem], hashKeys);
-      }
-      return {};
-    })
-    .then((value) => console.log(value))
-    .catch((error) => console.log(error));
+  if (!jpnStorage.checkForNoteID(newItem)) {
+    jpnStorage.set(newItem)
+  }
 };
 
 (function highlightDefinitions() {
@@ -42,10 +35,7 @@ const storeWord = function (wordResultElement) {
     });
     meaningWrapperElement.addEventListener('click', (event) => {
       storeWord(event.target);
-      jpnStorage.get().then(
-        (value) => console.log(value),
-        (error) => console.log(error),
-      );
+      console.log(jpnStorage.get());
     });
   });
 }());

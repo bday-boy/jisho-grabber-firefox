@@ -1,9 +1,14 @@
 /* eslint-disable no-param-reassign */
 /**
- * ANKI CONNECT SETUP
+ * Initialize all classes first
  */
 const ankiConnect = new AnkiConnect();
 const ankiConfig = new AnkiConfig(ankiConnect);
+const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
+
+/**
+ * ANKI CONNECT SETUP
+ */
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
 const ankiConnectSwitch = document.querySelector('#anki-connect-switch');
 
@@ -91,18 +96,11 @@ ankiConfigSelect.addEventListener('click', () => {
  */
 const refreshTableBtn = document.querySelector('#init-table');
 const addNotesBtn = document.querySelector('#add-anki-notes');
-const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
 
-jpnStorage.get().then(
-  (items) => tableManager.initTable(items),
-  (error) => console.log(error),
-);
+tableManager.initTable(jpnStorage.get());
 
 refreshTableBtn.addEventListener('click', () => {
-  jpnStorage.get().then(
-    (items) => tableManager.initTable(items),
-    (error) => console.log(error),
-  );
+  tableManager.initTable(jpnStorage.get());
 });
 
 addNotesBtn.addEventListener('click', () => {
@@ -145,19 +143,15 @@ const addNote = function (word, meaning, ankiSettings, jpnStorage, ankiConnector
   ) {
     return Promise.resolve(false);
   }
-  const hashKeys = ['expression', 'englishMeaning'];
   const wordObj = {
     expression: word,
     englishMeaning: meaning,
   };
-  return jpnStorage.createAnkiNote(wordObj, hashKeys, ankiSettings)
-    .then((note) => {
-      if (isEmptyObject(note)) { return {}; }
-      return ankiConnector.addNote(note);
-    })
+  const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
+  return ankiConnector.addNote(note)
     .then((response) => {
       if (response.result === undefined) { return false; }
-      return jpnStorage.changeProperty(wordObj, hashKeys, 'noteID', response.result);
+      return jpnStorage.changeProperty(wordObj, 'noteID', response.result);
     })
     .then(() => true)
     .catch((error) => {
@@ -184,12 +178,9 @@ const addNoteOnClick = function (event) {
 let jpnStorageTest;
 window.addEventListener('focus', () => {
   console.log('Window focused');
-  jpnStorage.get().then(
-    (items) => { jpnStorageTest = items; },
-    (error) => console.log(error),
-  );
+  jpnStorage.load();
 });
 window.addEventListener('blur', () => {
   console.log('Window blurred');
-  console.log(jpnStorageTest);
+  console.log(jpnStorage.get());
 });

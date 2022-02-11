@@ -125,14 +125,20 @@ const refreshTable = () => {
 refreshTableBtn.addEventListener('click', refreshTable);
 
 addNotesBtn.addEventListener('click', () => {
-  const addButtons = document.querySelectorAll('#notes-table tbody tr button');
-  let count = 1;
-  Array.from(addButtons).forEach((button) => {
-    if (!button.disabled) {
-      setTimeout(button.click(), 200 * count);
-      count += 1;
-    }
+  const addButtons = document.querySelectorAll('#notes-table tbody tr button:not([disabled])');
+  Array.from(addButtons).forEach((btn) => {
+    const wordObj = tableManager.getRowWordObj(btn);
+    addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
+      .then((added) => {
+        if (added) {
+          turnOffButton(btn);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   });
+  jpnStorage.save();
 });
 
 /**
@@ -157,24 +163,20 @@ const turnOffButton = function (buttonElement) {
  * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
  * keys
  */
-const addNote = function (word, meaning, ankiSettings, jpnStorage, ankiConnector) {
+const addNote = function (wordObj, ankiSettings, jpnStorage, ankiConnector) {
   if (/* Make sure ankiConnect works and ankiSettings is correct */
     !ankiConnector.enabled
     || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
   ) {
     return Promise.resolve(false);
   }
-  const wordObj = {
-    expression: word,
-    englishMeaning: meaning,
-  };
   const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
   return ankiConnector.addNote(note)
     .then((response) => {
       if (response.result === undefined) { return false; }
-      return jpnStorage.changeProperty(wordObj, 'noteID', response.result);
+      jpnStorage.changeProperty(wordObj, 'noteID', response.result);
+      return true;
     })
-    .then(() => true)
     .catch((error) => {
       console.log(error);
       return false;
@@ -183,13 +185,13 @@ const addNote = function (word, meaning, ankiSettings, jpnStorage, ankiConnector
 
 const addNoteOnClick = function (event) {
   const buttonElement = event.target.closest('button.button-pushable');
-  const dataRow = event.target.closest('tr');
-  const rowCells = dataRow.querySelectorAll('td');
-  const word = rowCells[0].childNodes[0].textContent;
-  const meaning = rowCells[1].childNodes[0].textContent;
-  addNote(word, meaning, ankiConfig.toObject(), jpnStorage, ankiConnect)
+  const wordObj = tableManager.getRowWordObj(event.target);
+  addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
     .then((added) => {
-      if (added) turnOffButton(buttonElement);
+      if (added) {
+        turnOffButton(buttonElement);
+        jpnStorage.save();
+      }
     })
     .catch((error) => {
       console.log(error);

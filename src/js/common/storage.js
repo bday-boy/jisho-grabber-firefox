@@ -142,8 +142,8 @@ class JapaneseStorage {
         allowDuplicate: true,
       },
     };
-    Object.entries(ankiSettings.fields).forEach((entry) => {
-      const [fieldKey, wordObjKey] = entry;
+    ankiSettings.fields.forEach((fieldPair) => {
+      const [fieldKey, wordObjKey] = fieldPair;
       if (wordObjKey !== NO_VAL_STRING) {
         note.fields[fieldKey] = wordObj[wordObjKey];
       } else {

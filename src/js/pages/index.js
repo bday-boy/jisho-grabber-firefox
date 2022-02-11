@@ -96,12 +96,33 @@ ankiConfigSelect.addEventListener('click', () => {
  */
 const refreshTableBtn = document.querySelector('#init-table');
 const addNotesBtn = document.querySelector('#add-anki-notes');
+const refreshTable = () => {
+  jpnStorage.load()
+    .then(() => {
+      tableManager.initTable(jpnStorage.get());
+      const editableCells = document.querySelectorAll(
+        '#notes-table > tbody td[contenteditable=true]'
+      );
+      Array.from(editableCells).forEach((cell) => {
+        cell.addEventListener('focus', function () {
+          this.oldValue = this.childNodes[0].textContent;
+          console.log('Clicked');
+        });
+        cell.addEventListener('blur', function () {
+          const newValue = this.childNodes[0].textContent;
+          if (this.oldValue !== undefined && this.oldValue !== newValue) {
+            const property = this.getAttribute('data-word-obj-key');
+            const wordObj = tableManager.getRowWordObj(this);
+            wordObj[property] = this.oldValue;
+            jpnStorage.changeProperty(wordObj, property, newValue);
+            jpnStorage.save();
+          }
+        });
+      });
+    });
+};
 
-tableManager.initTable(jpnStorage.get());
-
-refreshTableBtn.addEventListener('click', () => {
-  tableManager.initTable(jpnStorage.get());
-});
+refreshTableBtn.addEventListener('click', refreshTable);
 
 addNotesBtn.addEventListener('click', () => {
   const addButtons = document.querySelectorAll('#notes-table tbody tr button');
@@ -175,12 +196,12 @@ const addNoteOnClick = function (event) {
     });
 };
 
-let jpnStorageTest;
 window.addEventListener('focus', () => {
   console.log('Window focused');
   jpnStorage.load();
 });
-window.addEventListener('blur', () => {
-  console.log('Window blurred');
-  console.log(jpnStorage.get());
+
+window.addEventListener('load', () => {
+  console.log('Window loaded');
+  refreshTable();
 });

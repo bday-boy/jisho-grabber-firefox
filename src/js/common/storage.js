@@ -48,9 +48,6 @@ class JapaneseStorage {
   save() {
     if (!this._loaded) return;
     return this._storage.set({ japanese: this._japanese })
-      .then(() => {
-        alert('Saved changes to storage.')
-      })
       .catch((error) => {
         console.log(error);
       });

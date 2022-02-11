@@ -46,7 +46,7 @@
                 "src/js/anki/japanese-util.js",
                 "src/js/anki/anki.js",
                 "src/js/jisho/word-parser.js",
-                "src/js/jisho/meaning-selector.js",
+                "src/js/jisho/jisho-selector.js",
                 "src/js/jisho/element-picker.js",
                 "src/js/common/globals.js"
             ]

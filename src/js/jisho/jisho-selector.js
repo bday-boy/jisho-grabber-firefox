@@ -39,3 +39,13 @@ const storeWord = function (wordResultElement) {
     });
   });
 }());
+
+window.addEventListener('focus', () => {
+  console.log('Window focused');
+  jpnStorage.load();
+});
+
+window.addEventListener('blur', () => {
+  console.log('Window blurred');
+  console.log(jpnStorage.save());
+});

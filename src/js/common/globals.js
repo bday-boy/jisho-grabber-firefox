@@ -58,13 +58,3 @@ const isEmptyObject = function (variable) {
 const objectHasKeys = function (obj, keys) {
   return !keys.some((key) => !Object.prototype.hasOwnProperty.call(obj, key));
 };
-
-window.addEventListener('blur', () => {
-  console.log('Window blurred');
-  console.log(jpnStorage.save());
-});
-
-window.addEventListener('focus', () => {
-  console.log('Window loaded');
-  jpnStorage.load();
-});

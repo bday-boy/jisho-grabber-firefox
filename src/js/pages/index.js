@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /**
- * Initialize all classes first
+ * Initialize all classes
  */
 const ankiConnect = new AnkiConnect();
 const ankiConfig = new AnkiConfig(ankiConnect);
@@ -96,7 +96,8 @@ ankiConfigSelect.addEventListener('click', () => {
  */
 const refreshTableBtn = document.querySelector('#init-table');
 const addNotesBtn = document.querySelector('#add-anki-notes');
-const refreshTable = () => {
+const delNotesBtn = document.querySelector('#remove-added-notes');
+const refreshTable = function () {
   jpnStorage.load()
     .then(() => {
       tableManager.initTable(jpnStorage.get());
@@ -106,12 +107,13 @@ const refreshTable = () => {
       Array.from(editableCells).forEach((cell) => {
         cell.addEventListener('focus', function () {
           this.oldValue = this.childNodes[0].textContent;
-          console.log('Clicked');
         });
         cell.addEventListener('blur', function () {
           const newValue = this.childNodes[0].textContent;
           if (this.oldValue !== undefined && this.oldValue !== newValue) {
-            const property = this.getAttribute('data-word-obj-key');
+            const table = this.closest('table');
+            const th = table.querySelector(`thead th:nth-child(${1 + this.cellIndex})`);
+            const property = th.getAttribute('data-word-obj-key');
             const wordObj = tableManager.getRowWordObj(this);
             wordObj[property] = this.oldValue;
             jpnStorage.changeProperty(wordObj, property, newValue);
@@ -120,6 +122,14 @@ const refreshTable = () => {
         });
       });
     });
+};
+const turnOffButton = function (buttonElement) {
+  buttonElement.style.cursor = 'not-allowed';
+  buttonElement.disabled = 'disabled';
+  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
+  buttonSpan.textContent = ADDED;
+  buttonSpan.classList.remove('add-button');
+  buttonSpan.classList.add('added-button');
 };
 
 refreshTableBtn.addEventListener('click', refreshTable);
@@ -140,19 +150,24 @@ addNotesBtn.addEventListener('click', () => {
   });
   jpnStorage.save();
 });
+delNotesBtn.addEventListener('click', () => {
+  if (confirm('Are you sure? Deleted entires cannot be recovered.')) {
+    const delRows = document.querySelectorAll('#notes-table tbody tr button[disabled]');
+    Array.from(delRows).forEach((btn) => {
+      const wordObj = tableManager.getRowWordObj(btn);
+      jpnStorage.del(wordObj);
+      const thisRow = btn.closest('tr');
+      if (thisRow) {
+        thisRow.parentNode.removeChild(thisRow);
+      }
+    });
+    jpnStorage.save();
+  }
+});
 
 /**
  * FUNCTIONS FOR PAGE FUNCTIONALITY
  */
-
-const turnOffButton = function (buttonElement) {
-  buttonElement.style.cursor = 'not-allowed';
-  buttonElement.disabled = 'disabled';
-  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
-  buttonSpan.textContent = ADDED;
-  buttonSpan.classList.remove('add-button');
-  buttonSpan.classList.add('added-button');
-};
 
 /**
  * Adds a single note to Anki.
@@ -190,7 +205,6 @@ const addNoteOnClick = function (event) {
     .then((added) => {
       if (added) {
         turnOffButton(buttonElement);
-        jpnStorage.save();
       }
     })
     .catch((error) => {
@@ -201,6 +215,11 @@ const addNoteOnClick = function (event) {
 window.addEventListener('focus', () => {
   console.log('Window focused');
   jpnStorage.load();
+});
+
+window.addEventListener('blur', () => {
+  console.log('Window blurred');
+  jpnStorage.save();
 });
 
 window.addEventListener('load', () => {

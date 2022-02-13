@@ -1,14 +1,7 @@
 class TableManager {
   constructor(tableBody) {
+    this._anki = new Anki();
     this._table = tableBody;
-    this._tableKeys = [
-      'expression',
-      'englishMeaning',
-      'partsOfSpeech',
-      'common',
-      'jlpt',
-      'wanikani'
-    ];
     this._tableFilters = {
       japanese: {
         index: 0,
@@ -60,17 +53,31 @@ class TableManager {
         }
       }
     };
-    this._anki = new Anki();
+  }
+
+  getRowWordObj(element) {
+    const row = element.closest('tr');
+    if (!row) {
+      return {};
+    }
+    const expressionText = row.cells[0].childNodes[0];
+    const englishText = row.cells[1].childNodes[0];
+    return {
+      expression: expressionText.textContent.trim(),
+      englishMeaning: englishText.textContent.trim(),
+    };
   }
 
   initTable(wordObjs) {
-    const table = this._table.closest('table');
     while (this._table.firstChild) {
       this._table.removeChild(this._table.firstChild);
     }
-    this.insertRows(wordObjs);
+    this._insertRows(wordObjs);
+
+    const table = this._table.closest('table');
     table.style.display = '';
     table.style.tableLayout = 'fixed';
+
     const searchFilters = document.querySelector('thead > tr');
     for (const searchFilter of searchFilters.querySelectorAll('input')) {
       searchFilter.oninput = () => {
@@ -79,26 +86,26 @@ class TableManager {
     }
   }
 
-  insertRows(wordObjs) {
+  _insertRows(wordObjs) {
     for (const [hash, wordObj] of Object.entries(wordObjs)) {
-      this.insertRow(wordObj);
+      this._insertRow(wordObj);
     }
   }
 
-  insertRow(wordObj) {
+  _insertRow(wordObj) {
     const newRow = this._table.insertRow();
-    this.insertExpressionCell(
+    this._insertExpressionCell(
       newRow, wordObj.expression, wordObj.expressionWithReadings
     );
-    this.insertMeaningCell(newRow, wordObj.englishMeaning);
-    this.insertPartsOfSpeechCell(newRow, wordObj.partsOfSpeech);
-    this.insertCommonWordCell(newRow, wordObj.common);
-    this.insertJLPTCell(newRow, wordObj.jlpt);
-    this.insertWaniKaniCell(newRow, wordObj.wanikani);
-    this.insertButtonCell(newRow, wordObj.noteID !== -1);
+    this._insertMeaningCell(newRow, wordObj.englishMeaning);
+    this._insertPartsOfSpeechCell(newRow, wordObj.partsOfSpeech);
+    this._insertCommonWordCell(newRow, wordObj.common);
+    this._insertJLPTCell(newRow, wordObj.jlpt);
+    this._insertWaniKaniCell(newRow, wordObj.wanikani);
+    this._insertButtonCell(newRow, wordObj.noteID !== -1);
   }
 
-  insertExpressionCell(newRow, expression, reading) {
+  _insertExpressionCell(newRow, expression, reading) {
     const exprCell = this._newTextCell(newRow, expression, true, 'expression');
     exprCell.classList.add('expression')
     const hiddenReading = document.createElement('span');
@@ -109,50 +116,34 @@ class TableManager {
     exprCell.title = hoverReading;
   }
 
-  insertMeaningCell(newRow, meaning) {
-    this._newTextCell(newRow, meaning, true, 'englishMeaning');
+  _insertMeaningCell(newRow, meaning) {
+    this._newTextCell(newRow, meaning, true);
   }
 
-  insertPartsOfSpeechCell(newRow, partsOfSpeech) {
-    this._newTextCell(newRow, partsOfSpeech, true, 'partsOfSpeech');
+  _insertPartsOfSpeechCell(newRow, partsOfSpeech) {
+    this._newTextCell(newRow, partsOfSpeech, true);
   }
 
-  insertCommonWordCell(newRow, commonWord) {
-    this._newTextCell(newRow, commonWord, true, 'common');
+  _insertCommonWordCell(newRow, commonWord) {
+    this._newTextCell(newRow, commonWord, true);
   }
 
-  insertJLPTCell(newRow, jlptLevel) {
-    this._newTextCell(newRow, jlptLevel, true, 'jlpt');
+  _insertJLPTCell(newRow, jlptLevel) {
+    this._newTextCell(newRow, jlptLevel, true);
   }
 
-  insertWaniKaniCell(newRow, wanikaniLevel) {
-    this._newTextCell(newRow, wanikaniLevel, true, 'wanikani');
+  _insertWaniKaniCell(newRow, wanikaniLevel) {
+    this._newTextCell(newRow, wanikaniLevel, true);
   }
 
-  insertButtonCell(newRow, hasNoteID) {
+  _insertButtonCell(newRow, hasNoteID) {
     const newCell = newRow.insertCell();
     const newAddBtn = this._newAddButtonElement(hasNoteID);
     newCell.appendChild(newAddBtn);
   }
 
-  getRowWordObj(element) {
-    const row = element.closest('tr');
-    if (!row) {
-      return {};
-    }
-    const expressionText = row.querySelector('[data-word-obj-key=expression]').childNodes[0];
-    const englishText = row.querySelector('[data-word-obj-key=englishMeaning]').childNodes[0];
-    return {
-      expression: expressionText.textContent.trim(),
-      englishMeaning: englishText.textContent.trim(),
-    };
-  }
-
-  _newTextCell(newRow, text, editable, data) {
+  _newTextCell(newRow, text, editable) {
     const newCell = newRow.insertCell();
-    if (data) {
-      newCell.setAttribute('data-word-obj-key', data);
-    }
     if (editable) {
       newCell.setAttribute('contenteditable', 'true');
       newCell.setAttribute('spellcheck', 'false');
@@ -246,9 +237,7 @@ class TableManager {
     newAddBtn.appendChild(spanEdge);
     newAddBtn.appendChild(spanText);
     if (!hasNoteID) {
-      newAddBtn.addEventListener('click', event => {
-        addNoteOnClick(event);
-      });
+      newAddBtn.addEventListener('click', addNoteOnClick);
     } else {
       turnOffButton(newAddBtn);
     }

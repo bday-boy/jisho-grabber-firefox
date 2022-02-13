@@ -11,8 +11,7 @@ browser.storage.onChanged.addListener((changes, area) => {
   console.log(`Change in storage area: ${area}`);
   const changedItems = Object.keys(changes);
   changedItems.forEach((item) => {
-    console.log(`${item} has changed:`);
-    console.log('Old value and new value shown below: ');
+    console.log(`${item} has changed (old value, new value):`);
     console.log(changes[item].oldValue);
     console.log(changes[item].newValue);
   });
@@ -22,6 +21,7 @@ class JapaneseStorage {
   constructor(hashFunc, storageArea) {
     this._japanese = null;
     this._loaded = false;
+    this._changed = false;
     this._storage = storageArea;
     this._hashFunc = hashFunc;
     this._hashKeys = ['expression', 'englishMeaning'];
@@ -45,8 +45,11 @@ class JapaneseStorage {
   }
 
   save() {
-    if (!this._loaded) return;
+    if (!this._loaded || !this._changed) return;
     return this._storage.set({ japanese: this._japanese })
+      .then(() => {
+        this._changed = false;
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -66,6 +69,7 @@ class JapaneseStorage {
       throw new TypeError('item must be a nonempty object.');
     }
     this._japanese[this._getHash(item)] = item;
+    this._changed = true;
   }
 
   /**
@@ -106,6 +110,7 @@ class JapaneseStorage {
       throw new TypeError('item must be a nonempty object.');
     }
     delete this._japanese[this._getHash(item)];
+    this._changed = true;
   }
 
   /**

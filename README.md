@@ -47,6 +47,11 @@ of these future features are as follows:
 - Primarily visual features:
   - Better-looking buttons/animations and such
 
+## Bugs
+- When Jisho is scrolled in the y-direction and gets refreshed, all bounding
+  boxes are offset by the amount that is scrolled. I'm sure this is a super
+  easy fix, but it's pretty low-priority for me rn, so I don't really care.
+
 ## Notes for nerds
 I really like thorough documentation, so I'm going to use this area to dump
 information about this program that is important to my implementation, both

@@ -51,6 +51,10 @@ of these future features are as follows:
 - When Jisho is scrolled in the y-direction and gets refreshed, all bounding
   boxes are offset by the amount that is scrolled. I'm sure this is a super
   easy fix, but it's pretty low-priority for me rn, so I don't really care.
+  - **Update:** Fixed for now. Client bounding boxes have all kinds of BS going on
+    but it seems like this is working as should be. Turns out I was adding both
+    scrollY and document.body.getBoundingClientRect().top to the rectangle's y
+    coordinate, but only the latter is needed.
 
 ## Notes for nerds
 I really like thorough documentation, so I'm going to use this area to dump

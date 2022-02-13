@@ -1,9 +1,6 @@
-/*
- * Author:      Andrew Smith
- * File:        search-selection.js
- * Project:     jisho-grabber-firefox
- * Description: This file contains functionality to add a search function to
- *              the right-click context menu in Firefox.
+/**
+ * @file This file contains functionality to add a search function to the
+ * right-click context menu in Firefox.
  */
 
 const searchJisho = function (word) {

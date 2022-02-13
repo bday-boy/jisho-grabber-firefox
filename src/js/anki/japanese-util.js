@@ -1,10 +1,7 @@
-/*
-** Author:      Andrew Smith
-** File:        utils.js
-** Project:     jisho-grabber-firefox
-** Description: This file contains functions that are useful mostly for
-**              processing meaning/word data and such.
-*/
+/**
+ * @file This file contains functions that are useful mostly for processing
+ * meaning/word data and such.
+ */
 
 /** Class for processing Japanese characters. */
 class JapaneseUtil {

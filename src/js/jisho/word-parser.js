@@ -1,10 +1,7 @@
-/*
-** Author:      Andrew Smith
-** File:        word-parser.js
-** Project:     jisho-grabber-firefox
-** Description: Uses the element the user selected to get various word
-**              information, like meaning, tags, and reading.
-*/
+/**
+ * @file Uses the element the user selected to get various word information,
+ * like meaning, tags, and reading.
+ */
 
 class WordParser {
     constructor() {

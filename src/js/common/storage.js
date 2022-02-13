@@ -1,5 +1,4 @@
 /**
- * @author Andrew Smith
  * @file Class for managing the Japanese words in local storage. Database keys
  * are created by concatenating the Japanese expression and meaning of a
  * selected word and hashing them.

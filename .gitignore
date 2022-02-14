@@ -2,6 +2,7 @@
 .vscode/
 node_modules/
 package-lock.json
+package.json
 
 # For files I will no longer be using in the project
 .dead/

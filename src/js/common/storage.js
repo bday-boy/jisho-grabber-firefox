@@ -66,7 +66,7 @@ class JapaneseStorage {
           console.log(error);
         });
     }
-    return new Promise();
+    return Promise.resolve();
   }
 
   /**

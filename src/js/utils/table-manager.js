@@ -1,3 +1,68 @@
+const getRowWordObj = function (element) {
+  const row = element.closest('tr');
+  if (!row) {
+    return {};
+  }
+  const expressionText = row.cells[0].childNodes[0];
+  const englishText = row.cells[1].childNodes[0];
+  return {
+    expression: expressionText.textContent.trim(),
+    englishMeaning: englishText.textContent.trim(),
+  };
+};
+
+const turnOffButton = function (buttonElement) {
+  buttonElement.style.cursor = 'not-allowed';
+  buttonElement.disabled = 'disabled';
+  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
+  buttonSpan.textContent = ADDED;
+  buttonSpan.classList.remove('add-button');
+  buttonSpan.classList.add('added-button');
+};
+
+/**
+ * Adds a single note to Anki.
+ * @param {string} word
+ * @param {string} meaning
+ * @param {string} deck
+ * @param {string} model
+ * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
+ * keys
+ */
+const addNote = function (wordObj, ankiSettings, jpnStorage, ankiConnector) {
+  if (/* Make sure ankiConnect works and ankiSettings is correct */
+    !ankiConnector.enabled
+    || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
+  ) {
+    return Promise.resolve(false);
+  }
+  const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
+  return ankiConnector.addNote(note)
+    .then((response) => {
+      if (response.result === undefined) { return false; }
+      jpnStorage.changeProperty(wordObj, 'noteID', response.result);
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+};
+
+const addNoteOnClick = function (event) {
+  const buttonElement = event.target.closest('button.button-pushable');
+  const wordObj = getRowWordObj(event.target);
+  addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
+    .then((added) => {
+      if (added) {
+        turnOffButton(buttonElement);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 class TableManager {
   constructor(tableBody) {
     this._anki = new Anki();
@@ -6,65 +71,38 @@ class TableManager {
       japanese: {
         index: 0,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal.indexOf(enteredVal) > -1;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal.indexOf(enteredVal) > -1,
       },
       english: {
         index: 1,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal.indexOf(enteredVal) > -1;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal.indexOf(enteredVal) > -1,
       },
       partsOfSpeech: {
         index: 2,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal.indexOf(enteredVal) > -1;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal.indexOf(enteredVal) > -1,
       },
       common: {
         index: 3,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal !== NO_VAL_STRING;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal !== NO_VAL_STRING,
       },
       jlpt: {
         index: 4,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal.indexOf(enteredVal) > -1;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal.indexOf(enteredVal) > -1,
       },
       wanikani: {
         index: 5,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal.indexOf(enteredVal) > -1;
-        }
+        filterFunc: (enteredVal, cellVal) => cellVal.indexOf(enteredVal) > -1,
       },
       added: {
         index: 6,
         value: '',
-        filterFunc: (enteredVal, cellVal) => {
-          return cellVal === ADD;
-        }
-      }
-    };
-  }
-
-  getRowWordObj(element) {
-    const row = element.closest('tr');
-    if (!row) {
-      return {};
-    }
-    const expressionText = row.cells[0].childNodes[0];
-    const englishText = row.cells[1].childNodes[0];
-    return {
-      expression: expressionText.textContent.trim(),
-      englishMeaning: englishText.textContent.trim(),
+        filterFunc: (enteredVal, cellVal) => cellVal === ADD,
+      },
     };
   }
 
@@ -79,24 +117,21 @@ class TableManager {
     table.style.tableLayout = 'fixed';
 
     const searchFilters = document.querySelector('thead > tr');
-    for (const searchFilter of searchFilters.querySelectorAll('input')) {
-      searchFilter.oninput = () => {
-        this._filterTable();
-      };
-    }
+    searchFilters.querySelectorAll('input').forEach((searchFilter) => {
+      searchFilter.addEventListener('input', () => { this._filterTable(); });
+    });
   }
 
   _insertRows(wordObjs) {
-    for (const [hash, wordObj] of Object.entries(wordObjs)) {
+    Object.entries(wordObjs).forEach((entry) => {
+      const wordObj = entry[1];
       this._insertRow(wordObj);
-    }
+    });
   }
 
   _insertRow(wordObj) {
     const newRow = this._table.insertRow();
-    this._insertExpressionCell(
-      newRow, wordObj.expression, wordObj.expressionWithReadings
-    );
+    this._insertExpressionCell(newRow, wordObj.expression, wordObj.expressionWithReadings);
     this._insertMeaningCell(newRow, wordObj.englishMeaning);
     this._insertPartsOfSpeechCell(newRow, wordObj.partsOfSpeech);
     this._insertCommonWordCell(newRow, wordObj.common);
@@ -148,7 +183,7 @@ class TableManager {
       newCell.setAttribute('contenteditable', 'true');
       newCell.setAttribute('spellcheck', 'false');
     }
-    newCell.textContent = text ? text : NO_VAL_STRING;
+    newCell.textContent = text || NO_VAL_STRING;
     return newCell;
   }
 

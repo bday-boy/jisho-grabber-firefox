@@ -7,62 +7,6 @@ const ankiConfig = new AnkiConfig(ankiConnect);
 const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
 
 /**
- * FUNCTIONS FOR PAGE FUNCTIONALITY
- */
-
-const turnOffButton = function (buttonElement) {
-  buttonElement.style.cursor = 'not-allowed';
-  buttonElement.disabled = 'disabled';
-  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
-  buttonSpan.textContent = ADDED;
-  buttonSpan.classList.remove('add-button');
-  buttonSpan.classList.add('added-button');
-};
-
-/**
- * Adds a single note to Anki.
- * @param {string} word
- * @param {string} meaning
- * @param {string} deck
- * @param {string} model
- * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
- * keys
- */
-const addNote = function (wordObj, ankiSettings, jpnStorage, ankiConnector) {
-  if (/* Make sure ankiConnect works and ankiSettings is correct */
-    !ankiConnector.enabled
-    || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
-  ) {
-    return Promise.resolve(false);
-  }
-  const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
-  return ankiConnector.addNote(note)
-    .then((response) => {
-      if (response.result === undefined) { return false; }
-      jpnStorage.changeProperty(wordObj, 'noteID', response.result);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-};
-
-const addNoteOnClick = function (event) {
-  const buttonElement = event.target.closest('button.button-pushable');
-  const wordObj = tableManager.getRowWordObj(event.target);
-  addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
-    .then((added) => {
-      if (added) {
-        turnOffButton(buttonElement);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-/**
  * ANKI CONNECT SETUP
  */
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
@@ -159,7 +103,7 @@ const refreshTable = function () {
             const table = this.closest('table');
             const th = table.querySelector(`thead th:nth-child(${1 + this.cellIndex})`);
             const property = th.getAttribute('data-word-obj-key');
-            const wordObj = tableManager.getRowWordObj(this);
+            const wordObj = getRowWordObj(this);
             wordObj[property] = this.oldValue;
             jpnStorage.changeProperty(wordObj, property, newValue);
             jpnStorage.save();
@@ -169,17 +113,15 @@ const refreshTable = function () {
     });
 };
 
-refreshTableBtn.addEventListener('click', refreshTable);
+refreshTableBtn.addEventListener('click', () => { refreshTable(); });
 
 addNotesBtn.addEventListener('click', () => {
   const addButtons = document.querySelectorAll('#notes-table tbody tr button:not([disabled])');
   Array.from(addButtons).forEach((btn) => {
-    const wordObj = tableManager.getRowWordObj(btn);
+    const wordObj = getRowWordObj(btn);
     addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
       .then((added) => {
-        if (added) {
-          turnOffButton(btn);
-        }
+        if (added) turnOffButton(btn);
       })
       .catch((error) => {
         console.log(error);
@@ -191,7 +133,7 @@ delNotesBtn.addEventListener('click', () => {
   if (confirm('Are you sure? Deleted entires cannot be recovered.')) {
     const delRows = document.querySelectorAll('#notes-table tbody tr button[disabled]');
     Array.from(delRows).forEach((btn) => {
-      const wordObj = tableManager.getRowWordObj(btn);
+      const wordObj = getRowWordObj(btn);
       jpnStorage.del(wordObj);
       const thisRow = btn.closest('tr');
       if (thisRow) {

@@ -83,6 +83,7 @@ const getElementBoundingClientRect = function (elem) {
     }
   });
 
+  // TODO: Delete this? Idk it's working on my Mac but not my Ubuntu distro
   // for (const child of elem.children) {
   //   rect = getElementBoundingClientRect(child);
   //   if (rect.width === 0 || rect.height === 0) { continue; }

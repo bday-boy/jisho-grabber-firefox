@@ -6,14 +6,21 @@
 let drawn = false;
 const parser = new WordParser();
 
+/**
+ * Stores a definition in Jisho if it doesn't already exist in storage.
+ * @param {Element} wordResultElement - The DOM element of the definition to store
+ */
 const storeWord = function (wordResultElement) {
   parser.parseWord(wordResultElement);
   const newItem = parser.wordObject;
   if (!jpnStorage.checkForNoteID(newItem)) {
-    jpnStorage.set(newItem)
+    jpnStorage.set(newItem);
   }
 };
 
+/**
+ * The main function to add page functionality for saving definitions from Jisho.
+ */
 const onLoad = function () {
   (function highlightDefinitions() {
     const meaningWrappers = document.querySelectorAll('div.meaning-wrapper');
@@ -39,7 +46,7 @@ const onLoad = function () {
       });
     });
   }());
-}
+};
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', onLoad);
@@ -54,5 +61,5 @@ window.addEventListener('focus', () => {
 
 window.addEventListener('blur', () => {
   console.log('Saving content to Japanese storage...');
-  console.log(jpnStorage.save());
+  jpnStorage.save();
 });

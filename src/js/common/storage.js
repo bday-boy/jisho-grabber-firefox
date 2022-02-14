@@ -17,6 +17,7 @@ browser.storage.onChanged.addListener((changes, area) => {
   });
 });
 
+// eslint-disable-next-line no-unused-vars
 class JapaneseStorage {
   constructor(hashFunc, storageArea) {
     this._japanese = null;
@@ -28,6 +29,11 @@ class JapaneseStorage {
     this.load();
   }
 
+  /**
+   * Loads all Japanese vocab from local storage into an instance's _japanese
+   * property.
+   * @returns {Promise}
+   */
   load() {
     this._loaded = false;
     return this._storage.get('japanese')
@@ -38,21 +44,29 @@ class JapaneseStorage {
           this._japanese = jpnObj.japanese;
         }
         this._loaded = true;
-      }, (error) => {
+      })
+      .catch((error) => {
         console.log(error);
         this._loaded = false;
       });
   }
 
+  /**
+   * Saves changes made in a loaded Japanese Storage object back into local
+   * storage.
+   * @returns {Promise}
+   */
   save() {
-    if (!this._loaded || !this._changed) return;
-    return this._storage.set({ japanese: this._japanese })
-      .then(() => {
-        this._changed = false;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (this._loaded && this._changed) {
+      return this._storage.set({ japanese: this._japanese })
+        .then(() => {
+          this._changed = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    return new Promise();
   }
 
   /**
@@ -92,11 +106,10 @@ class JapaneseStorage {
       throw new TypeError('item must be a nonempty object.');
     }
     const gotItem = this._japanese[this._getHash(item)];
-    if (gotItem !== undefined && !isEmptyObject(gotItem)) {
-      return gotItem;
-    } else {
+    if (gotItem === undefined || isEmptyObject(gotItem)) {
       return {};
     }
+    return gotItem;
   }
 
   /**
@@ -116,20 +129,17 @@ class JapaneseStorage {
   /**
    * Checks local storage for the given item and sees if the noteID field is
    * not empty.
-   * @param {Object} item
+   * @param {Object} item - The word object to check for a note ID.
    * @returns {boolean} True if the item has a noteID, false otherwise.
    */
   checkForNoteID(item) {
     const wordObj = this.get(item);
-    if (wordObj !== undefined) {
-      return wordObj.noteID !== undefined && wordObj.noteID !== NO_NOTEID;
-    }
-    return false;
+    return wordObj !== undefined && wordObj.noteID !== undefined && wordObj.noteID !== NO_NOTEID;
   }
 
   /**
    * Gets an item from storage and creates a note object to be sent to Anki.
-   * @param {Object} item
+   * @param {Object} item - The word object to create an Anki note from.
    * @returns {Object} A new Anki note.
    */
   createAnkiNote(item, ankiSettings) {
@@ -180,7 +190,7 @@ class JapaneseStorage {
   /**
    * Uses an object and a list of keys to concatenate values from the object
    * and hash them.
-   * @param {Object} items - Object with JSONifiable values
+   * @param {Object} item - Object with JSONifiable values
    * @returns {string} Hex string MD5 hash
    */
   _getHash(item) {

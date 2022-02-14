@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const jpnStorage = new JapaneseStorage(window.md5, browser.storage.local);
 const ADD = '+';
 const ADDED = '✓';

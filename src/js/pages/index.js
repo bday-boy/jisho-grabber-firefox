@@ -7,6 +7,62 @@ const ankiConfig = new AnkiConfig(ankiConnect);
 const tableManager = new TableManager(document.querySelector('#notes-table tbody'));
 
 /**
+ * FUNCTIONS FOR PAGE FUNCTIONALITY
+ */
+
+const turnOffButton = function (buttonElement) {
+  buttonElement.style.cursor = 'not-allowed';
+  buttonElement.disabled = 'disabled';
+  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
+  buttonSpan.textContent = ADDED;
+  buttonSpan.classList.remove('add-button');
+  buttonSpan.classList.add('added-button');
+};
+
+/**
+ * Adds a single note to Anki.
+ * @param {string} word
+ * @param {string} meaning
+ * @param {string} deck
+ * @param {string} model
+ * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
+ * keys
+ */
+const addNote = function (wordObj, ankiSettings, jpnStorage, ankiConnector) {
+  if (/* Make sure ankiConnect works and ankiSettings is correct */
+    !ankiConnector.enabled
+    || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
+  ) {
+    return Promise.resolve(false);
+  }
+  const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
+  return ankiConnector.addNote(note)
+    .then((response) => {
+      if (response.result === undefined) { return false; }
+      jpnStorage.changeProperty(wordObj, 'noteID', response.result);
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+};
+
+const addNoteOnClick = function (event) {
+  const buttonElement = event.target.closest('button.button-pushable');
+  const wordObj = tableManager.getRowWordObj(event.target);
+  addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
+    .then((added) => {
+      if (added) {
+        turnOffButton(buttonElement);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+/**
  * ANKI CONNECT SETUP
  */
 const ankiConnectStatus = document.querySelector('#anki-connect-status');
@@ -53,17 +109,6 @@ const configModelSelect = document.querySelector('#select-model');
 const configCloseBtn = document.querySelector('#cancel-config');
 const configResetBtn = document.querySelector('#refresh-config');
 const configSaveBtn = document.querySelector('#save-config');
-const ankiSettings = {
-  deck: 'Jisho Grabber Test',
-  model: 'Jisho Test',
-  fields: [
-    ['Expression', 'expression'],
-    ['Reading', 'expressionWithReadings'],
-    ['Meaning', 'englishMeaning'],
-    ['Parts of speech', 'partsOfSpeech'],
-    ['Tags', 'allTags'],
-  ],
-};
 
 configModelSelect.addEventListener('change', () => {
   ankiConfig.initFieldOptions(configModelSelect.value);
@@ -102,13 +147,13 @@ const refreshTable = function () {
     .then(() => {
       tableManager.initTable(jpnStorage.get());
       const editableCells = document.querySelectorAll(
-        '#notes-table > tbody td[contenteditable=true]'
+        '#notes-table > tbody td[contenteditable=true]',
       );
       Array.from(editableCells).forEach((cell) => {
-        cell.addEventListener('focus', function () {
+        cell.addEventListener('focus', function saveOldValue() {
           this.oldValue = this.childNodes[0].textContent;
         });
-        cell.addEventListener('blur', function () {
+        cell.addEventListener('blur', function updateStorage() {
           const newValue = this.childNodes[0].textContent;
           if (this.oldValue !== undefined && this.oldValue !== newValue) {
             const table = this.closest('table');
@@ -122,14 +167,6 @@ const refreshTable = function () {
         });
       });
     });
-};
-const turnOffButton = function (buttonElement) {
-  buttonElement.style.cursor = 'not-allowed';
-  buttonElement.disabled = 'disabled';
-  const buttonSpan = buttonElement.querySelector('span.button-pushable-front');
-  buttonSpan.textContent = ADDED;
-  buttonSpan.classList.remove('add-button');
-  buttonSpan.classList.add('added-button');
 };
 
 refreshTableBtn.addEventListener('click', refreshTable);
@@ -164,53 +201,6 @@ delNotesBtn.addEventListener('click', () => {
     jpnStorage.save();
   }
 });
-
-/**
- * FUNCTIONS FOR PAGE FUNCTIONALITY
- */
-
-/**
- * Adds a single note to Anki.
- * @param {string} word
- * @param {string} meaning
- * @param {string} deck
- * @param {string} model
- * @param {Array[]} fields - Pairs/map of model fields -> WordParser.wordObj
- * keys
- */
-const addNote = function (wordObj, ankiSettings, jpnStorage, ankiConnector) {
-  if (/* Make sure ankiConnect works and ankiSettings is correct */
-    !ankiConnector.enabled
-    || !objectHasKeys(ankiSettings, ['deck', 'model', 'tags', 'fields'])
-  ) {
-    return Promise.resolve(false);
-  }
-  const note = jpnStorage.createAnkiNote(wordObj, ankiSettings);
-  return ankiConnector.addNote(note)
-    .then((response) => {
-      if (response.result === undefined) { return false; }
-      jpnStorage.changeProperty(wordObj, 'noteID', response.result);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-};
-
-const addNoteOnClick = function (event) {
-  const buttonElement = event.target.closest('button.button-pushable');
-  const wordObj = tableManager.getRowWordObj(event.target);
-  addNote(wordObj, ankiConfig.toObject(), jpnStorage, ankiConnect)
-    .then((added) => {
-      if (added) {
-        turnOffButton(buttonElement);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
 
 window.addEventListener('focus', () => {
   console.log('Window focused');

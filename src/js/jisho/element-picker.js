@@ -6,6 +6,9 @@
 let myCanvas;
 let canvasContainer;
 
+/**
+ * Creates a new canvas over the entire web page if it does not exist.
+ */
 const createCanvasOverlay = function () {
   if (myCanvas === undefined) {
     if (canvasContainer === undefined) {
@@ -32,52 +35,77 @@ const createCanvasOverlay = function () {
   } else { myCanvas.parentNode.style.visibility = 'visible'; }
 };
 
-function hideCanvas() {
+/**
+ * Hides the canvas to prevent bounding boxes from being drawn.
+ */
+const hideCanvas = function () {
   if (myCanvas !== undefined && myCanvas.parentNode !== undefined) {
     myCanvas.parentNode.style.visibility = 'hidden';
   }
 };
 
-/*
+/**
  * This function was adapted from part of the uBlock Origin source code,
  * created by user gorhill (and 93 other contributors) on GitHub.
- * Date retrieved: Dec 29, 2021
  * https://github.com/gorhill/uBlock/blob/master/src/js/scriptlets/epicker.js
+ * @param {Element} elem - The element to find a bounding box for
+ * @returns {Object} The element's bounding box
  */
 const getElementBoundingClientRect = function (elem) {
-  let rect = typeof elem.getBoundingClientRect === 'function'
-    ? elem.getBoundingClientRect()
-    : { height: 0, left: 0, top: 0, width: 0 };
+  let rect;
+  if (typeof elem.getBoundingClientRect === 'function') {
+    rect = elem.getBoundingClientRect();
+  } else {
+    rect = {
+      height: 0,
+      left: 0,
+      top: 0,
+      width: 0,
+    };
+  }
 
   // Try not returning an empty bounding rect.
   if (rect.width !== 0 && rect.height !== 0) {
     return rect;
   }
 
-  let left = rect.left;
-  let right = rect.right;
-  let top = rect.top;
-  let bottom = rect.bottom;
+  let { left, top } = rect;
+  let right = left + rect.width;
+  let bottom = top + rect.height;
 
-  for (const child of elem.children) {
+  elem.children.forEach((child) => {
     rect = getElementBoundingClientRect(child);
-    if (rect.width === 0 || rect.height === 0) {
-      continue;
+    if (rect.width !== 0 && rect.height !== 0) {
+      if (rect.left < left) { left = rect.left; }
+      if (rect.right > right) { right = rect.right; }
+      if (rect.top < top) { top = rect.top; }
+      if (rect.bottom > bottom) { bottom = rect.bottom; }
     }
-    if (rect.left < left) { left = rect.left; }
-    if (rect.right > right) { right = rect.right; }
-    if (rect.top < top) { top = rect.top; }
-    if (rect.bottom > bottom) { bottom = rect.bottom; }
-  }
+  });
+
+  // for (const child of elem.children) {
+  //   rect = getElementBoundingClientRect(child);
+  //   if (rect.width === 0 || rect.height === 0) { continue; }
+  //   if (rect.left < left) { left = rect.left; }
+  //   if (rect.right > right) { right = rect.right; }
+  //   if (rect.top < top) { top = rect.top; }
+  //   if (rect.bottom > bottom) { bottom = rect.bottom; }
+  // }
 
   return {
+    bottom,
     height: bottom - top,
     left,
+    right,
     top,
-    width: right - left
+    width: right - left,
   };
 };
 
+/**
+ * Draws a translucent green rectangle over the input element.
+ * @param {Element} elem - The element to draw a rectangle around
+ */
 const highlightElement = function (elem) {
   const offsetX = document.body.getBoundingClientRect().left;
   const offsetY = document.body.getBoundingClientRect().top;

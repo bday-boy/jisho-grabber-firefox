@@ -117,7 +117,7 @@ class WordParser {
       jlpt: '',
       wanikani: [],
     };
-    Array.from(wordTagsElement).forEach((tag) => {
+    wordTagsElement.forEach((tag) => {
       const tagText = tag.textContent.toLowerCase().trim().split(' ');
       switch (tagText[0]) {
         case 'common':

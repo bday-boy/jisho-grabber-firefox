@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const getRowWordObj = function (element) {
   const row = element.closest('tr');
   if (!row) {
@@ -142,7 +143,7 @@ class TableManager {
 
   _insertExpressionCell(newRow, expression, reading) {
     const exprCell = this._newTextCell(newRow, expression, true, 'expression');
-    exprCell.classList.add('expression')
+    exprCell.classList.add('expression');
     const hiddenReading = document.createElement('span');
     const hoverReading = this._anki.makeKana(reading);
     hiddenReading.textContent = hoverReading;
@@ -188,7 +189,7 @@ class TableManager {
   }
 
   _updateFilterValues() {
-    for (const filterType of Object.keys(this._tableFilters)) {
+    Object.keys(this._tableFilters).forEach((filterType) => {
       const input = document.querySelector(`#filter-${filterType}`);
       switch (filterType) {
         case 'japanese':
@@ -208,25 +209,26 @@ class TableManager {
           console.log(`Filter type ${filterType} has not been added yet.`)
           break;
       }
-    }
+    });
   }
 
   _filterTable() {
     this._updateFilterValues();
     const rows = document.querySelectorAll('tbody tr');
     const activeFilters = {};
-    for (const [key, searchFilter] of Object.entries(this._tableFilters)) {
+    Object.entries(this._tableFilters).forEach((entry) => {
+      const [key, searchFilter] = entry;
       if (searchFilter.value !== '') {
         activeFilters[key] = searchFilter;
       }
-    }
-    for (const row of rows) {
-      let show = true;
-      for (const [key, searchFilter] of Object.entries(activeFilters)) {
+    });
+    rows.forEach((row) => {
+      const hide = Object.entries(activeFilters).some((entry) => {
+        const [key, searchFilter] = entry;
         let cellVal = this._getRowColumnValue(row, searchFilter.index);
         switch (key) {
           case 'japanese':
-            cellVal += ' ' + row.cells[searchFilter.index].querySelector('span').textContent;
+            cellVal += ` ${row.cells[searchFilter.index].querySelector('span').textContent}`;
             break;
           case 'jlpt':
           case 'common':
@@ -236,16 +238,13 @@ class TableManager {
           case 'added':
             break;
           default:
-            console.log(`Filter type ${key} has not been added yet.`)
+            console.log(`Filter type ${key} has not been added yet.`);
             break;
         }
-        show &= searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
-        if (!show) {
-          break;
-        }
-      }
-      this._hideOrUnhideRow(row, show);
-    }
+        return !searchFilter.filterFunc(searchFilter.value, cellVal.toLowerCase());
+      });
+      this._hideOrUnhideRow(row, !hide);
+    });
   }
 
   _hideOrUnhideRow(row, shouldShow) {

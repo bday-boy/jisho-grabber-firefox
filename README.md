@@ -55,6 +55,10 @@ of these future features are as follows:
     but it seems like this is working as should be. Turns out I was adding both
     scrollY and document.body.getBoundingClientRect().top to the rectangle's y
     coordinate, but only the latter is needed.
+- When a sentence is searched on Jisho and the user switches between meanings
+  of words in the sentence, definitions will not be selectable. I think this
+  happens because definitions are given highlighting events on page load, and
+  switching between meanings in a sentence doesn't reload the page.
 
 ## Notes for nerds
 I really like thorough documentation, so I'm going to use this area to dump

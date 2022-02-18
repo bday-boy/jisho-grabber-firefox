@@ -14,32 +14,32 @@ const ankiConnectSwitch = document.querySelector('#anki-connect-switch');
 
 ankiConnectSwitch.checked = false;
 ankiConnectSwitch.addEventListener('change', (event) => {
+  ankiConnectStatus.classList.remove('success-text', 'error-text');
   if (event.target.checked) {
     ankiConnect.server = document.querySelector('#anki-connect-server').value;
     ankiConnect.isConnected()
       .then((isConnected) => {
         ankiConnect.enabled = isConnected;
-        ankiConnectStatus.style.display = 'block';
         if (isConnected) {
-          ankiConnectStatus.style.color = 'green';
+          ankiConnectStatus.classList.add('success-text');
           ankiConnectStatus.textContent = 'Connected to Anki';
           ankiConfig.initDeckOptions();
           ankiConfig.initModelOptions();
           ankiConfig.loadOptions();
         } else {
-          ankiConnectStatus.style.color = '#ff4242';
+          ankiConnectStatus.classList.add('error-text');
           ankiConnectStatus.textContent = 'Failed to connect, see console for error';
         }
       }, (error) => {
         ankiConnect.enabled = false;
-        ankiConnectStatus.style.display = 'block';
-        ankiConnectStatus.style.color = '#ff4242';
-        ankiConnectStatus.textContent = `Failed to connect: ${error.error}`;
+        ankiConnectStatus.classList.add('error-text');
+        ankiConnectStatus.textContent = 'Failed to connect, see console for error';
         throw error;
       });
   } else {
     ankiConnect.enabled = false;
-    ankiConnectStatus.style.display = 'none';
+    ankiConnectStatus.classList.add('hint-text');
+    ankiConnectStatus.textContent = 'Not connected to Anki';
   }
 });
 

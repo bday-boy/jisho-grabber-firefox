@@ -96,10 +96,10 @@ th .text-input, th .switch {
  */
 svg.border-horizontal {
   height: 3px;
-  width: 95%;
+  width: 100%;
 }
 svg.border-vertical {
-  height: 95%;
+  height: 2rem;
   width: 3px;
 }
 svg > rect {
@@ -107,7 +107,7 @@ svg > rect {
 }
 svg > rect.content-border-horizontal {
   height: inherit;
-  width: 100%;
+  width: 95%;
 }
 svg > rect.content-border-vertical {
   height: 100%;
@@ -119,6 +119,12 @@ svg > rect.content-border-vertical {
   height: inherit;
   justify-content: center;
   width: inherit;
+}
+.vl {
+  border: 1.5px solid var(--background-color-main);
+  border-radius: 1.5px;
+  height: 1.5rem;
+  left: 50%;
 }
 
 /**

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/src/css/homepage.css"/>
+    <link rel="stylesheet" href="/src/css/materials.css"/>
+    <link rel="stylesheet" href="/src/css/modal.css"/>
+  </head>
+
+  <body>
+    <div id="anki-config-modal" class="modal">
+      <div class="modal-content">
+        <div class="content-group">
+          <div class="content-header">
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
+            <span>
+              Anki deck and model configuration
+            </span>
+          </div>
+          <div class="content-body">
+            <div class="content-item">
+              <div class="content-item-cell">
+                <select id="select-deck" class="select-input">
+                  <option id="default-deck" value="">Select deck</option>
+                </select>
+              </div>
+              <div class="content-item-cell">
+                <select id="select-model" class="select-input">
+                  <option id="default-model" value="">Select model</option>
+                </select>
+              </div>
+            </div>
+            <div class="content-item">
+              <div class="content-item-left">
+                <span>
+                  Note field
+                </span>
+              </div>
+              <div class="content-item-right">
+                <span>
+                  Field from this extension
+                </span>
+              </div>
+            </div>
+            <div id="select-model-fields"></div>
+            <div id="config-buttons" class="content-item">
+              <button id="cancel-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Close
+                </span>
+              </button>
+              <button id="refresh-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Reset
+                </span>
+              </button>
+              <button id="save-config" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Save
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-main">
+      <div class="content-center">
+        <div class="content-group">
+          <div class="content-header">
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
+            <span>
+              Anki integration configuration
+            </span>
+          </div>
+          <div class="content-body">
+            <div class="content-item">
+              <div class="content-item-left">
+                <span>
+                  Connect to Anki via AnkiConnect (required for Anki integration)
+                </span>
+                <label id="anki-connect-status" class="content-item-hidden-text"></label>
+              </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
+              <div class="content-item-right">
+                <label class="switch">
+                  <input id="anki-connect-switch" type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
+            </div>
+            <div class="content-item">
+              <div class="content-item-left">
+                <span>
+                  AnkiConnect localhost URL and port
+                </span>
+                <label class="content-item-hint">
+                  Default is http://127.0.0.1:8765/ or http://localhost:8765/
+                </label>
+              </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
+              <div class="content-item-right">
+                <input id="anki-connect-server" type="text" class="text-input" value="http://127.0.0.1:8765/">
+              </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
+            </div>
+            <div class="content-item">
+              <div class="content-item-left">
+                <span>
+                  Card tags
+                </span>
+                <label class="content-item-hint">
+                  List of comma-separated tags
+                </label>
+              </div>
+              <div class="content-border-wrapper">
+                <svg class="border-vertical">
+                  <rect class="content-border-vertical" rx="2"></rect>
+                </svg>
+              </div>
+              <div class="content-item-right">
+                <input id="anki-tags" type="text" class="text-input" value="jisho_grabber">
+              </div>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
+            </div>
+            <div id="anki-config" class="content-item">
+              <div class="content-item-left">
+                <span>
+                  Set Anki deck and model settings
+                </span>
+              </div>
+              <div class="content-item-right">
+                <div class="arrow-right"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="table-group" class="content-group">
+          <div class="content-header">
+            <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
+            <span>
+              Anki note table
+            </span>
+          </div>
+          <div class="content-body">
+            <div class="content-item">
+              <button id="init-table" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Refresh table
+                </span>
+              </button>
+              <button id="remove-rows" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Remove row mode
+                </span>
+              </button>
+              <button id="remove-added-notes" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Remove added notes
+                </span>
+              </button>
+              <button id="add-anki-notes" class="button-pushable" role="button">
+                <span class="button-pushable-shadow"></span>
+                <span class="button-pushable-edge"></span>
+                <span class="button-pushable-front">
+                  Add all notes
+                </span>
+              </button>
+            </div>
+            <div class="content-border-wrapper">
+              <svg class="border-horizontal">
+                <rect class="content-border-horizontal" rx="2"></rect>
+              </svg>
+            </div>
+            <div class="content-item">
+              <span>
+                Below is a table of all available Anki notes in local storage. Fields can be filtered and the table can
+                be scrolled.
+              </span>
+            </div>
+            <div class="table-wrapper disable-scrollbars">
+              <table id="notes-table" style="display: none;">
+                <!-- <caption>
+                  Table of all available Anki notes in local storage.
+                </caption> -->
+                <colgroup>
+                  <col span="7">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col" data-word-obj-key="expression">
+                      <span>
+                        Japanese<br>expression
+                      </span><br>
+                      <input id="filter-japanese" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col" data-word-obj-key="englishMeaning">
+                      <span>
+                        English<br>meaning(s)
+                      </span><br>
+                      <input id="filter-english" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col" data-word-obj-key="partsOfSpeech">
+                      <span>
+                        Part(s) of<br>speech
+                      </span><br>
+                      <input id="filter-partsOfSpeech" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col" data-word-obj-key="common">
+                      <span>
+                        Common word
+                      </span>
+                      <label class="switch">
+                        <input id="filter-common" type="checkbox">
+                        <span class="slider"></span>
+                      </label>
+                    </th>
+                    <th scope="col" data-word-obj-key="jlpt">
+                      <span>
+                        JLPT level
+                      </span><br>
+                      <input id="filter-jlpt" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col" data-word-obj-key="wanikani">
+                      <span>
+                        WaniKani level(s)
+                      </span><br>
+                      <input id="filter-wanikani" type="text" class="text-input" placeholder="Filter...">
+                    </th>
+                    <th scope="col">
+                      <span>
+                        Add to Anki
+                      </span>
+                      <label class="switch">
+                        <input id="filter-added" type="checkbox">
+                        <span class="slider"></span>
+                      </label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/md5/js/md5.js"></script>
+    <script src="/lib/yomichan/js/anki-util.js"></script>
+    <script src="/lib/yomichan/js/anki-connector.js"></script>
+    <script src="/src/js/anki/japanese-util.js"></script>
+    <script src="/src/js/anki/anki.js"></script>
+    <script src="/src/js/anki/anki-config.js"></script>
+    <script src="/src/js/utils/table-manager.js"></script>
+    <script src="/src/js/common/storage.js"></script>
+    <script src="/src/js/common/globals.js"></script>
+    <script src="/src/js/pages/index.js"></script>
+  </body>
+</html>

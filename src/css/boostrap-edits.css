@@ -1,0 +1,85 @@
+:root {
+  --background-color-main: #e5e5e5;
+  --background-color-group: #f8f8f8;
+  --background-color-hover: #ddd;
+  --background-color-table-even: #f0f0f0;
+  --background-color-table-odd: var(--background-color-main);
+
+  --content-margin: 10px;
+  --content-padding: 10px;
+  --content-width: 900px;
+  --content-outline: 2px solid var(--background-color-main);
+  --content-border-radius: 8px;
+  --content-error-text-color: #ff4242;
+
+  --font-color-high-emphasis: #000;
+  --font-color-low-emphasis: #aaa;
+  --font-family: Garamond, Arial, Helvetica, sans-serif;
+  --font-size: 16px;
+  --font-size-small: 12px;
+  --font-size-header: 20px;
+  --hover-text-color: rgb(0, 102, 204);
+
+  --shadow-color: #5a5a5a88;
+  --shadow-box: 4px 2px 4px var(--shadow-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color-main: #121212;
+    --background-color-group: #212121;
+    --background-color-hover: #333;
+    --background-color-table-even: #222;
+    --background-color-table-odd: var(--background-color-main);
+    --content-outline: 2px solid var(--background-color-main);
+    --font-color-high-emphasis: rgba(255, 255, 255, 0.87);
+    --font-color-low-emphasis: rgba(255, 255, 255, 0.38);
+    --shadow-color: #0084dd88;
+    /* Dark mode shadow box adds a glow effect */
+    --shadow-box: 2px  0px 8px var(--shadow-color),
+                -2px  0px 8px var(--shadow-color),
+                0px  2px 8px var(--shadow-color),
+                0px -2px 8px var(--shadow-color);
+  }
+}
+
+div.table-wrapper {
+  background-color: var(--background-color-main);
+  border: 2px solid rgb(200,200,200);
+  margin: var(--content-margin);
+  max-height: 600px;
+  overflow-y: scroll;
+  padding: 0;
+}
+table.table {
+  border-spacing: 0;
+  border-collapse: separate;
+  color: var(--font-color-high-emphasis);
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+table.table > thead th {
+  background-color: var(--background-color-main);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.disable-scrollbars::-webkit-scrollbar {
+  background: transparent;
+  width: 0px;
+}
+.disable-scrollbars {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hidden-reading {
+  border: none;
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form-control, .form-control:focus {
+  background-color: var(--background-color-main);
+  color: var(--font-color-high-emphasis);
+}

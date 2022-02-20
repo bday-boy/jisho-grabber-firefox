@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/src/css/boostrap-edits.css"/>
     <link rel="stylesheet" href="/src/css/homepage.css"/>
     <link rel="stylesheet" href="/src/css/materials.css"/>
     <link rel="stylesheet" href="/src/css/modal.css"/>
@@ -75,217 +76,209 @@
       </div>
     </div>
     <div class="container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-lg-8 mt-3 mx-3">
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="row">
-                <div class="col-md-1">
-                  <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
-                </div>
-                <div class="col-md-4 offset-7 lead text-center">
-                  <span>
-                    Anki integration configuration
-                  </span>
-                </div>
+      <div class="row mx-3 d-flex justify-content-center">
+        <div class="col-xxl-10 col-xl-10 col-lg-12">
+          <div class="container my-3">
+            <div class="row">
+              <div class="col-1">
+                <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
               </div>
-              <div class="row rounded glow themed-background">
-                <div class="col-xl-12">
-                  <div class="row my-2 d-flex justify-content-between align-items-center">
-                    <div class="col-lg-7 d-flex flex-column">
-                      <span>
-                        Connect to Anki via AnkiConnect (required for Anki integration)
-                      </span>
-                      <label id="anki-connect-status" class="hint-text">
-                        Not connected to Anki
-                      </label>
-                    </div>
-                    <div class="col-lg-1 d-flex justify-content-center align-items-center">
-                      <div class="vr"></div>
-                    </div>
-                    <div class="col-lg-4 d-flex justify-content-center">
-                      <label class="switch">
-                        <input id="anki-connect-switch" type="checkbox">
-                        <span class="slider"></span>
-                      </label>
-                    </div>
+              <div class="col-11 lead text-end">
+                <span>
+                  Anki integration configuration
+                </span>
+              </div>
+            </div>
+            <div class="row rounded glow themed-background">
+              <div class="col-sm-12">
+                <div class="row my-1 d-flex justify-content-between align-items-center">
+                  <div class="col-sm-10 my-1 d-flex flex-column">
+                    <label for="anki-connect-switch">
+                      Connect to Anki via AnkiConnect (required for Anki integration)
+                    </label>
+                    <label id="anki-connect-status" class="hint-text">
+                      Not connected to Anki
+                    </label>
                   </div>
-                  <div class="content-border-wrapper">
-                    <svg class="border-horizontal">
-                      <rect class="content-border-horizontal" rx="2"></rect>
-                    </svg>
+                  <div class="col-sm-2 my-1 d-flex justify-content-center">
+                    <label class="switch">
+                      <input id="anki-connect-switch" type="checkbox">
+                      <span class="slider"></span>
+                      <!-- TODO: Make this a bootstrap slider -->
+                    </label>
                   </div>
-                  <div class="content-item">
-                    <div class="content-item-left">
-                      <span>
-                        AnkiConnect localhost URL and port
-                      </span>
-                      <label class="content-item-hint">
-                        Default is http://127.0.0.1:8765/ or http://localhost:8765/
-                      </label>
-                    </div>
-                    <div class="content-border-wrapper">
-                      <svg class="border-vertical">
-                        <rect class="content-border-vertical" rx="2"></rect>
-                      </svg>
-                    </div>
-                    <div class="content-item-right">
-                      <input id="anki-connect-server" type="text" class="text-input" value="http://127.0.0.1:8765/">
-                    </div>
+                </div>
+                <div class="row my-1 d-flex justify-content-between align-items-center">
+                  <div class="col-lg-6 my-1 d-flex flex-column">
+                    <label for="anki-connect-server">
+                      AnkiConnect localhost URL and port
+                    </label>
                   </div>
-                  <div class="content-border-wrapper">
-                    <svg class="border-horizontal">
-                      <rect class="content-border-horizontal" rx="2"></rect>
-                    </svg>
+                  <div class="col-lg-6 my-1">
+                    <input id="anki-connect-server" type="text" class="form-control" value="http://127.0.0.1:8765/">
                   </div>
-                  <div class="content-item">
-                    <div class="content-item-left">
-                      <span>
-                        Card tags
-                      </span>
-                      <label class="content-item-hint">
-                        List of comma-separated tags
-                      </label>
-                    </div>
-                    <div class="content-border-wrapper">
-                      <svg class="border-vertical">
-                        <rect class="content-border-vertical" rx="2"></rect>
-                      </svg>
-                    </div>
-                    <div class="content-item-right">
-                      <input id="anki-tags" type="text" class="text-input" value="jisho_grabber">
-                    </div>
+                </div>
+                <div class="row my-1 d-flex justify-content-between align-items-center">
+                  <div class="col-lg-6 my-1 d-flex flex-column">
+                    <label for="anki-tags">
+                      Comma-separated list of tags
+                    </label>
                   </div>
-                  <div class="content-border-wrapper">
-                    <svg class="border-horizontal">
-                      <rect class="content-border-horizontal" rx="2"></rect>
-                    </svg>
+                  <div class="col-lg-6 my-1">
+                    <input id="anki-tags" type="text" class="form-control" value="jisho_grabber">
                   </div>
-                  <div id="anki-config" class="content-item">
-                    <div class="content-item-left">
-                      <span>
-                        Set Anki deck and model settings
-                      </span>
-                    </div>
-                    <div class="content-item-right">
-                      <div class="arrow-right"></div>
-                    </div>
+                </div>
+                <div id="anki-config" class="row py-1 d-flex justify-content-between align-items-center">
+                  <div class="col-11 my-1">
+                    <span>
+                      Set Anki deck and model settings
+                    </span>
+                  </div>
+                  <div class="col-1 my-1 d-flex justify-content-end">
+                    <div class="arrow-right"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div id="table-group" class="content-group">
-            <div class="content-header">
-              <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
-              <span>
-                Anki note table
-              </span>
-            </div>
-            <div class="content-body">
-              <div class="content-item">
-                <button id="init-table" class="button-pushable" role="button">
-                  <span class="button-pushable-shadow"></span>
-                  <span class="button-pushable-edge"></span>
-                  <span class="button-pushable-front">
-                    Refresh table
-                  </span>
-                </button>
-                <button id="remove-rows" class="button-pushable" role="button">
-                  <span class="button-pushable-shadow"></span>
-                  <span class="button-pushable-edge"></span>
-                  <span class="button-pushable-front">
-                    Remove row mode
-                  </span>
-                </button>
-                <button id="remove-added-notes" class="button-pushable" role="button">
-                  <span class="button-pushable-shadow"></span>
-                  <span class="button-pushable-edge"></span>
-                  <span class="button-pushable-front">
-                    Remove added notes
-                  </span>
-                </button>
-                <button id="add-anki-notes" class="button-pushable" role="button">
-                  <span class="button-pushable-shadow"></span>
-                  <span class="button-pushable-edge"></span>
-                  <span class="button-pushable-front">
-                    Add all notes
-                  </span>
-                </button>
+          <div class="container my-3">
+            <div class="row">
+              <div class="col-1">
+                <object type="image/svg+xml" data="/icons/anki-icon.svg" width="32" height="32"></object>
               </div>
-              <div class="content-border-wrapper">
-                <svg class="border-horizontal">
-                  <rect class="content-border-horizontal" rx="2"></rect>
-                </svg>
-              </div>
-              <div class="content-item">
+              <div class="col-11 lead text-end">
                 <span>
-                  Below is a table of all available Anki notes in local storage. Fields can be filtered and the table can
-                  be scrolled.
+                  Anki note table
                 </span>
               </div>
-              <div class="table-wrapper disable-scrollbars">
-                <table id="notes-table" style="display: none;">
-                  <!-- <caption>
-                    Table of all available Anki notes in local storage.
-                  </caption> -->
-                  <colgroup>
-                    <col span="7">
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th scope="col" data-word-obj-key="expression">
-                        <span>
-                          Japanese<br>expression
-                        </span><br>
-                        <input id="filter-japanese" type="text" class="text-input" placeholder="Filter...">
-                      </th>
-                      <th scope="col" data-word-obj-key="englishMeaning">
-                        <span>
-                          English<br>meaning(s)
-                        </span><br>
-                        <input id="filter-english" type="text" class="text-input" placeholder="Filter...">
-                      </th>
-                      <th scope="col" data-word-obj-key="partsOfSpeech">
-                        <span>
-                          Part(s) of<br>speech
-                        </span><br>
-                        <input id="filter-partsOfSpeech" type="text" class="text-input" placeholder="Filter...">
-                      </th>
-                      <th scope="col" data-word-obj-key="common">
-                        <span>
-                          Common word
-                        </span>
-                        <label class="switch">
-                          <input id="filter-common" type="checkbox">
-                          <span class="slider"></span>
-                        </label>
-                      </th>
-                      <th scope="col" data-word-obj-key="jlpt">
-                        <span>
-                          JLPT level
-                        </span><br>
-                        <input id="filter-jlpt" type="text" class="text-input" placeholder="Filter...">
-                      </th>
-                      <th scope="col" data-word-obj-key="wanikani">
-                        <span>
-                          WaniKani level(s)
-                        </span><br>
-                        <input id="filter-wanikani" type="text" class="text-input" placeholder="Filter...">
-                      </th>
-                      <th scope="col">
-                        <span>
-                          Add to Anki
-                        </span>
-                        <label class="switch">
-                          <input id="filter-added" type="checkbox">
-                          <span class="slider"></span>
-                        </label>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
+            </div>
+            <div id="table-group" class="row rounded glow themed-background">
+              <div class="col-sm-12">
+                <div class="row my-2 px-2 d-flex justify-content-around align-items-center">
+                  <button id="init-table" class="button-pushable col-lg-2 my-2" role="button">
+                    <span class="button-pushable-shadow"></span>
+                    <span class="button-pushable-edge"></span>
+                    <span class="button-pushable-front">
+                      Refresh table
+                    </span>
+                  </button>
+                  <button id="remove-rows" class="button-pushable col-lg-2 my-2" role="button">
+                    <span class="button-pushable-shadow"></span>
+                    <span class="button-pushable-edge"></span>
+                    <span class="button-pushable-front">
+                      Remove row mode
+                    </span>
+                  </button>
+                  <button id="remove-added-notes" class="button-pushable col-lg-2 my-2" role="button">
+                    <span class="button-pushable-shadow"></span>
+                    <span class="button-pushable-edge"></span>
+                    <span class="button-pushable-front">
+                      Remove added notes
+                    </span>
+                  </button>
+                  <button id="add-anki-notes" class="button-pushable col-lg-2 my-2" role="button">
+                    <span class="button-pushable-shadow"></span>
+                    <span class="button-pushable-edge"></span>
+                    <span class="button-pushable-front">
+                      Add all notes
+                    </span>
+                  </button>
+                </div>
+                <div class="row my-1 d-flex justify-content-around align-items-center">
+                  <div class="col-sm-12 text-center">
+                    Below is a table of all available Anki notes in local storage. Fields can be filtered and the table
+                    can be scrolled.
+                  </div>
+                </div>
+                <div class="row my-2 d-flex justify-content-center">
+                  <div class="col-12">
+                    <div class="table-responsive table-wrapper disable-scrollbars">
+                      <table id="notes-table" class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="text-center" data-word-obj-key="expression">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  Japanese expression
+                                </div>
+                                <div>
+                                  <input id="filter-japanese" type="text" class="form-control" placeholder="Filter...">
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center" data-word-obj-key="englishMeaning">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  English meaning(s)
+                                </div>
+                                <div>
+                                  <input id="filter-english" type="text" class="form-control" placeholder="Filter...">
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center" data-word-obj-key="partsOfSpeech">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  Part(s) of speech
+                                </div>
+                                <div>
+                                  <input id="filter-partsOfSpeech" type="text" class="form-control" placeholder="Filter...">
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center" data-word-obj-key="common">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  Common word
+                                </div>
+                                <div>
+                                  <label class="switch">
+                                    <input id="filter-common" type="checkbox">
+                                    <span class="slider"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center" data-word-obj-key="jlpt">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  JLPT level
+                                </div>
+                                <div>
+                                  <input id="filter-jlpt" type="text" class="form-control" placeholder="Filter...">
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center" data-word-obj-key="wanikani">
+                              <div class="d-flex flex-column justify-content-center align-content-between">
+                                <div>
+                                  WaniKani level(s)
+                                </div>
+                                <div>
+                                  <input id="filter-wanikani" type="text" class="form-control" placeholder="Filter...">
+                                </div>
+                              </div>
+                            </th>
+                            <th scope="col" class="text-center">
+                              <div class="d-flex flex-column justify-content-between align-content-center">
+                                <div>
+                                  Add to Anki
+                                </div>
+                                <div>
+                                  <label class="switch">
+                                    <input id="filter-added" type="checkbox">
+                                    <span class="slider"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
